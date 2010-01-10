@@ -2,13 +2,13 @@
 
 === Introduction ===
 
-Toshiro-IOC is ready to use in production. There will be some features added in the future in order to make make the project more complete into real world applications.
+Toshiro-IOC is ready to use in production. However there will be some features added in the future in order to make make the project more complete into real world applications. All of the future releases are planned to be interface compatible with the first released version (0.7)
 
 === Release plan ===
 
 *0.8* 
   * more ASDocs comments
-  * refactored internal structure (compatible with 0.7 release)
+  * refactored internal structure
   * added puremvc (multicore) support
 
 *0.9*
