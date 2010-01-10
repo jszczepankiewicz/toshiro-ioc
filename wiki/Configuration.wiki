@@ -1,0 +1,13 @@
+#summary All of the configuration options
+
+== Introduction ==
+
+Below you can find all of the configuration features of the project
+
+== Details ==
+
+=== Starting the container ===
+Toshiro-IOC is xml driven. The main factory object is `org.toshiroioc.core.XMLBeanFactory` which implements `org.toshiroioc.core.IBeanFactory`. Below is typical usage of the factory:
+{{{
+
+}}}
