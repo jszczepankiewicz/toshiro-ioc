@@ -1,0 +1,18 @@
+== Plan of the future releases ==
+
+=== Introduction ===
+
+Toshiro-IOC is ready to use in production. There will be some features added in the future in order to make make the project more complete into real world applications.
+
+=== Release plan ===
+
+*0.8* 
+  * more ASDocs comments
+  * refactored internal structure (compatible with 0.7 release)
+  * added puremvc (multicore) support
+
+*0.9*
+  * added support to multifile implementation
+
+*1.0*
+  * added support for dynamically adding new xml files with object definitions, which will help to integrate into multicore modules
