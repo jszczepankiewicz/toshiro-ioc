@@ -1,10 +1,11 @@
+#summary Features to be implemented and to not be implemented.
 === Introduction ===
 
 Toshiro-IOC is ready to use in production. However there will be some features added in the future in order to make the project more complete and helpfull in real world applications. All of the future releases are planned to be interface compatible with the first released version (0.7)
 
 === Features not planned ===
 
-Toshiro-IOC is planned to be simple and lean container. It is not planned to make it 100% compatible with all of the Spring Framework IOC features. 
+Toshiro-IOC is planned to be simple and lean container. It is not planned to make it 100% compatible with all of the Spring Framework IOC features. The autowire option is not planned to be implemented partially due to mis
 
 === Release plan ===
 
