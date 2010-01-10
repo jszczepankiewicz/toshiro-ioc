@@ -9,6 +9,9 @@ Toshiro-IOC is planned to be simple and lean container. It is not planned to mak
 
 === Release plan ===
 
+*0.7* 
+  * first release of the library (January 2010)
+
 *0.8* 
   * more ASDocs comments
   * refactored internal structure
