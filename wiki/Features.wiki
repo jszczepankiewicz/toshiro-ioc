@@ -5,9 +5,19 @@
 This page provides information about supported features by Toshiro-IOC container.
 
 
-=== Basics ===
+=== Example configuration ===
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+Toshiro-IOC is using XML files to configure the objects and all of the dependencies. Example configuration looks like:
+
+{{{
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+	<object id="objectOne" class="org.toshiroioc.test.beans.SimpleBean">
+		<property name="booleanItem" value="true"/>
+		<property name="stringItem" value="some123String"/>
+		<property name="intItem" value="-99999"/>
+		<property name="uintItem" value="1111"/>
+		<property name="numberItem" value="9999.00001"/>
+	</object>	
+</objects>
+}}}
