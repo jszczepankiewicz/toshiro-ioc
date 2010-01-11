@@ -50,5 +50,34 @@ var object4:ParentOfSimpleDependencyObject = context.getTypedObject("object4", c
 if the object4 would be not expected type (i.e. `org.toshiroioc.test.beans.ParentOfSimpleDependencyObject`), then the ContainerError will be thrown.
 
 === Injecting simple types ===
+Example setter injection:
+{{{
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+	<object id="objectOne" class="org.toshiroioc.test.beans.SimpleBean">
+		<property name="booleanItem" value="true"/>
+		<property name="stringItem" value="some123String"/>
+		<property name="intItem" value="-99999"/>
+		<property name="uintItem" value="1111"/>
+		<property name="numberItem" value="9999.00001"/>
+	</object>
+</objects>
+}}}
+
+Example constructor injection:
+{{{
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+	<object id="objectOne" class="org.toshiroioc.test.beans.BeanWithConstructor">
+		<constructor-arg value="-99999"/>
+		<constructor-arg value="1111"/>		
+		<constructor-arg value="some123String"/>
+		<constructor-arg value="true"/>		
+		
+		<property name="someAdditionalString" value="false"/>
+		
+	</object>
+</objects>	
+}}}
 === Injecting date type ===
 === Injecting date type ===
