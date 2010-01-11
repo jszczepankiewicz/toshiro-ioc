@@ -36,9 +36,13 @@ Container allows two ways for retrieving objects:
   * without type checking
   * retrieve object with type check
 
-The method `getObject(id:String):*` returns initialized object. Example:
+The method `getObject(id:String):*` returns initialized object without type check. Example:
 {{{
 var beanOne:SimpleBean = context.getObject("objectOne");
 }}}
 
-It is also possible to retrieve object with checking the type
+It is also possible to retrieve object with checking the type by using the method `getTypedObject(id:String, clazz:Class):*`. It is recommended way of retrieving. Example:
+{{{
+var clazz4:Class = Class(getDefinitionByName("org.toshiroioc.test.beans.ParentOfSimpleDependencyObject"));
+			var object4:ParentOfSimpleDependencyObject = context.getTypedObject("object4", clazz4);		
+}}}
