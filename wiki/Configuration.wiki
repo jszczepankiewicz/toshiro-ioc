@@ -3,8 +3,7 @@
 == Introduction ==
 
 Below you can find all of the configuration features of the project
-
-== Details ==
+== Configuration and usage scenario ===
 
 === Starting the container ===
 Toshiro-IOC is xml driven. The main factory object is `org.toshiroioc.core.XMLBeanFactory` which implements `org.toshiroioc.core.IBeanFactory`. Below is typical usage of the factory:
@@ -30,3 +29,16 @@ and the xml configuration looks like:
 	</object>
 </objects>	
 }}}
+
+=== Object retrieval ===
+
+Container allows two ways for retrieving objects:
+  * without type checking
+  * retrieve object with type check
+
+The method `getObject(id:String):*` returns initialized object. Example:
+{{{
+var beanOne:SimpleBean = context.getObject("objectOne");
+}}}
+
+It is also possible to retrieve object with checking the type
