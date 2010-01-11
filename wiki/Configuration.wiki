@@ -74,10 +74,13 @@ Example constructor injection:
 		<constructor-arg value="some123String"/>
 		<constructor-arg value="true"/>		
 		
-		<property name="someAdditionalString" value="false"/>
+		...
 		
 	</object>
 </objects>	
 }}}
+
+*Constructor arguments order should be keeped as in the object constructor definition.*
+
 === Injecting date type ===
 === Injecting date type ===
