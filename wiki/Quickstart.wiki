@@ -1,0 +1,5 @@
+#summary How to start using Toshiro-IOC immediatelly
+
+=== Introduction ===
+
+(soon)
