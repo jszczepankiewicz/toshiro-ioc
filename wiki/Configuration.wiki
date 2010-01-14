@@ -106,4 +106,15 @@ Example constructor date injection:
 	
 </objects>
 }}}
-=== Injecting date type ===
+=== Injecting null values ===
+
+Example null in setter injection:
+
+{{{
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+	<object id="objectOne" class="org.toshiroioc.test.beans.SimpleBean">	
+		<property name="stringItem"><null/></property>		
+	</object>
+</objects>
+}}}
