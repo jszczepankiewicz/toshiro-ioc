@@ -120,7 +120,7 @@ Example null in setter injection:
 }}}
 
 === Injecting class objects ===
-Toshiro-IOC can inject Class object from full string domain representation.
+Toshiro-IOC can inject Class object from full domain class name representation.
 
 Example setter injection:
 {{{
@@ -135,7 +135,7 @@ Example setter injection:
 }}}
 
 === Injecting objects  ===
-The primary purpose of every DI engine is injection of objects
+The primary purpose of every DI engine is injection of objects.
 
 Example setter injection:
 {{{
@@ -196,5 +196,43 @@ Example constructor injection:
 		<property name="numberItem" value="9999.00001"/>
 	</object>
 
+</objects>
+}}}
+
+=== Object lifecycle  ===
+Toshiro-IOC supports both singleton and prototype mode. Singleton mode is default. In order to make the bean to behave like prototype the bean should be marked with attribute `lifecycle="prototype"`.
+
+Full example:
+{{{
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+	
+	<!-- object without dependency -->
+	<object id="object5" class="org.toshiroioc.test.beans.ParentOfSimpleDependencyObject">		
+		<property name="nextChild" ref="object3"/>
+	</object>
+	
+	<object id="object4" class="org.toshiroioc.test.beans.ParentOfSimpleDependencyObject">		
+		<property name="nextChild" ref="object3"/>		
+	</object>
+		
+	<object id="object2" class="org.toshiroioc.test.beans.SimpleDependencyObject">		
+		<property name="someChild" ref="objectChild"/>		
+		<property name="someString" value="some123$#"/>
+	</object>
+	
+	<object id="objectChild" lifecycle="prototype" class="org.toshiroioc.test.beans.BeanWithConstructor">
+		<constructor-arg value="-99999"/>
+		<constructor-arg value="1111"/>		
+		<constructor-arg value="some123String"/>
+		<constructor-arg value="true"/>		
+		
+		<property name="someAdditionalString" value="false"/>		
+	</object>	
+	
+	<object id="object3" class="org.toshiroioc.test.beans.SimpleDependencyObject">	
+		<property name="someChild" ref="objectChild"/>				
+	</object>		
+		
 </objects>
 }}}
