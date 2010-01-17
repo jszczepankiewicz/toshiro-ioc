@@ -1,5 +1,5 @@
 #summary How to start using Toshiro-IOC immediatelly
 
-=== Introduction ===
+=== Using Toshiro-IOC in your own project ===
 
-(soon)
+Unpack latest archieve. Use dist/toshiro-ioc-standalone.swc as library to be linked with your project. Check documentation of your IDE how to use compiled flash libraries.
