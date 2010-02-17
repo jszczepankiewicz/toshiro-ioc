@@ -1,0 +1,10 @@
+BREX REQUIRED
+- multiple files
+- [DONE] acyclic dependency detection
+- [DONE] rename of beans -> objects
+- puremvc plugins (copy from spring actionscript)
+
+OPTIONAL
+- [DONE] lifecycle (non singletons beans)
+- setters / constructors with arrays
+

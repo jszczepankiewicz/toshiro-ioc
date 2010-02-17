@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+
+	<object id="object1" class="org.toshiroioc.test.beans.CyclicConstructorAndSetter">
+		<property name="childBean" ref="object3"/>	
+	</object>
+
+	<object id="object2" class="org.toshiroioc.test.beans.CyclicConstructorAndSetter">
+		<constructor-arg ref="object1"/>	
+	</object>
+		
+	<object id="object3" class="org.toshiroioc.test.beans.CyclicConstructorAndSetter">
+		<constructor-arg ref="object2"/>	
+	</object>
+</objects>

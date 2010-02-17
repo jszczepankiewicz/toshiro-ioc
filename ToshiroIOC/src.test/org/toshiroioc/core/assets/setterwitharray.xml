@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+	<object id="object1" class="org.toshiroioc.test.beans.SetterWithArrays">
+		<property name="booleanItem"><value>true</value></property>
+		
+		<property name="simpleArrayString">
+			<array>
+				<entry>1</entry>
+				<entry>2</entry>
+				<entry>2</entry>
+			</array>
+		</property>
+		
+		<property name="simpleArrayDate">
+			<array>
+				<entry>1</entry>
+				<entry>2</entry>
+				<entry>2</entry>
+			</array>
+		</property>
+	</object>
+	
+</objects>

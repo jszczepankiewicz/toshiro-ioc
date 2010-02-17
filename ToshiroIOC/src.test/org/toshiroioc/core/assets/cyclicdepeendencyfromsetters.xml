@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+
+	<object id="object1" class="org.toshiroioc.test.beans.CyclicSetter">
+		<property name="someChild" ref="object2"/>	
+	</object>
+	
+	<object id="object2" class="org.toshiroioc.test.beans.CyclicSetter">
+		<property name="someChild" ref="object1"/>	
+	</object>
+	
+</objects>

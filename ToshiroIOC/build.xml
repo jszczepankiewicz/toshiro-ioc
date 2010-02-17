@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+
+<project name="toshiro-ioc" basedir="." default="dist.lib">
+
+	<!-- ======================================================================================== -->
+	<property name="name" value="toshiro-ioc" />
+	<property name="APP_NAME" value="${basedir}" />
+
+	<property file="${basedir}/build.properties" />
+
+	<property name="flexpmd.version" value="1.0" />
+	<property name="flexpmd.dir" value="${basedir}/java.libs" />
+
+	<!-- task defs -->
+	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
+	<taskdef name="flexPmd" classname="com.adobe.ac.pmd.ant.FlexPmdAntTask" classpath="${flexpmd.dir}/flex-pmd-ant-task-${flexpmd.version}.jar">
+		<classpath>
+			<pathelement location="${flexpmd.dir}/flex-pmd-ruleset-api-${flexpmd.version}.jar" />
+			<pathelement location="${flexpmd.dir}/flex-pmd-ruleset-${flexpmd.version}.jar" />
+			<pathelement location="${flexpmd.dir}/flex-pmd-core-${flexpmd.version}.jar" />
+			<pathelement location="${flexpmd.dir}/as3-plugin-utils-${flexpmd.version}.jar" />
+			<pathelement location="${flexpmd.dir}/as3-parser-${flexpmd.version}.jar" />
+			<pathelement location="${flexpmd.dir}/pmd-4.2.5.jar" />
+			<pathelement location="${flexpmd.dir}/commons-lang-2.4.jar" />
+			<pathelement location="${flexpmd.dir}/flex-pmd-files-${flexpmd.version}.jar" />
+			<pathelement location="${flexpmd.dir}/as3-parser-api-${flexpmd.version}.jar" />
+			<pathelement location="${flexpmd.dir}/plexus-utils-1.0.2.jar" />
+		</classpath>
+	</taskdef>
+	<!-- ================ TARGETS ======================== -->
+
+	<target name="dist.lib">
+		<echo message="building distribution library" />
+
+		<mkdir dir="dist" />
+
+		<compc output="${basedir}/dist/toshiro-ioc-standalone.swc" include-classes="org.toshiroioc.core.XMLBeanFactory">
+			<source-path path-element="src" />
+		</compc>
+
+	</target>
+
+	<target name="pmd.show">
+		<echo message="running pmd analysis..." />
+
+		<mkdir dir="quality" />
+
+		<flexPmd sourceDirectory="src" outputDirectory="quality" />
+
+	</target>
+
+
+
+</project>

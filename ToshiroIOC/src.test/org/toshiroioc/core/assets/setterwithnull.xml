@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+	<object id="objectOne" class="org.toshiroioc.test.beans.SimpleBean">	
+		<property name="stringItem"><null/></property>		
+	</object>
+	
+	<object id="objectTwo" class="org.toshiroioc.test.beans.SimpleBean">
+		<!-- property that will be empty string (NOT null) -->
+		<property name="stringItem"><value></value></property>		
+	</object>
+	
+	<object id="objectThree" class="org.toshiroioc.test.beans.SimpleBean">	
+		<property name="stringItem"><value/></property>		
+	</object>
+</objects>

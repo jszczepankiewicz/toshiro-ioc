@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+	<object id="objectOne" class="org.toshiroioc.test.beans.BeanWithConstructor">
+		<constructor-arg><value>-99999</value></constructor-arg>
+		<constructor-arg><value>1111</value></constructor-arg>		
+		<constructor-arg><value>some123String</value></constructor-arg>
+		<constructor-arg><value>true</value></constructor-arg>		
+		
+		<property name="someAdditionalString"><value>false</value></property>
+		
+	</object>	
+	
+	<object id="objectTwo" class="org.toshiroioc.test.beans.BeanWithConstructor">
+		<constructor-arg><value>-99999.6</value></constructor-arg>
+		<!--<constructor-arg value="-99999.6"/>-->
+		<constructor-arg><value>1111</value></constructor-arg>		
+		<constructor-arg><null/></constructor-arg>
+		<constructor-arg><value>false</value></constructor-arg>		
+		
+		<property name="someAdditionalString"><value>enedueRikeFake</value></property>
+		
+	</object>	
+	
+</objects>

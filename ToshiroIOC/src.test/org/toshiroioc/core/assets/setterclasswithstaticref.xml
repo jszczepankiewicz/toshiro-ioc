@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+
+	<object id="objectOne" class="org.toshiroioc.test.beans.SimpleBean">
+		<property name="staticRefItem" const="org.toshiroioc.core.FieldDescription.FIELD_TYPE_UINT"/>
+	</object>
+	
+	<object id="objectTwo" class="org.toshiroioc.test.beans.SimpleBean">
+		<property name="staticRefItem" const="org.toshiroioc.core.FieldDescription.NONEXISTENT"/>
+	</object>
+	
+</objects>
