@@ -687,6 +687,9 @@ package org.toshiroioc.core
 				trace(error);
 			}
 			
+			assertNotNull(error);
+			assertEquals(ContainerError.ERROR_INVALID_STATIC_REFERENCE, error.errorCode);
+			
 			var bean:SimpleBean = context.getTypedObject("objectOne", SimpleBean);
 			assertNotNull(bean);
 			assertEquals(7, bean.staticRefItem)
