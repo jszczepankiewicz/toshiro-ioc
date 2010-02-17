@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+	<object id="object1" class="org.toshiroioc.test.beans.SetterWithMaps">
+		<property name="booleanItem"><value>true</value></property>
+		
+		<property name="simpleMapString">
+			<map>
+				<entry key="some1" value="some123"/>
+				<entry key="some3" value="second&*"/>
+				<entry key="some99" value="uyow*&"/>
+			</map>
+		</property>
+		
+		<property name="simpleMapDate">
+			<map>
+				<entry key="TODO" type="date" value="xwer876"/>
+				<entry key="TODO" type="date" value="sc1"/>
+				<entry key="TODO" type="date" value="ower89"/>
+			</map>
+		</property>
+	</object>
+</objects>

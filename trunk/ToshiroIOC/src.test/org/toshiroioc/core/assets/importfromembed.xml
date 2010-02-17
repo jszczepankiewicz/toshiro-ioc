@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+	
+	
+	<object id="object1" class="org.toshiroioc.test.beans.SimpleBean">
+		<property name="booleanItem"><value>false</value></property>		
+		<property name="intItem"><value>999</value></property>
+		<property name="uintItem"><value>0</value></property>
+		<property name="numberItem"><value>-123456.99987</value></property>
+		
+	</object>
+	
+	<import providerclass="pl." stream-id="0"/>
+</objects>
