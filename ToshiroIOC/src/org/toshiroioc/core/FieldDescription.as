@@ -47,13 +47,17 @@ package org.toshiroioc.core
 		public static const FIELD_TYPE_UINT:uint	=	7;
 		public static const FIELD_TYPE_INT:uint	= 8;
 		public static const FIELD_TYPE_CLASS:uint	= 9;
+		public static const METATAG_BEFORE_CONFIGURE:String	= "BeforeConfigure";
+		public static const METATAG_AFTER_CONFIGURE:String	= "AfterConfigure";
+		public static const METATAG_REQUIRED:String	= "Required";
 		public static const CONSTRUCTOR_FLAG:uint = 1;
 		public static const CONSTRUCTOR_DETECTED:String = "toshiro.constructor.detected";
 		
 		/**
 		 * classDescriptionCache
 		 */
-		private static var classDescriptionCache:Object = new Object();
+		private static var classFieldsDescriptionCache:Object = new Object();
+		private static var classMetatagsDescriptionCache:Object = new Object();
 		
 		private static var registryCache:Array = new Array();		
 		
@@ -131,10 +135,25 @@ package org.toshiroioc.core
 		}
 		*/
 		
-		public static function getClassFieldTypeDescription(clazz:Class):Object{
+		public static function getBeforeConfigureMethodName(clazz:Class):String{
+			var obj:Object = classMetatagsDescriptionCache[getQualifiedClassName(clazz)];
+			if (obj)
+				return obj[METATAG_BEFORE_CONFIGURE];
+			return null;
+		}
+		
+		public static function getAfterConfigureMethodName(clazz:Class):String{
+			var obj:Object = classMetatagsDescriptionCache[getQualifiedClassName(clazz)];
+			if (obj)
+				return obj[METATAG_AFTER_CONFIGURE];
+			return null;
+		}
+		
+		public static function getClassDescription(clazz:Class):Object{
 			//	check if adding cache for getQualifiedClassName speeds up
 			var qualifiedClazzName:String = getQualifiedClassName(clazz);
-			var fieldsInfo:Object = classDescriptionCache[qualifiedClazzName];
+			var fieldsInfo:Object = classFieldsDescriptionCache[qualifiedClazzName];
+			var metatagsInfo:Object = classMetatagsDescriptionCache[qualifiedClazzName];
 			
 			//	detecting the constructor
 			
@@ -150,10 +169,31 @@ package org.toshiroioc.core
     </constructor>
     <accessor name="prototype" access="readonly" type="*" declaredBy="Class"/>
 			*/
-			if(fieldsInfo == null){
-				fieldsInfo = new Object();
+			
+			// if any info isn't available, get both
+			if(!fieldsInfo || !metatagsInfo){
+					
+					fieldsInfo = new Object();
+					metatagsInfo= new Object();
+				
 				
 				var classInfo:XML = describeType(clazz);
+				
+				 for each (var method:XML in classInfo..method){
+				 	for each (var metadata:XML in method..metadata){
+				 		
+						switch (metadata.@name.toString()){
+							case (METATAG_BEFORE_CONFIGURE):
+								metatagsInfo[METATAG_BEFORE_CONFIGURE] = method.attribute("name").toString();
+								break;
+							case (METATAG_AFTER_CONFIGURE):
+								metatagsInfo[METATAG_AFTER_CONFIGURE] =  method.attribute("name").toString();
+								break;
+							case (METATAG_REQUIRED):
+								break;
+						}
+				 	}
+				 }
 				
 				for each (var variable:XML in classInfo..accessor){
 					
@@ -206,7 +246,9 @@ package org.toshiroioc.core
 				}
 				
 				//	saving in cache for future use
-				classDescriptionCache[qualifiedClazzName] = fieldsInfo;
+				classFieldsDescriptionCache[qualifiedClazzName] = fieldsInfo;
+				classMetatagsDescriptionCache[qualifiedClazzName] = metatagsInfo;
+				
 			}
 			
 			return fieldsInfo;

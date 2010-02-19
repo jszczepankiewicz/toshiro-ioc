@@ -80,7 +80,8 @@ package org.toshiroioc.core
 			
 			
 			//	registering built in property editors			
-			registerPropertyEditor(new CorePropertyEditors());			
+			registerPropertyEditor(new CorePropertyEditors());
+			//registerPropertyEditor(new MetatagsEditor());				
 			startContainerParseBeans();
 		}
 		
@@ -319,9 +320,15 @@ package org.toshiroioc.core
 		}
 		
 		private function processBeanProperties(clazz:Class, bean:*, properties:XMLList, processDependencies:Boolean = false):void{
-			var fieldDescriptionMap:Object = FieldDescription.getClassFieldTypeDescription(clazz);
+			var fieldDescriptionMap:Object = FieldDescription.getClassDescription(clazz);
 			
-			//	initializing			
+			
+			// call method tagged [BeforeConfigure]
+			var beforeConfigureMethodName:String = FieldDescription.getBeforeConfigureMethodName(clazz);
+			if (beforeConfigureMethodName)
+				bean[beforeConfigureMethodName]();
+			
+			//	initializing
 			
 			for each (var property:XML in properties){
 				
@@ -363,6 +370,11 @@ package org.toshiroioc.core
 				bean[propertyName] = editor.parseProperty(propertyType, property);				
 				
 			}
+			
+			// call method tagged [AfterConfigure]
+			var afterConfigureMethodName:String = FieldDescription.getAfterConfigureMethodName(clazz);
+			if (afterConfigureMethodName)
+				bean[afterConfigureMethodName]();
 		}
 		
 		/**
