@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+	
+	<object id="objectWithTags" class="org.toshiroioc.test.beans.SimpleBeanWithMetatags">
+		<property name="numberItem" value="9999.00001"/>
+		<property name="dependencyItem" ref="object5"/> 		
+	</object>
+	
+	<object id="objectWithoutTags" class="org.toshiroioc.test.beans.SimpleBeanWithoutMetatags">
+		<property name="numberItem" value="9999.00001"/>
+		<property name="dependencyItem" ref="object5"/> 
+	</object>
+	
+	<object id="object5" class="org.toshiroioc.test.beans.SimpleBean"/>		
+
+</objects>
