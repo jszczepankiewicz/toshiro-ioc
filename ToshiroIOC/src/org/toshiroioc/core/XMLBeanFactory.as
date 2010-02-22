@@ -234,7 +234,7 @@ package org.toshiroioc.core
 		
 		
 		private function initializeBean(beanXML:XML, proceedIfSettingDependencyFound:Boolean = false):Object{
-			
+
 			var clazz:Class = getDefinitionByName(beanXML.attribute("class")) as Class;
 			
 			var retval:Object = null;
@@ -364,7 +364,7 @@ package org.toshiroioc.core
 				var editor:IPropertyEditor = propertyEditorsMap[propertyType];
 				
 				if(editor == null){
-					throw new ContainerError("Property editor for property: [" + propertyName + "], type: [" + propertyType);	
+					throw new ContainerError("Property editor for property: [" + propertyName + "], type: [" + propertyType +"]");	
 				}
 				
 				bean[propertyName] = editor.parseProperty(propertyType, property);				
@@ -375,6 +375,15 @@ package org.toshiroioc.core
 			var afterConfigureMethodName:String = FieldDescription.getAfterConfigureMethodName(clazz);
 			if (afterConfigureMethodName)
 				bean[afterConfigureMethodName]();
+				
+			var reqFields:Array = FieldDescription.getRequiredFields(clazz);
+			if (reqFields){
+				for each(var fieldName:String in reqFields){
+					if (!bean[fieldName])
+						throw new ContainerError("Required bean [" + fieldName + "] not initialized",0,ContainerError.ERROR_REQUIRED_METATAG_NOT_SATISFIED);
+				}
+			}   
+			
 		}
 		
 		/**
@@ -456,7 +465,10 @@ package org.toshiroioc.core
 			for each(var di:DINode in resolutionOrder){
 				
 				//	initialize ONLY uninitialized objects
-				if(di.object == null){										
+				if(di.object == null){	
+				// if there is no definition in xml throw error, else initialize
+					if (!di.xml)
+						throw new ContainerError("Bean ["+di.id+"] not found", 0, ContainerError.ERROR_OBJECT_NOT_FOUND);									
 					initializeBean(di.xml, true);
 				}							
 			}			

@@ -19,10 +19,9 @@ package org.toshiroioc.core
 	import org.toshiroioc.test.beans.SimpleBeanWithMetatags;
 	import org.toshiroioc.test.beans.SimpleBeanWithoutMetatags;
 	import org.toshiroioc.test.beans.SimpleDependencyObject;
-	import org.toshiroioc.test.errors.MethodInvocationTestError;
 
 	/*
-	 * TODO:	replace * types with direct types
+	 * TODO:	replace * types with direct types, test bean dependency without ref
 	 */
 	public class XMLBeanFactoryTestCase extends BaseTestCase{
 		
@@ -89,24 +88,78 @@ package org.toshiroioc.core
 		[Embed(source="assets/simplesettermetatags.xml", mimeType="application/octet-stream")]
 		private var MetatagsXMLClass:Class;
 		
+		[Embed(source="assets/dependencynotexistingsimplesetter.xml", mimeType="application/octet-stream")]
+		private var SetterWithoutDependencyXMLClass:Class;
+		
+		[Embed(source="assets/requiredmetatag.xml", mimeType="application/octet-stream")]
+		private var RequiredMetatagXMLClass:Class;
+		
+		[Embed(source="assets/requiredmetatagsatisfied.xml", mimeType="application/octet-stream")]
+		private var RequiredMetatag2XMLClass:Class;
+		
 		public function XMLBeanFactoryTestCase(methodName:String){
 			super(methodName);
 		}
 		
-		public function testMetatags():void{
+		public function testBeforeAndAfterMetatags():void{
 			var xml:XML = constructXMLFromEmbed(MetatagsXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			
 			context.initialize();
-						
+			
 			var simpleBeanWithMetatags:SimpleBeanWithMetatags = context.getObject("objectWithTags") as SimpleBeanWithMetatags;
+			assertNotNull(simpleBeanWithMetatags);
 			assertEquals(simpleBeanWithMetatags.beforeConfigureMethodInvocation, true);
 			assertEquals(simpleBeanWithMetatags.afterConfigureMethodInvocation, true);
 			
 			var simpleBeanWithoutMetatags:SimpleBeanWithoutMetatags = context.getObject("objectWithoutTags") as SimpleBeanWithoutMetatags;
+			assertNotNull(simpleBeanWithoutMetatags);
 			assertEquals(simpleBeanWithoutMetatags.beforeConfigureMethodInvocation, false);
-			assertEquals(simpleBeanWithoutMetatags.afterConfigureMethodInvocation, false);
+			assertEquals(simpleBeanWithoutMetatags.afterConfigureMethodInvocation, false);  
 			 
+		}
+	 	
+		public function testRequiredMetatagNotSatisfied():void{
+
+			var xml:XML = constructXMLFromEmbed(RequiredMetatagXMLClass);
+			var context:XMLBeanFactory = new XMLBeanFactory(xml);
+			var error: ContainerError;
+
+			try{
+				context.initialize();
+			}
+			catch(err: ContainerError){
+				error = err; 
+			} 
+			assertNotNull(error);
+			assertEquals(ContainerError.ERROR_REQUIRED_METATAG_NOT_SATISFIED, error.errorCode);
+			
+		} 
+		
+		public function testRequiredMetatagSatisfied():void{
+
+			var xml:XML = constructXMLFromEmbed(RequiredMetatag2XMLClass);
+			var context:XMLBeanFactory = new XMLBeanFactory(xml);
+			
+			context.initialize();
+			
+			var simpleBeanWithRequired:SimpleBeanWithMetatags = context.getObject("objectWithRequired") as SimpleBeanWithMetatags;
+			assertNotNull(simpleBeanWithRequired);
+		} 
+		
+		public function testDependencyNotExistingInConfig():void{
+			var xml:XML = constructXMLFromEmbed(SetterWithoutDependencyXMLClass);
+			var context:XMLBeanFactory = new XMLBeanFactory(xml);
+			var error: ContainerError;
+			
+			try{
+				context.initialize();
+			}
+			catch(err: ContainerError){
+				error = err; 
+			} 
+			assertNotNull(error);
+			assertEquals(ContainerError.ERROR_OBJECT_NOT_FOUND, error.errorCode);
 		}
 		
 		public function testLifecycle():void{ 
@@ -743,7 +796,12 @@ package org.toshiroioc.core
 		public static function getTestsArr():Vector.<Test>{
 			var retval:Vector.<Test> = new Vector.<Test>();		
 			
-			retval.push(new XMLBeanFactoryTestCase("testMetatags"));
+			
+			retval.push(new XMLBeanFactoryTestCase("testBeforeAndAfterMetatags"));
+			retval.push(new XMLBeanFactoryTestCase("testRequiredMetatagNotSatisfied"));
+			retval.push(new XMLBeanFactoryTestCase("testRequiredMetatagSatisfied"));
+			
+			retval.push(new XMLBeanFactoryTestCase("testDependencyNotExistingInConfig")); 
 			retval.push(new XMLBeanFactoryTestCase("testInstantiateBeanByID"));			
 			retval.push(new XMLBeanFactoryTestCase("testSetterNumber"));
 			retval.push(new XMLBeanFactoryTestCase("testSetterString"));
@@ -780,7 +838,7 @@ package org.toshiroioc.core
 			retval.push(new XMLBeanFactoryTestCase("testCyclicDependencyFromSetterToConstructorComplex"));
 			retval.push(new XMLBeanFactoryTestCase("testStaticReferenceInConstructor"));
 			retval.push(new XMLBeanFactoryTestCase("testStaticReferenceInSetter")); 
-			
+			 
 			
 			/*
 			retval.push(new XMLBeanFactoryTestCase("testInstantiateByConstructorNewClass"));

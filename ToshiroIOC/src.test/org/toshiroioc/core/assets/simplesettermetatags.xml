@@ -12,5 +12,5 @@
 	</object>
 	
 	<object id="object5" class="org.toshiroioc.test.beans.SimpleBean"/>		
-
+	
 </objects>
