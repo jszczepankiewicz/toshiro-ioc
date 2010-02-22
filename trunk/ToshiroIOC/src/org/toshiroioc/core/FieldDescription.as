@@ -149,6 +149,13 @@ package org.toshiroioc.core
 			return null;
 		}
 		
+		public static function getRequiredFields(clazz:Class):Array{
+			var obj:Object = classMetatagsDescriptionCache[getQualifiedClassName(clazz)];
+			if (obj)
+				return obj[METATAG_REQUIRED];
+			return null;
+		}
+		
 		public static function getClassDescription(clazz:Class):Object{
 			//	check if adding cache for getQualifiedClassName speeds up
 			var qualifiedClazzName:String = getQualifiedClassName(clazz);
@@ -189,15 +196,34 @@ package org.toshiroioc.core
 							case (METATAG_AFTER_CONFIGURE):
 								metatagsInfo[METATAG_AFTER_CONFIGURE] =  method.attribute("name").toString();
 								break;
-							case (METATAG_REQUIRED):
-								break;
 						}
 				 	}
 				 }
 				
+				var reqFields:Array;
+				var reqTagFound:Boolean;
+				
 				for each (var variable:XML in classInfo..accessor){
 					
 					//trace("=== " + variable.@name + " = " + variable.@type.toString());
+					
+					reqTagFound = false;
+					// make array of fields name tagged with [Required]
+					for each (metadata in variable..metadata){
+						switch (metadata.@name.toString()){
+							case (METATAG_REQUIRED):
+								reqTagFound = true;
+								if(!reqFields){
+									reqFields = new Array();
+									}
+								reqFields.push(variable.@name.toString());
+								break;
+						}
+					// don't look for other tags in the accessor
+					if (reqTagFound)
+						break;
+					}
+					
 					switch (variable.@type.toString()){
 						
 						case ("Number"):
@@ -244,6 +270,10 @@ package org.toshiroioc.core
 					}
 					//trace("description of field: " + variable.@type.toString() +", type: " + fieldsInfo[variable.@name] );
 				}
+				
+				// check if array of required fields names exists and add to metatagsInfo object
+				if(reqFields)
+					metatagsInfo[METATAG_REQUIRED] = reqFields;
 				
 				//	saving in cache for future use
 				classFieldsDescriptionCache[qualifiedClazzName] = fieldsInfo;

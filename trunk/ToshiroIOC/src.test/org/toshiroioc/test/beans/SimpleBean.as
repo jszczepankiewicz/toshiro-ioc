@@ -1,5 +1,7 @@
 package org.toshiroioc.test.beans{
 	
+
+	
 	public class SimpleBean{
 		private var booleanField:Boolean;
 		private var stringField:String;
@@ -8,9 +10,8 @@ package org.toshiroioc.test.beans{
 		private var intField:int;
 		private var dateField:Date;
 		private var clazzField:Class;
-		private var staticRefField:uint;		
-		
-		
+		private var staticRefField:uint;	
+
 		public function set booleanItem(value:Boolean):void{
 			booleanField = value;	
 		}
