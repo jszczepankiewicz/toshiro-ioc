@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute"
+	xmlns:view="org.toshiroioc.test.puremvc.view.*"
+	creationComplete="onCreationComplete()">
+	
+	<mx:Metadata>
+		[Event('hello_click')]
+	</mx:Metadata>
+	
+	<mx:Script>
+		<![CDATA[
+
+			[Embed(source="applicationContext.xml", mimeType="application/octet-stream")]
+			private var contextXMLClass:Class;
+			
+			import mx.core.ByteArrayAsset;
+			import org.toshiroioc.plugins.puremvc.multicore.ToshiroApplicationFacade;
+			import org.toshiroioc.test.puremvc.command.StartupCommand;
+			
+			public static const NAME:String = "ToshiroApplicationFacadeTest"
+			public static const BUTTON_CLICK:String = 'button_click';
+			public static const HELLO_CLICK:String  = 'hello_click';
+			public static const STARTUP:String      = 'startup';	
+			
+			private var facade:ToshiroApplicationFacade;
+			private var contextXML:XML;
+			private var linkageEnforcer:LinkageEnforcer;
+					
+			
+			private function onCreationComplete():void{
+				contextXML = constructXMLFromEmbed(contextXMLClass);
+				
+				facade = ToshiroApplicationFacade.getInstance(NAME);
+				facade.addEventListener(Event.COMPLETE, startupApp);
+				facade.initializeContext(contextXML);
+			}
+			
+			private function startupApp(ev:Event):void {
+        		facade.removeEventListener(Event.COMPLETE, startupApp);
+        		facade.sendNotification(STARTUP, this);
+   			}
+      		
+      		
+      		public function constructXMLFromEmbed(clazz:Class):XML{		
+				var byteArrayAsset:ByteArrayAsset = ByteArrayAsset(new clazz());			
+				return new XML(byteArrayAsset.toString());
+			}
+		]]>
+	</mx:Script>
+		<view:ExampleView id="exampleView" width="400" height="400" />
+		<mx:Button id="btnOne" label="Click" click="dispatchEvent( new Event( HELLO_CLICK ) )" />
+</mx:Panel>

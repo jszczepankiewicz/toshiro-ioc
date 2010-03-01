@@ -60,6 +60,7 @@ package org.toshiroioc.core
 				//	we have already initialized object
 				this.initializedObject = initializedObject;
 				this.objectID = id;
+				this.xmlContent = xmlC; //CHANGE
 			}
 			else if(postponedInitialization){
 				//	initialization postponed to later (after obtaining xml)
