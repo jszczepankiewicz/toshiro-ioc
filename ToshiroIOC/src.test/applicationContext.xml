@@ -3,33 +3,33 @@
 
 	
 	<!-- Commands-->	
-	<object id="startupCommand" class="org.toshiroioc.test.puremvc.command.StartupCommand"/>
+	<object id="startupCommand" class="org.toshiroioc.test.puremvc.command.StartupCommand" lifecycle="prototype"/>
 						
-	<object id="prepModelCommand" class="org.toshiroioc.test.puremvc.command.PrepModelCommand">
+	<object id="prepModelCommand" class="org.toshiroioc.test.puremvc.command.PrepModelCommand" lifecycle="prototype">
 		<property name="exampleProxy" ref="exampleProxy"/>
 	</object> 
 	
 	<object id="exampleProxy" class="org.toshiroioc.test.puremvc.model.ExampleProxy"/>
 	
-	<object id="prepViewCommand" class="org.toshiroioc.test.puremvc.command.PrepViewCommand">
+	<object id="prepViewCommand" class="org.toshiroioc.test.puremvc.command.PrepViewCommand" lifecycle="prototype">
 		<!--<property name="toshiroApplicationFacadeTestMediator" ref="toshiroApplicationFacadeTestMediator"/>
 		<property name="exampleViewMediator" ref="exampleViewMediator"/>-->
 	</object>
 	
-	<object id="beanWithSetterMap" class="org.toshiroioc.test.beans.SetterMap">
+	<object id="beanWithSetterMap" class="org.toshiroioc.plugins.puremvc.multicore.SetterMap">
 		<property name="mappings">
 			<array>
 				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
 					<property name="notification" value="startup"/>
-					<property name="command" value="org.toshiroioc.test.puremvc.command.StartupCommand"/>
+					<property name="command" class="org.toshiroioc.test.puremvc.command.StartupCommand"/>
 				</object>
 				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
 					<property name="notification" value="model"/>
-					<property name="command" value="org.toshiroioc.test.puremvc.command.PrepModelCommand"/>
+					<property name="command" class="org.toshiroioc.test.puremvc.command.PrepModelCommand"/>
 				</object>
 				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
 					<property name="notification" value="view"/>
-					<property name="command" value="org.toshiroioc.test.puremvc.command.PrepViewCommand"/>
+					<property name="command" class="org.toshiroioc.test.puremvc.command.PrepViewCommand"/>
 				</object>
 			</array>		
 		</property>
