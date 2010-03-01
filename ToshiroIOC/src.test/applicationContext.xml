@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+
+	
+	<!-- Commands-->	
+	<object id="startupCommand" class="org.toshiroioc.test.puremvc.command.StartupCommand"/>
+						
+	<object id="prepModelCommand" class="org.toshiroioc.test.puremvc.command.PrepModelCommand">
+		<property name="exampleProxy" ref="exampleProxy"/>
+	</object> 
+	
+	<object id="exampleProxy" class="org.toshiroioc.test.puremvc.model.ExampleProxy"/>
+	
+	<object id="prepViewCommand" class="org.toshiroioc.test.puremvc.command.PrepViewCommand">
+		<!--<property name="toshiroApplicationFacadeTestMediator" ref="toshiroApplicationFacadeTestMediator"/>
+		<property name="exampleViewMediator" ref="exampleViewMediator"/>-->
+	</object>
+	
+	<object id="beanWithSetterMap" class="org.toshiroioc.test.beans.SetterMap">
+		<property name="mappings">
+			<array>
+				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+					<property name="notification" value="startup"/>
+					<property name="command" value="org.toshiroioc.test.puremvc.command.StartupCommand"/>
+				</object>
+				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+					<property name="notification" value="model"/>
+					<property name="command" value="org.toshiroioc.test.puremvc.command.PrepModelCommand"/>
+				</object>
+				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+					<property name="notification" value="view"/>
+					<property name="command" value="org.toshiroioc.test.puremvc.command.PrepViewCommand"/>
+				</object>
+			</array>		
+		</property>
+	</object>
+	
+	
+	
+	
+	<!-- Model -->
+	<!--<object id="exampleVO" class="org.test.puremvc.model.ExampleVO"/>-->
+	
+	
+	
+	<!-- Mediators-->
+	<!-- jak z tego miejsca zdobyc referencje do widoku-->
+	
+	<!--<object id="toshiroApplicationFacadeTestMediator" class="org.toshiroioc.test.puremvc.mediator.ToshiroApplicationFacadeTestMediator">
+		<constructor-arg const="org.toshiroioc.test.puremvc.mediator.ToshiroApplicationFacadeTestMediator.NAME"/>
+	</object>
+	<object id="exampleViewMediator" class="org.toshiroioc.test.puremvc.mediator.ExampleViewMediator">
+		<constructor-arg const="org.toshiroioc.test.puremvc.mediator.ExampleViewMediator.NAME"/>
+	</object>-->
+
+</objects>
+

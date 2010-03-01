@@ -6,6 +6,7 @@
 		<constructor-arg value="some123String"/>
 		<constructor-arg value="true"/>		
 		<constructor-arg const="org.toshiroioc.core.FieldDescription.FIELD_TYPE_UINT"/>
+		<constructor-arg class="org.toshiroioc.test.beans.SimpleBean"/>
 		<property name="someAdditionalString" value="false"/>
 		
 	</object>	
@@ -16,6 +17,7 @@
 		<constructor-arg><null/></constructor-arg>
 		<constructor-arg value="false"/>		
 		<constructor-arg const="org.toshiroioc.core.FieldDescription.NONEXISTENT"/>
+		<constructor-arg class="org.toshiroioc.test.beans.SimpleBean"/>
 		<property name="someAdditionalString" value="enedueRikeFake"/>
 		
 	</object>	

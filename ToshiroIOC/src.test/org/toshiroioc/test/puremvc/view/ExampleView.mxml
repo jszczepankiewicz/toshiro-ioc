@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" 
+		  layout="vertical" 
+		  title="Example PMVC View" 
+		  horizontalAlign="center" 
+		  verticalAlign="middle">
+		  
+	<mx:DataGrid id="view_grid" width="100%" height="100%">
+		<mx:columns>
+			<mx:DataGridColumn dataField="label" headerText="View Grid"/>
+		</mx:columns>
+	</mx:DataGrid>
+	
+	<mx:Label id="view_lbl" width="100%"  color="#125A69" fontWeight="bold" fontSize="14" alpha="1.0" textAlign="center"/>
+	
+</mx:Panel>

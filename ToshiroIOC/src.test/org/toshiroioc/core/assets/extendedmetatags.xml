@@ -3,9 +3,11 @@
 	
 	<object id="objectWithTags" class="org.toshiroioc.test.beans.SimpleBeanWithMetatagsExtended">
 		<property name="numberItem" value="9999.00001"/>
-		<property name="dependencyItem" ref="object5"/> 		
+		<property name="dependencyItem" ref="object5"/>
+		<property name="dependencyItem2" ref="object6"/> 		
 	</object>
 	
-	<object id="object5" class="org.toshiroioc.test.beans.SimpleBean"/>		
+	<object id="object5" class="org.toshiroioc.test.beans.SimpleBean"/>	
+	<object id="object6" class="org.toshiroioc.test.beans.SimpleBean"/>			
 	
 </objects>

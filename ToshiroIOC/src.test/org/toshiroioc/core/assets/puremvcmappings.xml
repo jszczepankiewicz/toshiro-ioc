@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+	
+	<object id="beanWithSetterMap" class="org.toshiroioc.plugins.puremvc.multicore.SetterMap">
+		<property name="mappings">
+			<array>
+				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+					<property name="notification" value="startup"/>
+					<property name="command" class="org.toshiroioc.test.puremvc.command.StartupCommand"/>
+				</object>
+				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+					<property name="notification" value="model"/>
+					<property name="command" class="org.toshiroioc.test.puremvc.command.PrepModelCommand"/>
+				</object>
+				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+					<property name="notification" value="view"/>
+					<property name="command" class="org.toshiroioc.test.puremvc.command.PrepViewCommand"/>
+				</object>
+			</array>		
+		</property>
+	</object>
+	
+</objects>

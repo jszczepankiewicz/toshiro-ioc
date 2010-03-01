@@ -43,7 +43,8 @@ package org.toshiroioc.core
 				FieldDescription.FIELD_TYPE_COLLECTION,
 				FieldDescription.FIELD_TYPE_INT,
 				FieldDescription.FIELD_TYPE_UINT,
-				FieldDescription.FIELD_TYPE_CLASS];			 
+				FieldDescription.FIELD_TYPE_CLASS,
+				];			 
 		}
 			
 		
@@ -80,18 +81,20 @@ package org.toshiroioc.core
 					//TODO: add validation of format
 					return int(child.attribute("value").toString());
 					break;
-				case FieldDescription.FIELD_TYPE_COLLECTION:
+				/* case FieldDescription.FIELD_TYPE_COLLECTION:
 					throw new ContainerError("Unsupported property type: [" + type + "]");
-					break;
+					break; */
 					
 				case FieldDescription.FIELD_TYPE_DATE:
 					return JAXBDate.fromJAXB(child.child("date").toString());
 					break;
 					
 				case FieldDescription.FIELD_TYPE_CLASS:					
-					return Class(getDefinitionByName(child.attribute("value").toString()));
-					
+					return Class(getDefinitionByName(child.attribute("class").toString()));
 					break;
+				/* case FieldDescription.FIELD_TYPE_VECTOR:
+					
+					break; */
 				
 				default:
 					throw new ContainerError("Unsupported property type: [" + type + "]");

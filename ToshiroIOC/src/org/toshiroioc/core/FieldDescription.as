@@ -31,7 +31,6 @@ package org.toshiroioc.core
 	import flash.utils.describeType;
 	import flash.utils.getQualifiedClassName;
 	
-	
 	public class FieldDescription{
 		
 		private static var registryKeys:Vector.<String> = new Vector.<String>();
@@ -47,6 +46,7 @@ package org.toshiroioc.core
 		public static const FIELD_TYPE_UINT:uint	=	7;
 		public static const FIELD_TYPE_INT:uint	= 8;
 		public static const FIELD_TYPE_CLASS:uint	= 9;
+		public static const FIELD_TYPE_ARRAY:uint = 10;
 		public static const METATAG_BEFORE_CONFIGURE:String	= "BeforeConfigure";
 		public static const METATAG_AFTER_CONFIGURE:String	= "AfterConfigure";
 		public static const METATAG_REQUIRED:String	= "Required";
@@ -223,7 +223,6 @@ package org.toshiroioc.core
 					if (reqTagFound)
 						break;
 					}
-					
 					switch (variable.@type.toString()){
 						
 						case ("Number"):
@@ -249,13 +248,16 @@ package org.toshiroioc.core
 							fieldsInfo[variable.@name] = FIELD_TYPE_DATE;
 							break;
 							
-						case ("Array"):						
+						/* case ("Array"):						
 							fieldsInfo[variable.@name] = FIELD_TYPE_COLLECTION;							
-							break;	
+							break;	 */
 							
 						case ("Class"):
 							fieldsInfo[variable.@name] = FIELD_TYPE_CLASS;
 							break;
+						case ("Array"):
+							fieldsInfo[variable.@name] = FIELD_TYPE_ARRAY;
+							break; 
 											
 						default:
 							if(variable.@name.toString() == "prototype"){

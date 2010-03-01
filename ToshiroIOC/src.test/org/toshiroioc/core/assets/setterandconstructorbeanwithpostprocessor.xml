@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+	<object id="objectSetter" class="org.toshiroioc.test.beans.SimpleBeanWithPostprocessor">
+		<property name="property" value="5"/>
+	</object>
+	
+	<object id="objectConstructor" class="org.toshiroioc.test.beans.SimpleBeanWithPostprocessor">
+		<constructor-arg value="5"/>
+	</object>
+</objects>

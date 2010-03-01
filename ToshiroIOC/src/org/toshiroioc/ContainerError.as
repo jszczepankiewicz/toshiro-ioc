@@ -36,6 +36,8 @@ package org.toshiroioc
 		public static const ERROR_INVALID_OBJECT_TYPE:int = 4;
 		public static const ERROR_INVALID_STATIC_REFERENCE:int = 5;
 		public static const ERROR_REQUIRED_METATAG_NOT_SATISFIED:int = 6;
+		public static const ERROR_OBJECT_OF_THE_CLASS_NOT_FOUND:int = 7;
+		public static const ERROR_MORE_THAN_ONE_OBJECT_OF_THE_CLASS:int = 8;
 		
 		private var errorCodeValue:int;
 		

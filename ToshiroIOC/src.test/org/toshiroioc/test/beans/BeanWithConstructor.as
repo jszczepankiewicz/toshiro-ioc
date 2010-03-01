@@ -9,6 +9,7 @@ package org.toshiroioc.test.beans
 		private var someStringField:String;
 		private var someStaticField:uint;
 		private var someAdditionalStringField:String;
+		private var someClassField:Class;
 		
 		public function set someAdditionalString(field:String):void{
 			this.someAdditionalStringField = field;
@@ -23,7 +24,9 @@ package org.toshiroioc.test.beans
 			someInt:int,
 			someString:String,
 			someBoolean:Boolean,
-			someStatic:uint=0){
+			someStatic:uint=0,
+			someClass:Class=null
+			){
 				
 				
 				someNumberField = someNumber;
@@ -31,6 +34,7 @@ package org.toshiroioc.test.beans
 				someStringField = someString;
 				someBooleanField = someBoolean;
 				someStaticField = someStatic;
+				someClassField = someClass;
 		}
 		
 		public function get someUInt():uint{
@@ -55,6 +59,10 @@ package org.toshiroioc.test.beans
 
 		public function get someStatic():uint{
 			return someStaticField;
+		}
+		
+		public function get someClass():Class{
+			return someClassField;
 		}
 
 	}
