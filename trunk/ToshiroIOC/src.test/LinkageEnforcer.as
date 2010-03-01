@@ -7,6 +7,8 @@ package
 	import org.toshiroioc.test.puremvc.mediator.ExampleViewMediator;
 	import org.toshiroioc.test.puremvc.mediator.ToshiroApplicationFacadeTestMediator;
 	import org.toshiroioc.test.puremvc.model.ExampleProxy;
+	import org.toshiroioc.plugins.puremvc.multicore.SetterMap;
+	import org.toshiroioc.plugins.puremvc.multicore.CommandMap;
   /**
    * Author: Damir Murat
    * Version: $Revision: 436 $, $Date: 2008-03-27 13:18:27 +0100 (do, 27 mrt 2008) $, $Author: dmurat1 $
@@ -22,7 +24,9 @@ package
       prop3:StartupCommand,
       prop4:ExampleViewMediator,
       prop5:ToshiroApplicationFacadeTestMediator,
-      prop6:ExampleProxy
+      prop6:ExampleProxy,
+      prop7:SetterMap,
+      prop8:CommandMap
     };
 
     public function LinkageEnforcer() {

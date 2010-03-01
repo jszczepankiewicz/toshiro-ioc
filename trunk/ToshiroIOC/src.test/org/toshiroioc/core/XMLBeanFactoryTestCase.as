@@ -581,6 +581,11 @@ package org.toshiroioc.core
 		}
 		
 		/*
+		
+		public function testNotInstantiatePrototypes():void{
+			fail("unimplemented");
+		}
+		
 		public function testResolvingInnerObjectsReferences():void{
 			fail("unimplemented");
 		}

@@ -39,6 +39,7 @@ package org.toshiroioc.plugins.puremvc.multicore
 		protected function onContextLoad(ev:Event):void {
 			//initializeIocFacade();
 			context.removeEventListener(Event.COMPLETE, onContextLoad);
+			
 			dispatchEvent(new Event(Event.COMPLETE));
 	    }
 	    

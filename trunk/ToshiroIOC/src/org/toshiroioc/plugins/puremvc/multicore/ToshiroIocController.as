@@ -25,6 +25,7 @@ package org.toshiroioc.plugins.puremvc.multicore
 		
 		
  		override public function executeCommand(note:INotification):void {
+ 			trace(note.getName());
 	      	var commandClassRef:Class = context.getObject(note.getName());
 	
 	      	if (commandClassRef != null) {
