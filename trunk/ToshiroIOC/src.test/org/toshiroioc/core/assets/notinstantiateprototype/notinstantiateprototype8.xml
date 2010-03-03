@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+
+	<object id="prepModelCommand" class="org.toshiroioc.test.puremvc.command.PrepModelCommand" lifecycle="prototype">
+		<property name="exampleProxy" ref="exampleProxy"/>
+	</object>
+	
+	<object id="exampleProxy" class="org.toshiroioc.test.puremvc.model.ExampleProxy" lifecycle="prototype"/>
+
+</objects>

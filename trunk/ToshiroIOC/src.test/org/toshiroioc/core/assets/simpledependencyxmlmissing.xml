@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+	
+
+	<object id="objectChild" lifecycle="prototype" class="org.toshiroioc.test.beans.BeanWithConstructor">
+		<constructor-arg value="-99999"/>
+		<constructor-arg value="1111"/>		
+		<constructor-arg value="some123String"/>
+		<constructor-arg value="true"/>		
+	</object>	
+	
+	<object id="object3" class="org.toshiroioc.test.beans.SimpleDependencyObject">	
+		<property name="someChild" ref="objectChild"/>				
+	</object>	
+			
+</objects>

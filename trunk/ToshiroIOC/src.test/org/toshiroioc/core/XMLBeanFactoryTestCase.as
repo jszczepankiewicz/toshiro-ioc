@@ -5,6 +5,8 @@ package org.toshiroioc.core
 	import flexunit.framework.Test;
 	import flexunit.framework.TestSuite;
 	
+	import mx.controls.DataGrid;
+	
 	import org.toshiroioc.ContainerError;
 	import org.toshiroioc.plugins.puremvc.multicore.CommandMap;
 	import org.toshiroioc.plugins.puremvc.multicore.SetterMap;
@@ -28,8 +30,13 @@ package org.toshiroioc.core
 	import org.toshiroioc.test.postprocessors.TestClassPostprocessor2;
 	import org.toshiroioc.test.puremvc.command.PrepModelCommand;
 	import org.toshiroioc.test.puremvc.command.PrepViewCommand;
+	import org.toshiroioc.test.puremvc.command.SimpleStartupCommand;
 	import org.toshiroioc.test.puremvc.command.StartupCommand;
 	import org.toshiroioc.test.puremvc.command.TestCommand;
+	import org.toshiroioc.test.puremvc.mediator.ExampleViewMediator;
+	import org.toshiroioc.test.puremvc.mediator.ToshiroApplicationFacadeTestMediator;
+	import org.toshiroioc.test.puremvc.model.ExampleProxy;
+	import org.toshiroioc.test.puremvc.view.ExampleView;
 
 	/*
 	 * TODO:	replace * types with direct types, test bean dependency without ref
@@ -120,14 +127,47 @@ package org.toshiroioc.core
 		[Embed(source="assets/getbyclass.xml", mimeType="application/octet-stream")]
 		private var GetByClassXMLClass:Class; 
 		
-		[Embed(source="assets/puremvcmappings.xml", mimeType="application/octet-stream")]
-		private var PureMVCXMLClass:Class; 
+		[Embed(source="assets/puremvc1.xml", mimeType="application/octet-stream")]
+		private var PureMVCXMLClass1:Class; 
+		
+		[Embed(source="assets/puremvc2.xml", mimeType="application/octet-stream")]
+		private var PureMVCXMLClass2:Class; 
+		
+		[Embed(source="assets/puremvc3.xml", mimeType="application/octet-stream")]
+		private var PureMVCXMLClass3:Class; 
+		
+		[Embed(source="assets/simpledependencyxmlmissing.xml", mimeType="application/octet-stream")]
+		private var XMLMissingXMLClass:Class;
+		
+		[Embed(source="assets/notinstantiateprototype/notinstantiateprototype1.xml", mimeType="application/octet-stream")]
+		private var NotInstantiatePrototype1:Class;
+		
+		[Embed(source="assets/notinstantiateprototype/notinstantiateprototype2.xml", mimeType="application/octet-stream")]
+		private var NotInstantiatePrototype2:Class;
+		
+		[Embed(source="assets/notinstantiateprototype/notinstantiateprototype3.xml", mimeType="application/octet-stream")]
+		private var NotInstantiatePrototype3:Class;
+		
+		[Embed(source="assets/notinstantiateprototype/notinstantiateprototype4.xml", mimeType="application/octet-stream")]
+		private var NotInstantiatePrototype4:Class;
+		
+		[Embed(source="assets/notinstantiateprototype/notinstantiateprototype5.xml", mimeType="application/octet-stream")]
+		private var NotInstantiatePrototype5:Class;
+		
+		[Embed(source="assets/notinstantiateprototype/notinstantiateprototype6.xml", mimeType="application/octet-stream")]
+		private var NotInstantiatePrototype6:Class;
+		
+		[Embed(source="assets/notinstantiateprototype/notinstantiateprototype7.xml", mimeType="application/octet-stream")]
+		private var NotInstantiatePrototype7:Class;
+		
+		[Embed(source="assets/notinstantiateprototype/notinstantiateprototype8.xml", mimeType="application/octet-stream")]
+		private var NotInstantiatePrototype8:Class;
 		
 		public function XMLBeanFactoryTestCase(methodName:String){
 			super(methodName);
 		}
 		
-		public function testObjectPostprocessor():void{
+		public function testClassPostprocessor():void{
 			var xml:XML = constructXMLFromEmbed(BeanWithPostprocessorXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			var beanWithPostprocessor:SimpleBeanWithPostprocessor;
@@ -158,7 +198,6 @@ package org.toshiroioc.core
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			var setterMap:SetterMap;
 			var commandMap:CommandMap;
-			var testCommand: TestCommand;
 			//var constructorMap:ConstructorMap;
 			//var testDependencyObject:TESTDependencyObject;
 			context.initialize();
@@ -190,6 +229,12 @@ package org.toshiroioc.core
 			 
 		}
 		
+		public function testXMLMissing():void{
+			var xml:XML = constructXMLFromEmbed(XMLMissingXMLClass);
+			var context:XMLBeanFactory = new XMLBeanFactory(xml);
+			context.initialize();
+		}
+		
 		 public function testGetObjectByClass():void{
 			var xml:XML = constructXMLFromEmbed(GetByClassXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
@@ -217,20 +262,103 @@ package org.toshiroioc.core
 			assertEquals(ContainerError.ERROR_MORE_THAN_ONE_OBJECT_OF_THE_CLASS, error.errorCode);
 		} 
 		
-		public function testPureMVCObjectPostProcessor():void{
-			var xml:XML = constructXMLFromEmbed(PureMVCXMLClass);
-			var facade:ToshiroApplicationFacade = ToshiroApplicationFacade.getInstance("key");
+		public function testNotInitializePrototypeBeans():void{
+			
+			var xml:XML = constructXMLFromEmbed(NotInstantiatePrototype1);
+			var context:XMLBeanFactory = new XMLBeanFactory(xml);
+			context.initialize();
+			
+			assertNotNull(context.getObject("exampleProxy"));
+			assertNotNull(context.getObject("prepModelCommand"));
+			
+			xml = constructXMLFromEmbed(NotInstantiatePrototype2);
+			context = new XMLBeanFactory(xml);
+			context.initialize();
+			
+			assertNotNull(context.getObject("exampleProxy"));
+			assertNotNull(context.getObject("prepModelCommand"));
+			
+			xml = constructXMLFromEmbed(NotInstantiatePrototype3);
+			context = new XMLBeanFactory(xml);
+			context.initialize();
+			
+			assertNotNull(context.getObject("exampleProxy"));
+			assertNotNull(context.getObject("prepModelCommand"));
+			
+			xml = constructXMLFromEmbed(NotInstantiatePrototype4);
+			context = new XMLBeanFactory(xml);
+			context.initialize();
+			
+			assertNotNull(context.getObject("exampleProxy"));
+			assertNotNull(context.getObject("prepModelCommand"));
+			
+			xml = constructXMLFromEmbed(NotInstantiatePrototype5);
+			context = new XMLBeanFactory(xml);
+			context.initialize();
+			
+			assertNotNull(context.getObject("exampleProxy"));
+			assertNotNull(context.getObject("prepModelCommand"));
+			
+			xml = constructXMLFromEmbed(NotInstantiatePrototype6);
+			context = new XMLBeanFactory(xml);
+			context.initialize();
+			
+			assertNotNull(context.getObject("exampleProxy"));
+			assertNotNull(context.getObject("prepModelCommand"));
+			
+			xml = constructXMLFromEmbed(NotInstantiatePrototype7);
+			context = new XMLBeanFactory(xml);
+			context.initialize();
+			
+			assertNotNull(context.getObject("exampleProxy"));
+			assertNotNull(context.getObject("prepModelCommand"));
+			
+			xml = constructXMLFromEmbed(NotInstantiatePrototype8);
+			context = new XMLBeanFactory(xml);
+			context.initialize();
+			
+			assertNotNull(context.getObject("exampleProxy"));
+			assertNotNull(context.getObject("prepModelCommand"));
+		}
+		
+ 		public function testPureMVCSupport():void{
+			var mainApp:ToshiroApplicationFacadeTest = new ToshiroApplicationFacadeTest();
+			mainApp.exampleView = new ExampleView();
+			mainApp.exampleView.view_grid = new DataGrid();
+			var xml:XML;
 			var startupCommand:StartupCommand;
 			var prepViewCommand:PrepViewCommand;
 			var prepModelCommand : PrepModelCommand;
-			
+			var testCommand: TestCommand;
+			var simpleStartupCommand: SimpleStartupCommand;
+			var facade:ToshiroApplicationFacade;
+			//test macro startup command
+			xml = constructXMLFromEmbed(PureMVCXMLClass1);
+			facade = ToshiroApplicationFacade.getInstance("key", mainApp);
 			facade.initializeContext(xml);
 			
-			assertTrue(facade.hasCommand("startup"));
 			assertTrue(facade.hasCommand("model"));
 			assertTrue(facade.hasCommand("view"));
+			assertTrue(facade.hasCommand("test"));
+			assertTrue(facade.hasProxy(ExampleProxy.NAME));
+			assertTrue(facade.hasMediator(ToshiroApplicationFacadeTestMediator.NAME));
+			assertTrue(facade.hasMediator(ExampleViewMediator.NAME));
+			facade.sendNotification("test", 5);
+			assertEquals(5, (facade.getContext().getObject("testCommand") as TestCommand).executed);
+			 
+			//test simple startup command
+			xml = constructXMLFromEmbed(PureMVCXMLClass2);
+			facade = ToshiroApplicationFacade.getInstance("key2", mainApp);
+			facade.initializeContext(xml);
+		
+			assertTrue(facade.hasCommand("model"));
+			assertTrue(facade.hasCommand("view"));
+			assertTrue(facade.hasCommand(ToshiroApplicationFacadeTest.SIMPLE_STARTUP));
+			assertTrue(facade.hasProxy(ExampleProxy.NAME));
+			assertTrue(facade.hasMediator(ToshiroApplicationFacadeTestMediator.NAME));
+			assertTrue(facade.hasMediator(ExampleViewMediator.NAME));
 			
-		}
+		} 
 		
 		
 		public function testBeforeAndAfterMetatags():void{
@@ -952,10 +1080,11 @@ package org.toshiroioc.core
 		public static function getTestsArr():Vector.<Test>{
 			var retval:Vector.<Test> = new Vector.<Test>();	
 
-			retval.push(new XMLBeanFactoryTestCase("testGetObjectByClass"));
-	  		retval.push(new XMLBeanFactoryTestCase("testPureMVCObjectPostProcessor"));
+ 			retval.push(new XMLBeanFactoryTestCase("testNotInitializePrototypeBeans"));
+ 			retval.push(new XMLBeanFactoryTestCase("testGetObjectByClass"));
+	  		retval.push(new XMLBeanFactoryTestCase("testPureMVCSupport"));
 			retval.push(new XMLBeanFactoryTestCase("testSetterInjectionOfArray"));
-			retval.push(new XMLBeanFactoryTestCase("testObjectPostprocessor"));  	 	
+			retval.push(new XMLBeanFactoryTestCase("testClassPostprocessor"));  	 	
 			retval.push(new XMLBeanFactoryTestCase("testBeforeAndAfterMetatags"));
 			retval.push(new XMLBeanFactoryTestCase("testRequiredMetatagNotSatisfied"));
 			retval.push(new XMLBeanFactoryTestCase("testRequiredMetatagSatisfied"));
@@ -966,7 +1095,7 @@ package org.toshiroioc.core
 			retval.push(new XMLBeanFactoryTestCase("testSetterString"));
 			retval.push(new XMLBeanFactoryTestCase("testSetterDate"));			
 			retval.push(new XMLBeanFactoryTestCase("testSetterWithBoolean"));
-						
+			retval.push(new XMLBeanFactoryTestCase("testXMLMissing"));			
 			retval.push(new XMLBeanFactoryTestCase("testSetterWithClass"));			
 									
 			retval.push(new XMLBeanFactoryTestCase("testSetterWithImplicitNull"));
@@ -997,7 +1126,7 @@ package org.toshiroioc.core
 			retval.push(new XMLBeanFactoryTestCase("testCyclicDependencyFromConstructorToSetterComplex"));
 			retval.push(new XMLBeanFactoryTestCase("testCyclicDependencyFromSetterToConstructorComplex"));
 			retval.push(new XMLBeanFactoryTestCase("testStaticReferenceInConstructor"));
-			retval.push(new XMLBeanFactoryTestCase("testStaticReferenceInSetter"));            
+			retval.push(new XMLBeanFactoryTestCase("testStaticReferenceInSetter"));                 
 			  
   			
 			/*

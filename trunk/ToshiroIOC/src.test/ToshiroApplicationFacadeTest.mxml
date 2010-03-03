@@ -20,7 +20,9 @@
 			public static const NAME:String = "ToshiroApplicationFacadeTest"
 			public static const BUTTON_CLICK:String = 'button_click';
 			public static const HELLO_CLICK:String  = 'hello_click';
-			public static const STARTUP:String      = 'startup';	
+			public static const STARTUP:String      = 'startup';
+			public static const EX_PROXY_ON_REGISTER:String = 'ex_proxy_register';
+			public static const SIMPLE_STARTUP:String = 'simple_startup';
 			
 			private var facade:ToshiroApplicationFacade;
 			private var contextXML:XML;
@@ -30,14 +32,13 @@
 			private function onCreationComplete():void{
 				contextXML = constructXMLFromEmbed(contextXMLClass);
 				
-				facade = ToshiroApplicationFacade.getInstance(NAME);
+				facade = ToshiroApplicationFacade.getInstance(NAME, this);
 				facade.addEventListener(Event.COMPLETE, startupApp);
 				facade.initializeContext(contextXML);
 			}
 			
 			private function startupApp(ev:Event):void {
         		facade.removeEventListener(Event.COMPLETE, startupApp);
-        		facade.sendNotification(STARTUP, this);
    			}
       		
       		

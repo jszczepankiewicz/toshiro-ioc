@@ -10,7 +10,7 @@ package org.toshiroioc.test.puremvc.mediator
 	{
 		public static const NAME:String = 'ExampleViewMediator';
 		
-		public var examplePrx:ExampleProxy; //private na public
+		private var examplePrx:ExampleProxy; 
 		
 		public function ExampleViewMediator( viewComponent:Object = null)
 		{
@@ -19,9 +19,7 @@ package org.toshiroioc.test.puremvc.mediator
 		
 		override public function onRegister():void
 		{
-			examplePrx = facade.retrieveProxy( ExampleProxy.NAME ) as ExampleProxy;
-			
-			//example_view.view_grid.dataProvider = examplePrx.my_arr;
+			example_view.view_grid.dataProvider = exampleProxy.my_arr;
 		}		
 		
 		override public function listNotificationInterests():Array
@@ -41,9 +39,19 @@ package org.toshiroioc.test.puremvc.mediator
 			}
 		}
 		
-		public function get example_view():ExampleView //protected na public
+		protected function get example_view():ExampleView 
 		{
 			return viewComponent as ExampleView;
+		}
+		
+		public function get exampleProxy():ExampleProxy 
+		{
+			return examplePrx as ExampleProxy;
+		}
+		
+		public function set exampleProxy(value:ExampleProxy):void 
+		{
+			examplePrx = value;
 		}
 	}
 }

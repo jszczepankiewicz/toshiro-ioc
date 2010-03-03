@@ -4,12 +4,12 @@ package org.toshiroioc.plugins.puremvc.multicore
 	import org.toshiroioc.plugins.puremvc.multicore.SetterMap;
 	
 
-	public class PureMVCObjectPostprocessor implements IClassPostprocessor
+	public class PureMVCClassPostprocessor implements IClassPostprocessor
 	{
 		private var classVector: Vector.<Class>;
 		private var facade:ToshiroApplicationFacade;
 		
-		public function PureMVCObjectPostprocessor(facade:ToshiroApplicationFacade):void{
+		public function PureMVCClassPostprocessor(facade:ToshiroApplicationFacade):void{
 			classVector = new Vector.<Class>();
 			classVector.push(SetterMap);
 			this.facade = facade;

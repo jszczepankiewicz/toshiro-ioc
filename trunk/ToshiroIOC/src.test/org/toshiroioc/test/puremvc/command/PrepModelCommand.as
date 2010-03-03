@@ -16,6 +16,8 @@ package org.toshiroioc.test.puremvc.command
 			facade.registerProxy( exProxy );
 		}
 		
+		
+		
 		[Required]
 		public function set exampleProxy(proxy:ExampleProxy):void{
 			this.exProxy = proxy;
