@@ -47,5 +47,18 @@ package org.toshiroioc.plugins.puremvc.multicore
 			return notificationNames;
 		}
 		
+		public function getCommandsByNotification(note:String):Vector.<Class>{
+			var classVector:Vector.<Class> = new Vector.<Class>;
+			for each (var commandMap:CommandMap in mappings){
+				if(commandMap.notification == note){
+					classVector.push(commandMap.command);
+				}
+			}
+			if (classVector.length > 0){
+				return classVector;
+			}
+			throw new ArgumentError("There is no command assigned to: ["+note+"]"); 
+		}
+		
 	}
 }

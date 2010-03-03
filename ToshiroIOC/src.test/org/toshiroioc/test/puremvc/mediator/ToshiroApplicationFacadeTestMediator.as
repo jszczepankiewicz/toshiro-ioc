@@ -16,7 +16,7 @@ package org.toshiroioc.test.puremvc.mediator
 		
 		override public function onRegister():void
 		{
-			//app.addEventListener( ToshiroApplicationFacadeTest.HELLO_CLICK, handleHelloClick );
+			app.addEventListener( ToshiroApplicationFacadeTest.HELLO_CLICK, handleHelloClick );
 		}
 		
 		public function handleHelloClick( e:Event ):void

@@ -17,10 +17,8 @@ package org.toshiroioc.test.puremvc.command
 			var app:ToshiroApplicationFacadeTest = note.getBody() as ToshiroApplicationFacadeTest;
 			
 			appMediator.setViewComponent(app);
-			app.addEventListener(ToshiroApplicationFacadeTest.HELLO_CLICK, appMediator.handleHelloClick);
 			
 			exViewMediator.setViewComponent(app.exampleView);
-			exViewMediator.example_view.view_grid.dataProvider = exViewMediator.examplePrx.my_arr;
 			
 			facade.registerMediator( appMediator );
 			facade.registerMediator( exViewMediator);

@@ -7,7 +7,9 @@
 						
 	<object id="prepModelCommand" class="org.toshiroioc.test.puremvc.command.PrepModelCommand" lifecycle="prototype">
 		<property name="exampleProxy" ref="exampleProxy"/>
-	</object>  
+	</object>
+	
+	<object id="testCommand" class="org.toshiroioc.test.puremvc.command.TestCommand" />
 	
 	<object id="exampleProxy" class="org.toshiroioc.test.puremvc.model.ExampleProxy"/>
 	
@@ -19,10 +21,10 @@
 	<object id="beanWithSetterMap" class="org.toshiroioc.plugins.puremvc.multicore.SetterMap">
 		<property name="mappings">
 			<array>
-				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+				<!--<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
 					<property name="notification" value="startup"/>
 					<property name="command" class="org.toshiroioc.test.puremvc.command.StartupCommand"/>
-				</object>
+				</object>-->
 				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
 					<property name="notification" value="model"/>
 					<property name="command" class="org.toshiroioc.test.puremvc.command.PrepModelCommand"/>
@@ -30,6 +32,10 @@
 				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
 					<property name="notification" value="view"/>
 					<property name="command" class="org.toshiroioc.test.puremvc.command.PrepViewCommand"/>
+				</object>
+				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+					<property name="notification" value="test"/>
+					<property name="command" class="org.toshiroioc.test.puremvc.command.TestCommand"/>
 				</object>
 			</array>		
 		</property>

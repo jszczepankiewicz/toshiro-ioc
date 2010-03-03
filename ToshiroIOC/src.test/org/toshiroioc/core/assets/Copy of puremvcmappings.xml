@@ -2,12 +2,13 @@
 <objects>
 
 	
-	<!-- Commands	-->
 	<object id="pureMVCStartupCommand" class="org.toshiroioc.test.puremvc.command.StartupCommand" lifecycle="prototype"/>
 						
 	<object id="prepModelCommand" class="org.toshiroioc.test.puremvc.command.PrepModelCommand" lifecycle="prototype">
 		<property name="exampleProxy" ref="exampleProxy"/>
-	</object>  
+	</object>
+	
+	<object id="testCommand" class="org.toshiroioc.test.puremvc.command.TestCommand" />
 	
 	<object id="exampleProxy" class="org.toshiroioc.test.puremvc.model.ExampleProxy"/>
 	
@@ -31,11 +32,14 @@
 					<property name="notification" value="view"/>
 					<property name="command" class="org.toshiroioc.test.puremvc.command.PrepViewCommand"/>
 				</object>
+				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+					<property name="notification" value="test"/>
+					<property name="command" class="org.toshiroioc.test.puremvc.command.TestCommand"/>
+				</object>
 			</array>		
 		</property>
 	</object>
 	
-	<!-- Mediators-->
 	
 	<object id="toshiroApplicationFacadeTestMediator" class="org.toshiroioc.test.puremvc.mediator.ToshiroApplicationFacadeTestMediator">
 		<constructor-arg const="org.toshiroioc.test.puremvc.mediator.ToshiroApplicationFacadeTestMediator.NAME"/>
