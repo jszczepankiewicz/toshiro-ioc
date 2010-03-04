@@ -94,7 +94,7 @@ package org.toshiroioc.core
 		}
 		
 	
-		
+		//TODO: Unregister commands when failed
 		public function loadDynamicConfig(xml:XML):void{
 			var oldNodeNamesClassesMap:Vector.<Array> = nodeNamesClassesMap.concat();
 			try{
@@ -378,7 +378,7 @@ package org.toshiroioc.core
 				var clazz:Class = getDefinitionByName(beanXML.attribute("class")) as Class;
 				
 				try{
-					getObjectByClass(clazz);
+					getObjectsByClass(clazz);
 				}
 				catch(err:ContainerError){
 					removeFromNodeNamesClassesMapById(id);
@@ -528,6 +528,7 @@ package org.toshiroioc.core
 			if (afterConfigureMethodName){
 				bean[afterConfigureMethodName]();
 			}
+			
 			//if any required field not initialized throw an error
 			var reqFields:Array = FieldDescription.getRequiredFields(clazz);
 			if (reqFields){
@@ -536,6 +537,12 @@ package org.toshiroioc.core
 						throw new ContainerError("Required bean [" + fieldName + "] not initialized",0,ContainerError.ERROR_REQUIRED_METATAG_NOT_SATISFIED);
 				}
 			}
+			
+			var contextPropertyName:String = FieldDescription.getPropertyNameForContextInjection(clazz);
+			if(contextPropertyName){
+				bean[contextPropertyName] = this;
+			}
+				
 			
 			for each (var arr:Array in classesWithRegisteredPostprocessors){
 				if(bean is arr[0]){
@@ -612,27 +619,21 @@ package org.toshiroioc.core
 			nodeNamesClassesMap = resultVector;
 		}
 		
-		public function getObjectByClass(clazz:Class):*{
-			var objectOfTheClassCounter:Number = 0;
-			var beanToReturn:*;
+		public function getObjectsByClass(clazz:Class):Vector.<Object>{
+			var objects:Vector.<Object> = new Vector.<Object>;
 			
 			for each(var arr:Array in nodeNamesClassesMap){
 				if (clazz == (arr[1] as Class)){
-					beanToReturn = getObject(arr[0]);
-					objectOfTheClassCounter++;
+					objects.push(getObject(arr[0]));
 				}
 			}
-			switch(objectOfTheClassCounter){
+			switch(objects.length){
 				case(0):
 					throw new ContainerError("Bean of the class: ["+clazz+"] not found"
 						, 0, ContainerError.ERROR_OBJECT_OF_THE_CLASS_NOT_FOUND);
 					break;
-				case(1):
-					return beanToReturn;
-					break;
 				default:
-					throw new ContainerError("There is more than one bean of the class: ["+clazz+"]"
-						,0, ContainerError.ERROR_MORE_THAN_ONE_OBJECT_OF_THE_CLASS);
+					return objects;
 			}
 			
 		}

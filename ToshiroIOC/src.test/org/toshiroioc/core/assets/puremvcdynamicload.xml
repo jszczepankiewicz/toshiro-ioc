@@ -3,38 +3,49 @@
 
 	
 	<!-- Commands	-->
-	<object id="pureMVCStartupCommand" class="org.toshiroioc.test.puremvc.command.StartupCommand" lifecycle="prototype"/>
 						
-	<object id="prepModelCommand" class="org.toshiroioc.test.puremvc.command.PrepModelCommand" lifecycle="prototype">
+	<object id="dynamicMacroOnLoadCommand" class="org.toshiroioc.test.puremvc.command.DynamicMacroOnLoadCommand" lifecycle="prototype"/>
+	<object id="dynamicPrepModelCommand" class="org.toshiroioc.test.puremvc.command.DynamicPrepModelCommand" lifecycle="prototype"/>
+	
+	<object id="dynamicTestCommand" class="org.toshiroioc.test.puremvc.command.DynamicTestCommand" />
+	
+	
+	<object id="dynamicExampleProxy" class="org.toshiroioc.test.puremvc.model.DynamicExampleProxy"/>
+	<object id="dynamicExampleProxy2" class="org.toshiroioc.test.puremvc.model.DynamicExampleProxy2"/>
+	
+	<object id="dynamicPrepViewCommand" class="org.toshiroioc.test.puremvc.command.DynamicPrepViewCommand" lifecycle="prototype">
 	</object>
 	
-	<object id="testCommand" class="org.toshiroioc.test.puremvc.command.TestCommand" />
-	
-	
-	<object id="exampleProxy" class="org.toshiroioc.test.puremvc.model.ExampleProxy"/>
-	<object id="exampleProxy2" class="org.toshiroioc.test.puremvc.model.ExampleProxy2"/>
-	
-	<object id="prepViewCommand" class="org.toshiroioc.test.puremvc.command.PrepViewCommand" lifecycle="prototype">
-	</object>
-	
-	<object id="beanWithSetterMap" class="org.toshiroioc.plugins.puremvc.multicore.SetterMap">
+	<object id="dynamicBeanWithSetterMap" class="org.toshiroioc.plugins.puremvc.multicore.SetterMap">
 		<property name="mappings">
 			<array>
 				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" value="model"/>
-					<property name="command" class="org.toshiroioc.test.puremvc.command.PrepModelCommand"/>
+					<property name="notification" value="dynamic_model"/>
+					<property name="command" class="org.toshiroioc.test.puremvc.command.DynamicPrepModelCommand"/>
 				</object>
 				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" value="view"/>
+					<property name="notification" value="dynamic_view"/>
+					<property name="command" class="org.toshiroioc.test.puremvc.command.DynamicPrepViewCommand"/>
+				</object>
+				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+					<property name="notification" value="runDynTestCmd"/>
+					<property name="command" class="org.toshiroioc.test.puremvc.command.DynamicTestCommand"/>
+				</object>
+				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+					<property name="notification" value="runCmds"/>
+					<property name="command" class="org.toshiroioc.test.puremvc.command.DynamicTestCommand"/>
+				</object>
+				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+					<property name="notification" value="runCmds"/>
+					<property name="command" class="org.toshiroioc.test.puremvc.command.TestCommand"/>
+				</object>
+				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+					<property name="notification" value="runCmds"/>
 					<property name="command" class="org.toshiroioc.test.puremvc.command.PrepViewCommand"/>
 				</object>
 				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" value="test"/>
-					<property name="command" class="org.toshiroioc.test.puremvc.command.TestCommand"/>
-				</object>
-				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" value="test2"/>
-					<property name="command" class="org.toshiroioc.test.puremvc.command.TestCommand"/>
+					<property name="notification" value="custom_startup"/>
+					<property name="command" class="org.toshiroioc.test.puremvc.command.DynamicMacroOnLoadCommand"/>
 				</object>
 			</array>		
 		</property>
@@ -42,15 +53,13 @@
 	
 	<!-- Views -->
 	
-	<object id="exampleView" class="org.toshiroioc.test.puremvc.view.ExampleView"/>
+	<object id="dynamicModule" class="org.DynamicModule"/>
+	<object id="dynamicExampleView" class="org.toshiroioc.test.puremvc.view.DynamicExampleView"/>
 	
 	<!-- Mediators-->
 	
-	<object id="toshiroApplicationFacadeTestMediator" class="org.toshiroioc.test.puremvc.mediator.ToshiroApplicationFacadeTestMediator"/>
-
-	<object id="exampleViewMediator" class="org.toshiroioc.test.puremvc.mediator.ExampleViewMediator">
-		<constructor-arg ref="exampleView"/>
-		<property name="exampleProxy" ref="exampleProxy"/>
+	<object id="dynamicExampleViewMediator" class="org.toshiroioc.test.puremvc.mediator.DynamicExampleViewMediator">
+		<constructor-arg ref="dynamicExampleView"/>
 	</object>
 
 </objects>
