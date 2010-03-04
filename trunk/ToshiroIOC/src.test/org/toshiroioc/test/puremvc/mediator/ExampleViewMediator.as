@@ -1,11 +1,13 @@
 package org.toshiroioc.test.puremvc.mediator
 {
+	import mx.collections.ArrayCollection;
+	
 	import org.puremvc.as3.multicore.interfaces.IMediator;
 	import org.puremvc.as3.multicore.interfaces.INotification;
 	import org.puremvc.as3.multicore.patterns.mediator.Mediator;
 	import org.toshiroioc.test.puremvc.model.ExampleProxy;
 	import org.toshiroioc.test.puremvc.view.ExampleView;
-	import org.toshiroioc.test.puremvc.view.ExampleView;
+
 
 	public class ExampleViewMediator extends Mediator implements IMediator
 	{
@@ -20,6 +22,7 @@ package org.toshiroioc.test.puremvc.mediator
 		
 		override public function onRegister():void
 		{
+			sendNotification("ExViewMedOnReg", true);
 		}		
 		
 		override public function listNotificationInterests():Array
@@ -42,7 +45,7 @@ package org.toshiroioc.test.puremvc.mediator
 					example_view.view_lbl2.text = String( note.getBody() ).toUpperCase();
 				    break;
 				case ToshiroApplicationFacadeTest.EX_PROXY_ON_REGISTER:
-					example_view.view_grid.dataProvider = exampleProxy.my_arr;
+					example_view.view_grid.dataProvider = note.getBody() as ArrayCollection;
 				    break;
 			}
 		}
@@ -52,7 +55,7 @@ package org.toshiroioc.test.puremvc.mediator
 			return viewComponent as ExampleView;
 		}
 		
-		public function get exampleProxy():ExampleProxy 
+/* 		public function get exampleProxy():ExampleProxy 
 		{
 			return examplePrx as ExampleProxy;
 		}
@@ -60,6 +63,6 @@ package org.toshiroioc.test.puremvc.mediator
 		public function set exampleProxy(value:ExampleProxy):void 
 		{
 			examplePrx = value;
-		}
+		} */
 	}
 }

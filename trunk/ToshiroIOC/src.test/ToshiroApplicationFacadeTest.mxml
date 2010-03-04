@@ -9,6 +9,7 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import org.DynamicModule;
 			import org.toshiroioc.test.puremvc.view.ExampleView;
 
 			[Embed(source="applicationContext.xml", mimeType="application/octet-stream")]
@@ -16,7 +17,7 @@
 			
 			import mx.core.ByteArrayAsset;
 			import org.toshiroioc.plugins.puremvc.multicore.ToshiroApplicationFacade;
-			import org.toshiroioc.test.puremvc.command.StartupCommand;
+			import org.toshiroioc.test.puremvc.command.MacroStartupCommand;
 			
 			public static const NAME:String = "ToshiroApplicationFacadeTest"
 			public static const BUTTON_CLICK:String = 'button_click';
@@ -31,6 +32,7 @@
 			private var contextXML:XML;
 			private var linkageEnforcer:LinkageEnforcer;
 			public var exampleView:ExampleView;
+			public var dynamicModule:DynamicModule;
 					
 			
 			public function onCreationComplete(name:String, xml:XML):void{

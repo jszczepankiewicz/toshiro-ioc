@@ -44,6 +44,10 @@
 					<property name="notification" const="ToshiroApplicationFacadeTest.SIMPLE_STARTUP"/>
 					<property name="command" class="org.toshiroioc.test.puremvc.command.PrepViewCommand"/>
 				</object>
+				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+					<property name="notification" value="ExViewMedOnReg"/>
+					<property name="command" class="org.toshiroioc.test.puremvc.command.TestCommand"/>
+				</object>
 			</array>		
 		</property>
 	</object>
@@ -58,7 +62,6 @@
 
 	<object id="exampleViewMediator" class="org.toshiroioc.test.puremvc.mediator.ExampleViewMediator">
 		<constructor-arg ref="exampleView"/>
-		<property name="exampleProxy" ref="exampleProxy"/>
 	</object>
 
 </objects>

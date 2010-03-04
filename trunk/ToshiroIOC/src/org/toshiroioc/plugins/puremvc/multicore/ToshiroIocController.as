@@ -1,9 +1,10 @@
 package org.toshiroioc.plugins.puremvc.multicore
 {
+	import __AS3__.vec.Vector;
+	
 	import org.puremvc.as3.multicore.core.Controller;
 	import org.puremvc.as3.multicore.interfaces.ICommand;
 	import org.puremvc.as3.multicore.interfaces.INotification;
-	import org.puremvc.as3.multicore.interfaces.INotifier;
 	import org.puremvc.as3.multicore.patterns.command.SimpleCommand;
 	import org.puremvc.as3.multicore.patterns.observer.Notification;
 	import org.toshiroioc.ContainerError;
@@ -28,35 +29,45 @@ package org.toshiroioc.plugins.puremvc.multicore
 		
 		
  		override public function executeCommand(note:INotification):void {
- 			trace(note.getBody());
-	      	var commandClassVector:Vector.<Class> = (context.getObjectByClass(SetterMap) as SetterMap)
-	      		.getCommandsByNotification(note.getName());
-			var command:ICommand;
+ 			var commandClassVector:Vector.<Class> = new Vector.<Class>;
+ 			for each (var setterMap:SetterMap in context.getObjectsByClass(SetterMap)){
+ 				for each (var clazz:Class in setterMap.getCommandsByNotification(note.getName())){
+ 					commandClassVector.push(clazz);	
+ 				}
+ 			}
+ 			var command:ICommand;
+			var commands:Vector.<Object>;
 			for each(var commandClass:Class in commandClassVector){
-				command = context.getObjectByClass(commandClass) as ICommand;
-		      	if (command) {
+				commands = context.getObjectsByClass(commandClass);
+				
+		      	if (commands.length==1) {
+		      		command = context.getObjectsByClass(commandClass)[0] as ICommand;
 		      		command.initializeNotifier(multitonKey );
 	    		    command.execute(note);
 		    	}
+		    	else if(commands.length==0){
+					throw new ArgumentError("Command of a type:["+commandClass+"] not defined");
+				}
+				else {
+					throw new ArgumentError("Multiple commands of a type:["+commandClass+"]");
+				}
 		 	}
 			
       	} 
+				
       	
       	public function executeStartupCommand(facade:ToshiroApplicationFacade):void{
       		var command:ICommand = context.getObject("pureMVCStartupCommand") as ICommand;
       		var note:INotification;
       		if (command){
       			if (command is ToshiroIocMacroCommand || command is SimpleCommand){
-      				if (command is ToshiroIocMacroCommand){
-		      			note = new Notification(null, facade);
-		      		}
-		      		if (command is SimpleCommand){
-		      			note = new Notification(null, facade.getMainApp());
-		      		}
+		      		
+		      		note = new Notification(null, facade.getMainApp());
 	      			command.initializeNotifier( multitonKey );
 	      			command.execute(note); //if user registers startup command to his own note, startupCommand.execute() will be called at least twice
 	      			return;
-	      		}else{
+	      		}
+	      		else{
 	      			throw new ContainerError("Startup command has to be ToshiroIocMacroCommand or SimpleCommand type",0, ContainerError.ERROR_INVALID_OBJECT_TYPE);
 	      		}
       		}

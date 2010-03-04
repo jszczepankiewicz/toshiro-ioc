@@ -20,7 +20,7 @@
 			<array>
 				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
 					<property name="notification" value="startup"/>
-					<property name="command" class="org.toshiroioc.test.puremvc.command.StartupCommand"/>
+					<property name="command" class="org.toshiroioc.test.puremvc.command.MacroStartupCommand"/>
 				</object>
 				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
 					<property name="notification" value="model"/>

@@ -1,10 +1,13 @@
 package org.toshiroioc.core
 {
+	import __AS3__.vec.Vector;
+	
 	import flash.utils.getDefinitionByName;
 	
 	import flexunit.framework.Test;
 	import flexunit.framework.TestSuite;
 	
+	import org.DynamicModule;
 	import org.toshiroioc.ContainerError;
 	import org.toshiroioc.plugins.puremvc.multicore.CommandMap;
 	import org.toshiroioc.plugins.puremvc.multicore.SetterMap;
@@ -19,6 +22,7 @@ package org.toshiroioc.core
 	import org.toshiroioc.test.beans.ObjectWithConstructorDependency;
 	import org.toshiroioc.test.beans.ParentOfSimpleDependencyObject;
 	import org.toshiroioc.test.beans.SimpleBean;
+	import org.toshiroioc.test.beans.SimpleBeanWithContextInjection;
 	import org.toshiroioc.test.beans.SimpleBeanWithMetatags;
 	import org.toshiroioc.test.beans.SimpleBeanWithMetatagsExtended;
 	import org.toshiroioc.test.beans.SimpleBeanWithPostprocessor;
@@ -26,13 +30,20 @@ package org.toshiroioc.core
 	import org.toshiroioc.test.beans.SimpleDependencyObject;
 	import org.toshiroioc.test.postprocessors.TestClassPostprocessor;
 	import org.toshiroioc.test.postprocessors.TestClassPostprocessor2;
+	import org.toshiroioc.test.puremvc.command.DynamicMacroOnLoadCommand;
+	import org.toshiroioc.test.puremvc.command.DynamicPrepModelCommand;
+	import org.toshiroioc.test.puremvc.command.DynamicPrepViewCommand;
+	import org.toshiroioc.test.puremvc.command.DynamicTestCommand;
+	import org.toshiroioc.test.puremvc.command.MacroStartupCommand;
 	import org.toshiroioc.test.puremvc.command.PrepModelCommand;
 	import org.toshiroioc.test.puremvc.command.PrepViewCommand;
 	import org.toshiroioc.test.puremvc.command.SimpleStartupCommand;
-	import org.toshiroioc.test.puremvc.command.StartupCommand;
 	import org.toshiroioc.test.puremvc.command.TestCommand;
+	import org.toshiroioc.test.puremvc.mediator.DynamicExampleViewMediator;
 	import org.toshiroioc.test.puremvc.mediator.ExampleViewMediator;
 	import org.toshiroioc.test.puremvc.mediator.ToshiroApplicationFacadeTestMediator;
+	import org.toshiroioc.test.puremvc.model.DynamicExampleProxy;
+	import org.toshiroioc.test.puremvc.model.DynamicExampleProxy2;
 	import org.toshiroioc.test.puremvc.model.ExampleProxy;
 	import org.toshiroioc.test.puremvc.model.ExampleProxy2;
 
@@ -182,9 +193,15 @@ package org.toshiroioc.core
 		[Embed(source="assets/sameid.xml", mimeType="application/octet-stream")]
 		private var SameIDXMLClass:Class;
 		
+		[Embed(source="assets/contextinjection.xml", mimeType="application/octet-stream")]
+		private var ContextInjectionXMLClass:Class;
+		
 		public function XMLBeanFactoryTestCase(methodName:String){
 			super(methodName);
 		}
+		
+
+		
 		
 		public function testIDNotUnique():void{
 			var xml:XML = constructXMLFromEmbed(SameIDXMLClass);
@@ -335,31 +352,24 @@ package org.toshiroioc.core
 			context.initialize();
 		}
 		
-		 public function testGetObjectByClass():void{
+		 public function testGetObjectsByClass():void{
 			var xml:XML = constructXMLFromEmbed(GetByClassXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			var error:ContainerError;
 			context.initialize();
 			//test existing bean of a class
 			var setterMap:SetterMap;
-			setterMap = context.getObjectByClass(getDefinitionByName("org.toshiroioc.plugins.puremvc.multicore.SetterMap")as Class);
-			assertNotNull(setterMap);
+			var objectVector:Vector.<Object> = context.getObjectsByClass(getDefinitionByName("org.toshiroioc.plugins.puremvc.multicore.SetterMap")as Class);
+			assertNotNull(objectVector);
+			assertTrue(objectVector.length > 0);
 			//test not existing bean of a class
 			try{
-				context.getObjectByClass(getDefinitionByName("org.toshiroioc.test.beans.SimpleBean")as Class);
+				context.getObjectsByClass(getDefinitionByName("org.toshiroioc.test.beans.SimpleBean")as Class);
 			}catch(err:ContainerError){
 				error = err;
 			}
 			assertNotNull(error);
 			assertEquals(ContainerError.ERROR_OBJECT_OF_THE_CLASS_NOT_FOUND, error.errorCode);
-			//test too many beans of the class
-			try{
-				context.getObjectByClass(getDefinitionByName("org.toshiroioc.test.beans.SimpleDependencyObject")as Class);
-			}catch(err:ContainerError){
-				error = err;
-			}
-			assertNotNull(error);
-			assertEquals(ContainerError.ERROR_MORE_THAN_ONE_OBJECT_OF_THE_CLASS, error.errorCode);
 		} 
 		
 		public function testNotInitializePrototypeBeans():void{
@@ -424,13 +434,19 @@ package org.toshiroioc.core
  		public function testPureMVCMacroCommandStartup():void{
  			var mainApp:ToshiroApplicationFacadeTest = new ToshiroApplicationFacadeTest();
 			var xml:XML;
-			var startupCommand:StartupCommand;
+			var startupCommand:MacroStartupCommand;
 			var prepViewCommand:PrepViewCommand;
 			var prepModelCommand : PrepModelCommand;
 			var testCommand: TestCommand;
 			var simpleStartupCommand: SimpleStartupCommand;
 			var exProxy2:ExampleProxy2;
 			var facade:ToshiroApplicationFacade;
+			var dynamicMacroCommand:DynamicMacroOnLoadCommand;
+			var dynamicPrepViewCommand:DynamicPrepViewCommand;
+			var dynamicPrepModelCommand : DynamicPrepModelCommand;
+			var dynamicTestCommand: DynamicTestCommand;
+			var dynamicExampleProxy : DynamicExampleProxy;
+			var dynamicExampleProxy2 : DynamicExampleProxy2;
  			//test macro startup command
 			xml = constructXMLFromEmbed(PureMVCXMLClass1);
 			mainApp.onCreationComplete("macroCommand", xml);
@@ -448,7 +464,7 @@ package org.toshiroioc.core
 			mainApp.facade.sendNotification("test", 5);
 			assertEquals(5, (mainApp.facade.getContext().getObject("testCommand") as TestCommand).executed);
 			//tests if commands from startup macro command has been executed
-			assertTrue((mainApp.facade.getContext().getObject("testCommand") as TestCommand).testNoteFromOtherCommand);
+			assertEquals(1, (mainApp.facade.getContext().getObject("testCommand") as TestCommand).testNoteFromCommand);
 			// tests onRegister on proxy1 and note proxy --> mediator
 			assertNotNull(mainApp.exampleView.view_grid.dataProvider);
 			//tests if note has been sent between mediators
@@ -456,11 +472,33 @@ package org.toshiroioc.core
 			// tests onRegister on proxy2 and note proxy --> mediator
 			assertEquals(mainApp.exampleView.view_lbl2.text, "5");
 			//test if main app has been set by notification from PrepViewCommand
-			assertNotNull((mainApp.facade.retrieveMediator(ToshiroApplicationFacadeTestMediator.NAME) 
+			assertNotNull((mainApp.facade.getContext().getObject("toshiroApplicationFacadeTestMediator")
 				as ToshiroApplicationFacadeTestMediator).app);
 			//test if notification from proxy has been sent
-			assertTrue((mainApp.facade.retrieveMediator(ToshiroApplicationFacadeTestMediator.NAME) 
-				as ToshiroApplicationFacadeTestMediator).exProxyOnRegister); 
+			assertTrue((mainApp.facade.getContext().getObject("toshiroApplicationFacadeTestMediator")
+				as ToshiroApplicationFacadeTestMediator).exProxyOnRegister);
+			// receive note from mediator on register
+			assertEquals(0, (mainApp.facade.getContext().getObject("testCommand") as TestCommand).notRegisteredNoteCounter);
+			assertEquals(1, (mainApp.facade.getContext().getObject("testCommand") as TestCommand).noteFromMediator);
+			
+			//test dynamically loaded config
+			xml = constructXMLFromEmbed(PureMVCDynamicLoadXMLClass);
+			mainApp.facade.getContext().loadDynamicConfig(xml);
+			
+			//place for on reg test
+			
+			
+			//--------------working----------- 
+			mainApp.dynamicModule = mainApp.facade.getContext().getObject("dynamicModule") as DynamicModule;
+			assertNotNull(mainApp.dynamicModule);
+			mainApp.facade.sendNotification("custom_startup");
+			//tests notes from command to new and old commands
+			assertEquals(2, (mainApp.facade.getContext().getObject("dynamicTestCommand") as DynamicTestCommand).noteFromCmd); 
+			assertEquals(2, (mainApp.facade.getContext().getObject("testCommand") as TestCommand).testNoteFromCommand);
+			//tests note new cmd -> old cmd prototype -> new mediator
+			assertEquals(1, (mainApp.facade.getContext().getObject("dynamicExampleViewMediator") as DynamicExampleViewMediator).runsCount);
+			
+			 
 			}
 			
 		public function testPureMVCSimpleCommandStartup():void{
@@ -487,7 +525,7 @@ package org.toshiroioc.core
 				.getObject("testCommand") as TestCommand);
 			assertEquals(5, test.executed);
 			//tests if commands from startup macro command has been executed
-			assertTrue((mainApp.facade.getContext().getObject("testCommand") as TestCommand).testNoteFromOtherCommand);
+			assertEquals(1, (mainApp.facade.getContext().getObject("testCommand") as TestCommand).testNoteFromCommand);
 			// tests onRegister on proxy1 and note proxy --> mediator
 			assertNotNull(mainApp.exampleView.view_grid.dataProvider);
 			//tests if note has been sent between mediators
@@ -500,10 +538,38 @@ package org.toshiroioc.core
 			//test if notification from proxy has been sent
 			assertTrue((mainApp.facade.retrieveMediator(ToshiroApplicationFacadeTestMediator.NAME) 
 				as ToshiroApplicationFacadeTestMediator).exProxyOnRegister);  
+			// receive note from mediator on register
+			assertEquals(0, (mainApp.facade.getContext().getObject("testCommand") as TestCommand).notRegisteredNoteCounter);
+			assertEquals(1, (mainApp.facade.getContext().getObject("testCommand") as TestCommand).noteFromMediator);
+			 
 		} 
 		
+		public function testMetatagContextInjection():void{
+			var xml:XML = constructXMLFromEmbed(ContextInjectionXMLClass);
+			var context:XMLBeanFactory = new XMLBeanFactory(xml);
+			
+			context.initialize();
+			
+			var simpleBeanWithMetatags:SimpleBeanWithContextInjection = context.getObject("objectOne") as SimpleBeanWithContextInjection;
+			assertNotNull(simpleBeanWithMetatags);
+			assertEquals(simpleBeanWithMetatags.beforeConfigureMethodInvocation, true);
+			assertEquals(simpleBeanWithMetatags.afterConfigureMethodInvocation, true);
+			assertNotNull(simpleBeanWithMetatags.dependencyItem);
+			assertNotNull(simpleBeanWithMetatags.dependencyItem2);
+			assertEquals(context, simpleBeanWithMetatags.context);
+			
+			
+			var simpleBeanWithMetatags2:SimpleBeanWithContextInjection = context.getObject("objectTwo") as SimpleBeanWithContextInjection;
+			assertNotNull(simpleBeanWithMetatags2);
+			assertEquals(simpleBeanWithMetatags2.beforeConfigureMethodInvocation, true);
+			assertEquals(simpleBeanWithMetatags2.afterConfigureMethodInvocation, true);
+			assertNotNull(simpleBeanWithMetatags2.dependencyItem);
+			assertNotNull(simpleBeanWithMetatags2.dependencyItem2); 
+			assertEquals(context, simpleBeanWithMetatags2.context);
+		}
 		
-		public function testBeforeAndAfterMetatags():void{
+		
+		public function testMetatagsBeforeAndAfter():void{
 			var xml:XML = constructXMLFromEmbed(MetatagsXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			
@@ -535,7 +601,7 @@ package org.toshiroioc.core
 			
 		}
 	 	
-		public function testRequiredMetatagNotSatisfied():void{
+		public function testMetatagRequiredNotSatisfied():void{
 
 			var xml:XML = constructXMLFromEmbed(RequiredMetatagXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
@@ -552,7 +618,7 @@ package org.toshiroioc.core
 			
 		} 
 		
-		public function testRequiredMetatagSatisfied():void{
+		public function testMetatagRequiredSatisfied():void{
 
 			var xml:XML = constructXMLFromEmbed(RequiredMetatag2XMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
@@ -1222,8 +1288,8 @@ package org.toshiroioc.core
 		public static function getTestsArr():Vector.<Test>{
 			var retval:Vector.<Test> = new Vector.<Test>();	
 
-			
-			retval.push(new XMLBeanFactoryTestCase("testIDNotUnique"));
+		 	retval.push(new XMLBeanFactoryTestCase("testMetatagContextInjection"));
+ 			retval.push(new XMLBeanFactoryTestCase("testIDNotUnique"));
 			retval.push(new XMLBeanFactoryTestCase("testPureMVCMacroCommandStartup"));
 			retval.push(new XMLBeanFactoryTestCase("testPureMVCSimpleCommandStartup"));
 			retval.push(new XMLBeanFactoryTestCase("testDynamicContextLoadFailed"));
@@ -1231,12 +1297,12 @@ package org.toshiroioc.core
 			retval.push(new XMLBeanFactoryTestCase("testDynamicContextRefToBeanFrom2ndConfig"));
 			retval.push(new XMLBeanFactoryTestCase("testDynamicContextRefToBeanFrom1stConfig"));
  			retval.push(new XMLBeanFactoryTestCase("testNotInitializePrototypeBeans"));
- 			retval.push(new XMLBeanFactoryTestCase("testGetObjectByClass"));
+ 			retval.push(new XMLBeanFactoryTestCase("testGetObjectsByClass"));
 			retval.push(new XMLBeanFactoryTestCase("testSetterInjectionOfArray"));
 			retval.push(new XMLBeanFactoryTestCase("testClassPostprocessor"));  	 	
-			retval.push(new XMLBeanFactoryTestCase("testBeforeAndAfterMetatags"));
-			retval.push(new XMLBeanFactoryTestCase("testRequiredMetatagNotSatisfied"));
-			retval.push(new XMLBeanFactoryTestCase("testRequiredMetatagSatisfied"));
+			retval.push(new XMLBeanFactoryTestCase("testMetatagsBeforeAndAfter"));
+			retval.push(new XMLBeanFactoryTestCase("testMetatagRequiredNotSatisfied"));
+			retval.push(new XMLBeanFactoryTestCase("testMetatagRequiredSatisfied"));
 			retval.push(new XMLBeanFactoryTestCase("testBeforeAndAfterMetatagsExtended"));
 			retval.push(new XMLBeanFactoryTestCase("testDependencyNotExistingInConfig")); 
 			retval.push(new XMLBeanFactoryTestCase("testInstantiateBeanByID"));			
@@ -1275,7 +1341,7 @@ package org.toshiroioc.core
 			retval.push(new XMLBeanFactoryTestCase("testCyclicDependencyFromConstructorToSetterComplex"));
 			retval.push(new XMLBeanFactoryTestCase("testCyclicDependencyFromSetterToConstructorComplex"));
 			retval.push(new XMLBeanFactoryTestCase("testStaticReferenceInConstructor"));
-			retval.push(new XMLBeanFactoryTestCase("testStaticReferenceInSetter"));                    
+			retval.push(new XMLBeanFactoryTestCase("testStaticReferenceInSetter"));                      
 			  
   			
 			/*

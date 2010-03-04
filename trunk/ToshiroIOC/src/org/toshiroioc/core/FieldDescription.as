@@ -50,6 +50,7 @@ package org.toshiroioc.core
 		public static const METATAG_BEFORE_CONFIGURE:String	= "BeforeConfigure";
 		public static const METATAG_AFTER_CONFIGURE:String	= "AfterConfigure";
 		public static const METATAG_REQUIRED:String	= "Required";
+		public static const METATAG_TOSHIRO_IOC_FACTORY:String	= "ToshiroIOCFactory";
 		public static const CONSTRUCTOR_FLAG:uint = 1;
 		public static const CONSTRUCTOR_DETECTED:String = "toshiro.constructor.detected";
 		
@@ -137,22 +138,33 @@ package org.toshiroioc.core
 		
 		public static function getBeforeConfigureMethodName(clazz:Class):String{
 			var obj:Object = classMetatagsDescriptionCache[getQualifiedClassName(clazz)];
-			if (obj)
+			if (obj){
 				return obj[METATAG_BEFORE_CONFIGURE];
+			}
 			return null;
 		}
 		
 		public static function getAfterConfigureMethodName(clazz:Class):String{
 			var obj:Object = classMetatagsDescriptionCache[getQualifiedClassName(clazz)];
-			if (obj)
+			if (obj){
 				return obj[METATAG_AFTER_CONFIGURE];
+			}
 			return null;
 		}
 		
 		public static function getRequiredFields(clazz:Class):Array{
 			var obj:Object = classMetatagsDescriptionCache[getQualifiedClassName(clazz)];
-			if (obj)
+			if (obj){
 				return obj[METATAG_REQUIRED];
+			}
+			return null;
+		}
+		
+		public static function getPropertyNameForContextInjection(clazz:Class):String{
+			var obj:Object = classMetatagsDescriptionCache[getQualifiedClassName(clazz)];
+			if (obj){
+				return obj[METATAG_TOSHIRO_IOC_FACTORY];
+			}
 			return null;
 		}
 		
@@ -201,28 +213,32 @@ package org.toshiroioc.core
 				 }
 				
 				var reqFields:Array;
-				var reqTagFound:Boolean;
+				var tagFound:Boolean;
 				
 				for each (var variable:XML in classInfo..accessor){
 					
 					//trace("=== " + variable.@name + " = " + variable.@type.toString());
 					
-					reqTagFound = false;
+					tagFound = false;
 					// make array of fields name tagged with [Required]
 					for each (metadata in variable..metadata){
 						switch (metadata.@name.toString()){
 							case (METATAG_REQUIRED):
-								reqTagFound = true;
+								tagFound = true;
 								if(!reqFields){
 									reqFields = new Array();
 									}
 								reqFields.push(variable.@name.toString());
 								break;
+							case (METATAG_TOSHIRO_IOC_FACTORY):
+								tagFound = true;
+								metatagsInfo[METATAG_TOSHIRO_IOC_FACTORY] = variable.@name.toString();
+								break;
 						}
 					// don't look for other tags in the accessor
-					if (reqTagFound)
+					if (tagFound)
 						break;
-					}
+					} 
 					switch (variable.@type.toString()){
 						
 						case ("Number"):
@@ -274,8 +290,10 @@ package org.toshiroioc.core
 				}
 				
 				// check if array of required fields names exists and add to metatagsInfo object
+				// CHECK: why not up
 				if(reqFields)
 					metatagsInfo[METATAG_REQUIRED] = reqFields;
+					
 				
 				//	saving in cache for future use
 				classFieldsDescriptionCache[qualifiedClazzName] = fieldsInfo;

@@ -3,7 +3,7 @@ package
 	
 	import org.toshiroioc.test.puremvc.command.PrepModelCommand;
 	import org.toshiroioc.test.puremvc.command.PrepViewCommand;
-	import org.toshiroioc.test.puremvc.command.StartupCommand;
+	import org.toshiroioc.test.puremvc.command.MacroStartupCommand;
 	import org.toshiroioc.test.puremvc.mediator.ExampleViewMediator;
 	import org.toshiroioc.test.puremvc.mediator.ToshiroApplicationFacadeTestMediator;
 	import org.toshiroioc.test.puremvc.model.ExampleProxy;
@@ -21,7 +21,7 @@ package
     private var linkageEnforcer:Object = {
       prop1:PrepModelCommand,
       prop2:PrepViewCommand,
-      prop3:StartupCommand,
+      prop3:MacroStartupCommand,
       prop4:ExampleViewMediator,
       prop5:ToshiroApplicationFacadeTestMediator,
       prop6:ExampleProxy,

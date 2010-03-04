@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+	
+	<object id="objectOne" class="org.toshiroioc.test.beans.SimpleBeanWithContextInjection">
+		<property name="numberItem" value="9999.00001"/>
+		<property name="dependencyItem" ref="object5"/>
+		<property name="dependencyItem2" ref="object6"/> 	 		
+	</object>
+	
+	<object id="object5" class="org.toshiroioc.test.beans.SimpleBean"/>
+	<object id="object6" class="org.toshiroioc.test.beans.SimpleBean"/>
+	
+	<object id="objectTwo" class="org.toshiroioc.test.beans.SimpleBeanWithContextInjection">
+		<property name="numberItem" value="9999.00001"/>
+		<property name="dependencyItem" ref="object5"/>
+		<property name="dependencyItem2" ref="object6"/> 	 		
+	</object>
+	
+</objects>
