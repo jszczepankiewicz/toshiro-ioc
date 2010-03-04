@@ -25,6 +25,7 @@ package org.toshiroioc.test.postprocessors
 				obj.testField2 = true;
 			obj.commonField = obj.commonField+1;
 		}
-		
+		public function onContextLoaded():void{
+		}
 	}
 }

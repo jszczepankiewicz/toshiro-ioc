@@ -8,7 +8,6 @@ package org.toshiroioc.test.puremvc.command
 	{
 		override public function execute(note:INotification):void
         {
-        	trace(note.getBody());
         	sendNotification(ToshiroApplicationFacadeTest.SIMPLE_STARTUP, note.getBody());
         }
 	}

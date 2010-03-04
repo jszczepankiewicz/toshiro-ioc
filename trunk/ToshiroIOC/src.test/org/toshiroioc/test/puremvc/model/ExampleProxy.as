@@ -26,7 +26,7 @@ package org.toshiroioc.test.puremvc.model
 		override public function onRegister():void
 		{			
 			data = buildNameObjectArray();
-			//sendNotification(ToshiroApplicationFacadeTest.EX_PROXY_ON_REGISTER, data);
+			sendNotification(ToshiroApplicationFacadeTest.EX_PROXY_ON_REGISTER, data);
 		}
 		
 		protected function buildNameObjectArray():ArrayCollection

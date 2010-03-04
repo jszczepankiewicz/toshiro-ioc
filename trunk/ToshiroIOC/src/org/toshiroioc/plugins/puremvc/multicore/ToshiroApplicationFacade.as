@@ -46,11 +46,6 @@ package org.toshiroioc.plugins.puremvc.multicore
 			dispatchEvent(new Event(Event.COMPLETE));
 	    }
 	    
-	     /* override public function sendNotification(notificationName:String, body:Object=null, type:String=null ):void{
-	    	super.sendNotification(notificationName, body, type);
-	    }  */
-	    
-
 	    override protected function initializeFacade():void {
 
 	    }     

@@ -3,6 +3,7 @@ package org.toshiroioc.plugins.puremvc.multicore
 	import org.puremvc.as3.multicore.core.Controller;
 	import org.puremvc.as3.multicore.interfaces.ICommand;
 	import org.puremvc.as3.multicore.interfaces.INotification;
+	import org.puremvc.as3.multicore.interfaces.INotifier;
 	import org.puremvc.as3.multicore.patterns.command.SimpleCommand;
 	import org.puremvc.as3.multicore.patterns.observer.Notification;
 	import org.toshiroioc.ContainerError;
@@ -53,7 +54,7 @@ package org.toshiroioc.plugins.puremvc.multicore
 		      			note = new Notification(null, facade.getMainApp());
 		      		}
 	      			command.initializeNotifier( multitonKey );
-	      			command.execute(note);
+	      			command.execute(note); //if user registers startup command to his own note, startupCommand.execute() will be called at least twice
 	      			return;
 	      		}else{
 	      			throw new ContainerError("Startup command has to be ToshiroIocMacroCommand or SimpleCommand type",0, ContainerError.ERROR_INVALID_OBJECT_TYPE);

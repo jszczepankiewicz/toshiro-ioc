@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute"
 	xmlns:view="org.toshiroioc.test.puremvc.view.*"
-	creationComplete="onCreationComplete()">
+	creationComplete="onCreationComplete(null, null)">
 	
 	<mx:Metadata>
 		[Event('hello_click')]
@@ -9,6 +9,7 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import org.toshiroioc.test.puremvc.view.ExampleView;
 
 			[Embed(source="applicationContext.xml", mimeType="application/octet-stream")]
 			private var contextXMLClass:Class;
@@ -22,23 +23,28 @@
 			public static const HELLO_CLICK:String  = 'hello_click';
 			public static const STARTUP:String      = 'startup';
 			public static const EX_PROXY_ON_REGISTER:String = 'ex_proxy_register';
+			public static const EX_PROXY2_ON_REGISTER:String = 'ex_proxy2_register';
 			public static const SIMPLE_STARTUP:String = 'simple_startup';
+			public static const ADD_MAIN_APP:String = 'add_main_app';
 			
-			private var facade:ToshiroApplicationFacade;
+			public var facade:ToshiroApplicationFacade;
 			private var contextXML:XML;
 			private var linkageEnforcer:LinkageEnforcer;
+			public var exampleView:ExampleView;
 					
 			
-			private function onCreationComplete():void{
-				contextXML = constructXMLFromEmbed(contextXMLClass);
+			public function onCreationComplete(name:String, xml:XML):void{
+				//contextXML = constructXMLFromEmbed(xml);
 				
-				facade = ToshiroApplicationFacade.getInstance(NAME, this);
+				facade = ToshiroApplicationFacade.getInstance(name, this);
 				facade.addEventListener(Event.COMPLETE, startupApp);
-				facade.initializeContext(contextXML);
+				facade.initializeContext(xml);
 			}
 			
 			private function startupApp(ev:Event):void {
         		facade.removeEventListener(Event.COMPLETE, startupApp);
+        		exampleView = facade.getContext().getObject("exampleView") as ExampleView;
+        		addChild(exampleView);
    			}
       		
       		
@@ -48,6 +54,4 @@
 			}
 		]]>
 	</mx:Script>
-		<view:ExampleView id="exampleView" width="400" height="400" />
-		<mx:Button id="btnOne" label="Click" click="dispatchEvent( new Event( HELLO_CLICK ) )" />
 </mx:Panel>

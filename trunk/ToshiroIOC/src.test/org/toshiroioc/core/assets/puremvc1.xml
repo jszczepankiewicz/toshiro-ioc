@@ -6,25 +6,20 @@
 	<object id="pureMVCStartupCommand" class="org.toshiroioc.test.puremvc.command.StartupCommand" lifecycle="prototype"/>
 						
 	<object id="prepModelCommand" class="org.toshiroioc.test.puremvc.command.PrepModelCommand" lifecycle="prototype">
-		<property name="exampleProxy" ref="exampleProxy"/>
 	</object>
 	
 	<object id="testCommand" class="org.toshiroioc.test.puremvc.command.TestCommand" />
 	
+	
 	<object id="exampleProxy" class="org.toshiroioc.test.puremvc.model.ExampleProxy"/>
+	<object id="exampleProxy2" class="org.toshiroioc.test.puremvc.model.ExampleProxy2"/>
 	
 	<object id="prepViewCommand" class="org.toshiroioc.test.puremvc.command.PrepViewCommand" lifecycle="prototype">
-		<property name="toshiroApplicationFacadeTestMediator" ref="toshiroApplicationFacadeTestMediator"/>
-		<property name="exampleViewMediator" ref="exampleViewMediator"/>
 	</object>
 	
 	<object id="beanWithSetterMap" class="org.toshiroioc.plugins.puremvc.multicore.SetterMap">
 		<property name="mappings">
 			<array>
-				<!--<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" value="startup"/>
-					<property name="command" class="org.toshiroioc.test.puremvc.command.StartupCommand"/>
-				</object>-->
 				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
 					<property name="notification" value="model"/>
 					<property name="command" class="org.toshiroioc.test.puremvc.command.PrepModelCommand"/>
@@ -37,18 +32,25 @@
 					<property name="notification" value="test"/>
 					<property name="command" class="org.toshiroioc.test.puremvc.command.TestCommand"/>
 				</object>
+				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+					<property name="notification" value="test2"/>
+					<property name="command" class="org.toshiroioc.test.puremvc.command.TestCommand"/>
+				</object>
 			</array>		
 		</property>
 	</object>
 	
+	<!-- Views -->
+	
+	<object id="exampleView" class="org.toshiroioc.test.puremvc.view.ExampleView"/>
+	
 	<!-- Mediators-->
 	
-	<object id="toshiroApplicationFacadeTestMediator" class="org.toshiroioc.test.puremvc.mediator.ToshiroApplicationFacadeTestMediator">
-		<constructor-arg const="org.toshiroioc.test.puremvc.mediator.ToshiroApplicationFacadeTestMediator.NAME"/>
-	</object>
+	<object id="toshiroApplicationFacadeTestMediator" class="org.toshiroioc.test.puremvc.mediator.ToshiroApplicationFacadeTestMediator"/>
+
 	<object id="exampleViewMediator" class="org.toshiroioc.test.puremvc.mediator.ExampleViewMediator">
-		<constructor-arg const="org.toshiroioc.test.puremvc.mediator.ExampleViewMediator.NAME"/>
-		<property name="exampleProxy" ref = "exampleProxy"/>
+		<constructor-arg ref="exampleView"/>
+		<property name="exampleProxy" ref="exampleProxy"/>
 	</object>
 
 </objects>
