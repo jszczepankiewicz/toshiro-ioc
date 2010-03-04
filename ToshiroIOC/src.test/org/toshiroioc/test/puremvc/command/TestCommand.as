@@ -7,10 +7,21 @@ package org.toshiroioc.test.puremvc.command
 	public class TestCommand extends SimpleCommand implements ICommand
 	{
 		public var executed:Number;
+		public var testNoteFromOtherCommand:Boolean;
 		
 		override public function execute(note:INotification):void
 		{
-			executed=note.getBody() as Number;
+			trace(note.getName());
+			switch(note.getName()){
+				case("test"):
+					executed=note.getBody() as Number;
+					break;
+				case("test2"):
+					testNoteFromOtherCommand=true;
+					break;	
+			}
+			
+			
 		}
 
 	}

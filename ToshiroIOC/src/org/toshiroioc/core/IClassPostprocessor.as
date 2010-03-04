@@ -8,5 +8,7 @@ package org.toshiroioc.core
 		
 		function postprocessObject(object:*):*;
 		
+		function onContextLoaded():void;
+		
 	}
 }

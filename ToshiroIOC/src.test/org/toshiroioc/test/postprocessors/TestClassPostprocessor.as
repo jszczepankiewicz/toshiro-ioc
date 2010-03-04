@@ -27,5 +27,9 @@ package org.toshiroioc.test.postprocessors
 			return object;
 		}
 		
+		public function onContextLoaded():void{
+		}
+		
+		
 	}
 }

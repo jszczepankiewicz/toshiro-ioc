@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+	
+	<object id="objectTwo" class="org.toshiroioc.test.beans.SimpleBean">
+		<property name="booleanItem"  value="false" />		
+		<property name="intItem" value="999"/>
+		<property name="uintItem" value="0"/>
+		<property name="numberItem" value="-123456.99987"/>		
+	</object>
+	
+	<object id="objectWithRefToFirstConfig" class="org.toshiroioc.test.beans.SimpleDependencyObject">	
+		<property name="someChild" ref="objectChild"/>				
+	</object>	
+</objects>

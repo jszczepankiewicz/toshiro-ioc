@@ -70,9 +70,9 @@ package org.toshiroioc.core
 		
 		private var propertyEditorsMap:Object = new Object();
 		
-		private var classesWithRegisteredPostprocessors:Object = new Object();
+		private var classesWithRegisteredPostprocessors:Vector.<Array> = new Vector.<Array>();
 		
-		private var arrayOfObjects:Array;
+		private var registeredPostprocessors:Vector.<IClassPostprocessor>;
 		
 		public function XMLBeanFactory(xml:XML){			
 			xmlSource = xml;		
@@ -89,7 +89,52 @@ package org.toshiroioc.core
 			registerPropertyEditor(new CorePropertyEditors());
 			startParseBeans(xmlSource);
 			//	dispatch complete event to inform that container is ready
+			runPostprocessorsOnContextLoaded();
 			dispatchEvent(new Event(Event.COMPLETE));
+		}
+		
+	
+		
+		public function loadDynamicConfig(xml:XML):void{
+			var oldNodeNamesClassesMap:Vector.<Array> = nodeNamesClassesMap.concat();
+			try{
+				startParseBeans(xml);
+			}
+			catch (err:Error){
+				clearEverythingFromNewBeans(oldNodeNamesClassesMap);
+				throw err;
+			}
+			runPostprocessorsOnContextLoaded();
+			dispatchEvent(new Event(Event.COMPLETE));
+		}
+		
+		private function clearEverythingFromNewBeans(oldNodeNamesClassesMap:Vector.<Array>):void{
+			var oldBeansNames:Vector.<String> = new Vector.<String>;
+			var newBeansMap:Object = new Object();
+			var newNodes:Object = new Object();
+			var newPrototypesIDList:Vector.<String> = new Vector.<String>;
+			// get old beans names
+			for each (var arr:Array in oldNodeNamesClassesMap){
+				oldBeansNames.push(arr[0]);
+			}
+			//c
+			for each (var oldBeanId: String in oldBeansNames){
+				
+				newBeansMap[oldBeanId] = beansMap[oldBeanId];
+				newNodes[oldBeanId] = nodes[oldBeanId];
+				for each (var prototypeId:String in prototypesIDList){
+					if (prototypeId == oldBeanId){
+						newPrototypesIDList.push(prototypeId);
+					}
+				}
+				
+			}
+			postInitializedBeans = new Array();
+			unresolvedNodes = new Vector.<DINode>;
+			beansMap = newBeansMap;
+			nodes  = newNodes;
+			nodeNamesClassesMap = oldNodeNamesClassesMap;
+			prototypesIDList = newPrototypesIDList;
 		}
 		
 		private function parseConstAttribute(constans:String, id:String):*{
@@ -370,6 +415,17 @@ package org.toshiroioc.core
 		}
 		 */
 		 
+		 private function nameExists(name:String):Boolean{
+		 	//return true if exists map between name and not null class
+		 	//asserts map not created by ref
+		 	for each(var arr:Array in nodeNamesClassesMap){
+		 		if (arr[0] == name && arr[1]){
+		 			return true;
+		 		}
+		 	}
+		 	return false;
+		 }
+		 
 		 private function startParseBeans(xmlSource:XML):Array{
 			var beans:XMLList = xmlSource.child("object");
 			var beanXML:XML;
@@ -379,6 +435,8 @@ package org.toshiroioc.core
 			
 			for each(beanXML in beans){
 				var idString:String = String(beanXML.attribute("id")); 
+				if (nameExists(idString))
+					throw new ContainerError("Id: ["+idString+"] not unique",0,ContainerError.ERROR_MULTIPLE_BEANS_WITH_THE_SAME_ID);
 				bean = null;	
 				
 				//	checking for prototype
@@ -479,10 +537,12 @@ package org.toshiroioc.core
 				}
 			}
 			
-			var postprocessors:Array = 
-				classesWithRegisteredPostprocessors[getDefinitionByName(getQualifiedClassName(bean))] as Array;
-			if (postprocessors){
-				runPostprocessors(bean, postprocessors as Array);
+			for each (var arr:Array in classesWithRegisteredPostprocessors){
+				if(bean is arr[0]){
+					runPostprocessors(bean, arr[1] as Array);
+					return
+				}
+					
 			}
 		}
 		
@@ -522,7 +582,11 @@ package org.toshiroioc.core
 					
 					
 			} */
-		 
+		public function runPostprocessorsOnContextLoaded():void{
+			for each(var postprocessor:IClassPostprocessor in registeredPostprocessors){
+				postprocessor.onContextLoaded();
+			}	
+		}
 
 		private function runPostprocessors(bean:*, postprocessors:Array):void{
 			var inputChange:Boolean;
@@ -536,14 +600,6 @@ package org.toshiroioc.core
 					returnedValue = postprocessor.postprocessObject(returnedValue); 		
 			}
 		}
-		/* public function checkIfInNodeNamesClassesMap(id:String):Boolean{
-			for each(var arr:Array in nodeNamesClassesMap){
-				if (id == arr[0]){
-					return true;
-				}
-			}
-			return false;
-		} */
 		
 		public function removeFromNodeNamesClassesMapById(id:String):void{
 			var resultVector:Vector.<Array> = new Vector.<Array>();
@@ -644,17 +700,39 @@ package org.toshiroioc.core
 			return false;
 		}
 		
+		private function getRegisteredPostprocessors(clazz:Class):Array{
+			for each(var arr:Array in classesWithRegisteredPostprocessors){
+				if(clazz == arr[0]){
+					return arr[1] as Array;
+				}
+			}
+			return null;
+		}
+		
 		public function registerObjectPostprocessor(postprocessor:IClassPostprocessor):void{
-			if (!classesWithRegisteredPostprocessors){
-				classesWithRegisteredPostprocessors = new Object();
-			}
-			//create array of postprocessors for any given class
+
+			
 			for each (var clazz:Class in postprocessor.listClassInterests()){
-				if(!classesWithRegisteredPostprocessors[clazz]) 
-					classesWithRegisteredPostprocessors[clazz] = new Array(); 
+				var postprocessorsOfClass:Array = getRegisteredPostprocessors(clazz);
+				//if not already registered
+				if(!postprocessorsOfClass){
+					//create array of postprocessors for any given class 
+					var map:Array = new Array();
+					map[0] = clazz;
+					map[1] = [postprocessor];
+					classesWithRegisteredPostprocessors.push(map);
+				} 
+				else{
+					//add new postprocessor
+					postprocessorsOfClass.push(postprocessor);	
+				}
 				
-				(classesWithRegisteredPostprocessors[clazz] as Array).push(postprocessor);
 			}
+			//get all registered postprocessors to run onContextLoaded()
+			if(!registeredPostprocessors){
+				registeredPostprocessors = new Vector.<IClassPostprocessor>();
+			}
+			registeredPostprocessors.push(postprocessor);
 			
 			/* classesWithRegisteredPostprocessors = classesWithRegisteredPostprocessors
 								.concat(postprocessor.listClassInterests()); */
