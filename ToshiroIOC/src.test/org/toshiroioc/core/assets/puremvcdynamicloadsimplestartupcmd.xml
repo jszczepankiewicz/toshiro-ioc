@@ -4,7 +4,7 @@
 	
 	<!-- Commands	-->
 						
-	<object id="dynamicMacroOnLoadCommand" class="org.toshiroioc.test.puremvc.command.DynamicMacroOnLoadCommand" lifecycle="prototype"/>
+	<object id="dynamicSimpleStartupCommand" class="org.toshiroioc.test.puremvc.command.DynamicSimpleStartupCommand" lifecycle="prototype"/>
 	<object id="dynamicPrepModelCommand" class="org.toshiroioc.test.puremvc.command.DynamicPrepModelCommand" lifecycle="prototype"/>
 	
 	<object id="dynamicTestCommand" class="org.toshiroioc.test.puremvc.command.DynamicTestCommand" />
@@ -61,7 +61,15 @@
 				</object>
 				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
 					<property name="notification" value="custom_startup"/>
-					<property name="command" class="org.toshiroioc.test.puremvc.command.DynamicMacroOnLoadCommand"/>
+					<property name="command" class="org.toshiroioc.test.puremvc.command.DynamicSimpleStartupCommand"/>
+				</object>
+				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+					<property name="notification" const="ToshiroApplicationFacadeTest.SIMPLE_STARTUP_LOAD"/>
+					<property name="command" class="org.toshiroioc.test.puremvc.command.DynamicPrepViewCommand"/>
+				</object>
+				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+					<property name="notification" const="ToshiroApplicationFacadeTest.SIMPLE_STARTUP_LOAD"/>
+					<property name="command" class="org.toshiroioc.test.puremvc.command.DynamicPrepModelCommand"/>
 				</object>
 			</array>		
 		</property>

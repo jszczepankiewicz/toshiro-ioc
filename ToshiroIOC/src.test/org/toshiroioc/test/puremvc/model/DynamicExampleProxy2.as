@@ -18,7 +18,7 @@ package org.toshiroioc.test.puremvc.model
 		
 		override public function onRegister():void
 		{			
-			
+			sendNotification("dynExProxy2OnReg");
 		}
 	}
 }

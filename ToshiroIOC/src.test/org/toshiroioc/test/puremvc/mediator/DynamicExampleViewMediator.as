@@ -9,6 +9,7 @@ package org.toshiroioc.test.puremvc.mediator
 	{
 		public static const NAME:String = 'DynamicExampleViewMediator';
 		public var runsCount:Number = 0;
+		public var notesFromProxies : Number = 0;
 		
 		public function DynamicExampleViewMediator( viewComponent:DynamicExampleView)
 		{
@@ -16,14 +17,19 @@ package org.toshiroioc.test.puremvc.mediator
 		}
 		
 		override public function onRegister():void
+		
 		{
+			example_view.dynamic_view_lbl.text = "set";
 			sendNotification("dynMedOnReg");
 		}		
 		
 		override public function listNotificationInterests():Array
 		{
 			return [
-					"runDynMed"
+					"runDynMed",
+						ToshiroApplicationFacadeTest.EX_PROXY2_ON_REGISTER,
+						ToshiroApplicationFacadeTest.EX_PROXY_ON_REGISTER,
+						"dynEx", "dynExProxyOnReg"
 					];
 		}
 		
@@ -34,11 +40,20 @@ package org.toshiroioc.test.puremvc.mediator
 				case "runDynMed":
 					runsCount++;
 					break;
-					
+				case "dynExProxyOnReg":
+					notesFromProxies++;
+				    break;
+				case ToshiroApplicationFacadeTest.EX_PROXY2_ON_REGISTER:
+					notesFromProxies++;
+					break;
+				case ToshiroApplicationFacadeTest.EX_PROXY_ON_REGISTER:
+					notesFromProxies++;
+					break;
+				default: notesFromProxies++;
 			}
 		}
 		
-		protected function get example_view():DynamicExampleView 
+		public function get example_view():DynamicExampleView 
 		{
 			return viewComponent as DynamicExampleView;
 		}

@@ -10,6 +10,7 @@ package org.toshiroioc.test.puremvc.command
 		public var testNoteFromCommand:Number = 0;
 		public var noteFromMediator:Number=0;
 		public var notRegisteredNoteCounter:Number=0;
+		public var noteFromProxies : Number = 0;
 		
 		override public function execute(note:INotification):void
 		{
@@ -26,6 +27,12 @@ package org.toshiroioc.test.puremvc.command
 					break;	
 				case("ExViewMedOnReg"):
 					noteFromMediator++
+					break;
+				case "dynMedOnReg":
+					noteFromMediator++
+					break;
+				case "dynExProxy2OnReg":
+					noteFromProxies++;
 					break;
 				default:
 					notRegisteredNoteCounter++
