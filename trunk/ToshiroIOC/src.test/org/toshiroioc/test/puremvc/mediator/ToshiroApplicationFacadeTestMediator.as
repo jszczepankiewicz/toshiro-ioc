@@ -1,7 +1,5 @@
 package org.toshiroioc.test.puremvc.mediator
 {
-	import flash.events.Event;
-	
 	import org.puremvc.as3.multicore.interfaces.IMediator;
 	import org.puremvc.as3.multicore.interfaces.INotification;
 	import org.puremvc.as3.multicore.patterns.mediator.Mediator;
@@ -12,6 +10,7 @@ package org.toshiroioc.test.puremvc.mediator
 		
 		public var test:Boolean;
 		public var exProxyOnRegister:Boolean;
+		public var noteFromDynMed : Number = 0;
 		
 		public function ToshiroApplicationFacadeTestMediator( viewComponent:ToshiroApplicationFacadeTest=null)
 		{
@@ -37,7 +36,8 @@ package org.toshiroioc.test.puremvc.mediator
 		{
 			return [
 						ToshiroApplicationFacadeTest.EX_PROXY_ON_REGISTER,
-						ToshiroApplicationFacadeTest.ADD_MAIN_APP
+						ToshiroApplicationFacadeTest.ADD_MAIN_APP,
+						"dynMedOnReg"
 					];
 		}
 		override public function handleNotification( note:INotification ):void
@@ -50,6 +50,9 @@ package org.toshiroioc.test.puremvc.mediator
 				case ToshiroApplicationFacadeTest.ADD_MAIN_APP:
 					this.app = note.getBody() as ToshiroApplicationFacadeTest;
 					sendNotification( ToshiroApplicationFacadeTest.BUTTON_CLICK, "You clicked the button" );
+				    break;
+				default: 
+					noteFromDynMed++;
 				    break;
 			}
 		}

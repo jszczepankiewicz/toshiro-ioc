@@ -26,6 +26,7 @@
 			public static const EX_PROXY_ON_REGISTER:String = 'ex_proxy_register';
 			public static const EX_PROXY2_ON_REGISTER:String = 'ex_proxy2_register';
 			public static const SIMPLE_STARTUP:String = 'simple_startup';
+			public static const SIMPLE_STARTUP_LOAD:String = 'simple_startup_load';
 			public static const ADD_MAIN_APP:String = 'add_main_app';
 			
 			public var facade:ToshiroApplicationFacade;

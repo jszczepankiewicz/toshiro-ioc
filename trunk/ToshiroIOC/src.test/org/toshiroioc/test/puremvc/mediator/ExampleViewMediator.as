@@ -14,6 +14,8 @@ package org.toshiroioc.test.puremvc.mediator
 		public static const NAME:String = 'ExampleViewMediator';
 		
 		private var examplePrx:ExampleProxy; 
+		public var noteFromDynMed : Number =0;
+		public var notesFromProxies : Number = 0;
 		
 		public function ExampleViewMediator( viewComponent:ExampleView)
 		{
@@ -30,7 +32,8 @@ package org.toshiroioc.test.puremvc.mediator
 			return [
 						ToshiroApplicationFacadeTest.BUTTON_CLICK,
 						ToshiroApplicationFacadeTest.EX_PROXY2_ON_REGISTER,
-						ToshiroApplicationFacadeTest.EX_PROXY_ON_REGISTER
+						ToshiroApplicationFacadeTest.EX_PROXY_ON_REGISTER,
+						"dynMedOnReg", "dynExProxyOnReg"
 					];
 		}
 		
@@ -43,9 +46,17 @@ package org.toshiroioc.test.puremvc.mediator
 				    break;
 				case ToshiroApplicationFacadeTest.EX_PROXY2_ON_REGISTER:
 					example_view.view_lbl2.text = String( note.getBody() ).toUpperCase();
+					notesFromProxies++;
 				    break;
 				case ToshiroApplicationFacadeTest.EX_PROXY_ON_REGISTER:
 					example_view.view_grid.dataProvider = note.getBody() as ArrayCollection;
+					notesFromProxies++;
+				    break;
+				case "dynExProxyOnReg":
+					notesFromProxies++;
+				    break;
+				default:
+					noteFromDynMed++;
 				    break;
 			}
 		}

@@ -11,7 +11,6 @@ package org.toshiroioc.core
 	import org.toshiroioc.ContainerError;
 	import org.toshiroioc.plugins.puremvc.multicore.CommandMap;
 	import org.toshiroioc.plugins.puremvc.multicore.SetterMap;
-	import org.toshiroioc.plugins.puremvc.multicore.ToshiroApplicationFacade;
 	import org.toshiroioc.test.BaseTestCase;
 	import org.toshiroioc.test.beans.BeanWithConstructor;
 	import org.toshiroioc.test.beans.BeanWithDate;
@@ -30,14 +29,7 @@ package org.toshiroioc.core
 	import org.toshiroioc.test.beans.SimpleDependencyObject;
 	import org.toshiroioc.test.postprocessors.TestClassPostprocessor;
 	import org.toshiroioc.test.postprocessors.TestClassPostprocessor2;
-	import org.toshiroioc.test.puremvc.command.DynamicMacroOnLoadCommand;
-	import org.toshiroioc.test.puremvc.command.DynamicPrepModelCommand;
-	import org.toshiroioc.test.puremvc.command.DynamicPrepViewCommand;
 	import org.toshiroioc.test.puremvc.command.DynamicTestCommand;
-	import org.toshiroioc.test.puremvc.command.MacroStartupCommand;
-	import org.toshiroioc.test.puremvc.command.PrepModelCommand;
-	import org.toshiroioc.test.puremvc.command.PrepViewCommand;
-	import org.toshiroioc.test.puremvc.command.SimpleStartupCommand;
 	import org.toshiroioc.test.puremvc.command.TestCommand;
 	import org.toshiroioc.test.puremvc.mediator.DynamicExampleViewMediator;
 	import org.toshiroioc.test.puremvc.mediator.ExampleViewMediator;
@@ -51,6 +43,8 @@ package org.toshiroioc.core
 	 * TODO:	replace * types with direct types, test bean dependency without ref
 	 */
 	public class XMLBeanFactoryTestCase extends BaseTestCase{
+		
+		private var testLinkageEnforcer:TestLinkageEnforcer;
 		
 		[Embed(source="assets/simpleobjectsetter.xml", mimeType="application/octet-stream")]
 		private var SimpleObjectSetterClass:Class;
@@ -145,6 +139,10 @@ package org.toshiroioc.core
 		[Embed(source="assets/puremvcdynamicload.xml", mimeType="application/octet-stream")]
 		private var PureMVCDynamicLoadXMLClass:Class; 
 		
+		[Embed(source="assets/puremvcdynamicloadsimplestartupcmd.xml", mimeType="application/octet-stream")]
+		private var PureMVCDynamicSimpleStartupXMLClass:Class;
+		
+		
 		[Embed(source="assets/simpledependencyxmlmissing.xml", mimeType="application/octet-stream")]
 		private var XMLMissingXMLClass:Class;
 		
@@ -196,6 +194,7 @@ package org.toshiroioc.core
 		[Embed(source="assets/contextinjection.xml", mimeType="application/octet-stream")]
 		private var ContextInjectionXMLClass:Class;
 		
+
 		public function XMLBeanFactoryTestCase(methodName:String){
 			super(methodName);
 		}
@@ -434,22 +433,17 @@ package org.toshiroioc.core
  		public function testPureMVCMacroCommandStartup():void{
  			var mainApp:ToshiroApplicationFacadeTest = new ToshiroApplicationFacadeTest();
 			var xml:XML;
-			var startupCommand:MacroStartupCommand;
-			var prepViewCommand:PrepViewCommand;
-			var prepModelCommand : PrepModelCommand;
-			var testCommand: TestCommand;
-			var simpleStartupCommand: SimpleStartupCommand;
-			var exProxy2:ExampleProxy2;
-			var facade:ToshiroApplicationFacade;
-			var dynamicMacroCommand:DynamicMacroOnLoadCommand;
-			var dynamicPrepViewCommand:DynamicPrepViewCommand;
-			var dynamicPrepModelCommand : DynamicPrepModelCommand;
-			var dynamicTestCommand: DynamicTestCommand;
-			var dynamicExampleProxy : DynamicExampleProxy;
-			var dynamicExampleProxy2 : DynamicExampleProxy2;
- 			//test macro startup command
 			xml = constructXMLFromEmbed(PureMVCXMLClass1);
-			mainApp.onCreationComplete("macroCommand", xml);
+			mainApp.onCreationComplete("macroCommand", xml)
+			
+			var testCommand: TestCommand = mainApp.facade.getContext().getObject("testCommand") as TestCommand;
+			
+			var toshiroApplicationFacadeTestMediator: ToshiroApplicationFacadeTestMediator = mainApp.facade.getContext()
+				.getObject("toshiroApplicationFacadeTestMediator") as ToshiroApplicationFacadeTestMediator;
+			var exampleViewMediator : ExampleViewMediator =  mainApp.facade.getContext()
+				.getObject("exampleViewMediator") as ExampleViewMediator;
+ 			//test macro startup command
+
 			//test if postprocessor registers commands
 			assertTrue(mainApp.facade.hasCommand("model"));
 			assertTrue(mainApp.facade.hasCommand("view"));
@@ -462,9 +456,9 @@ package org.toshiroioc.core
 			assertTrue(mainApp.facade.hasMediator(ExampleViewMediator.NAME));
 			//tests sending notification
 			mainApp.facade.sendNotification("test", 5);
-			assertEquals(5, (mainApp.facade.getContext().getObject("testCommand") as TestCommand).executed);
+			assertEquals(5, testCommand.executed);
 			//tests if commands from startup macro command has been executed
-			assertEquals(1, (mainApp.facade.getContext().getObject("testCommand") as TestCommand).testNoteFromCommand);
+			assertEquals(1, testCommand.testNoteFromCommand);
 			// tests onRegister on proxy1 and note proxy --> mediator
 			assertNotNull(mainApp.exampleView.view_grid.dataProvider);
 			//tests if note has been sent between mediators
@@ -472,33 +466,61 @@ package org.toshiroioc.core
 			// tests onRegister on proxy2 and note proxy --> mediator
 			assertEquals(mainApp.exampleView.view_lbl2.text, "5");
 			//test if main app has been set by notification from PrepViewCommand
-			assertNotNull((mainApp.facade.getContext().getObject("toshiroApplicationFacadeTestMediator")
-				as ToshiroApplicationFacadeTestMediator).app);
+			assertNotNull(toshiroApplicationFacadeTestMediator.app);
 			//test if notification from proxy has been sent
-			assertTrue((mainApp.facade.getContext().getObject("toshiroApplicationFacadeTestMediator")
-				as ToshiroApplicationFacadeTestMediator).exProxyOnRegister);
+			assertTrue(toshiroApplicationFacadeTestMediator.exProxyOnRegister);
 			// receive note from mediator on register
-			assertEquals(0, (mainApp.facade.getContext().getObject("testCommand") as TestCommand).notRegisteredNoteCounter);
-			assertEquals(1, (mainApp.facade.getContext().getObject("testCommand") as TestCommand).noteFromMediator);
+			assertEquals(0, testCommand.notRegisteredNoteCounter);
+			assertEquals(1, testCommand.noteFromMediator);
 			
 			//test dynamically loaded config
 			xml = constructXMLFromEmbed(PureMVCDynamicLoadXMLClass);
 			mainApp.facade.getContext().loadDynamicConfig(xml);
 			
-			//place for on reg test
-			
-			
-			//--------------working----------- 
+			var dynamicTestCommand: DynamicTestCommand = mainApp.facade.getContext().getObject("dynamicTestCommand") as DynamicTestCommand;
+			var dynamicExampleViewMediator:DynamicExampleViewMediator = mainApp.facade.getContext()
+				.getObject("dynamicExampleViewMediator") as DynamicExampleViewMediator;
+
 			mainApp.dynamicModule = mainApp.facade.getContext().getObject("dynamicModule") as DynamicModule;
-			assertNotNull(mainApp.dynamicModule);
+			assertNotNull(mainApp.dynamicModule); //todo optional and lazy injection
 			mainApp.facade.sendNotification("custom_startup");
 			//tests notes from command to new and old commands
-			assertEquals(2, (mainApp.facade.getContext().getObject("dynamicTestCommand") as DynamicTestCommand).noteFromCmd); 
-			assertEquals(2, (mainApp.facade.getContext().getObject("testCommand") as TestCommand).testNoteFromCommand);
+			assertEquals(2, dynamicTestCommand.noteFromCmd); 
+			assertEquals(2, testCommand.testNoteFromCommand);
 			//tests note new cmd -> old cmd prototype -> new mediator
-			assertEquals(1, (mainApp.facade.getContext().getObject("dynamicExampleViewMediator") as DynamicExampleViewMediator).runsCount);
+			assertEquals(1, dynamicExampleViewMediator.runsCount);
+			//tests dynamic mediator on register
+			assertEquals("set", dynamicExampleViewMediator.example_view.dynamic_view_lbl.text);
+			//tests notes between dynamic and old mediators
+			assertEquals(1, toshiroApplicationFacadeTestMediator.noteFromDynMed);
+			assertEquals(1, exampleViewMediator.noteFromDynMed);
+			//notes dynamic mediator -> new and old command
+			assertEquals(2, testCommand.noteFromMediator);
+			assertEquals(1, dynamicTestCommand.noteFromMediator);
+			// notes proxies -> mediators
+			assertEquals(3, exampleViewMediator.notesFromProxies);
+			assertEquals(1, dynamicExampleViewMediator.notesFromProxies);
+			//notes proxies -> commands
+			assertEquals(0, testCommand.notRegisteredNoteCounter);
+			assertEquals(1, testCommand.noteFromProxies);
+			assertEquals(1, dynamicTestCommand.noteFromProxies);
+			//tests if not overrided
+			assertTrue(mainApp.facade.hasCommand("model"));
+			assertTrue(mainApp.facade.hasCommand("view"));
+			assertTrue(mainApp.facade.hasCommand("test"));
+			//test if postprocessor registers proxies
+			assertTrue(mainApp.facade.hasProxy(ExampleProxy.NAME));
+			assertTrue(mainApp.facade.hasProxy(ExampleProxy2.NAME));
+			//test if postprocessor registers mediators
+			assertTrue(mainApp.facade.hasMediator(ToshiroApplicationFacadeTestMediator.NAME));
+			assertTrue(mainApp.facade.hasMediator(ExampleViewMediator.NAME));
 			
-			 
+			
+			assertTrue(mainApp.facade.hasCommand("dynamic_model"));
+			assertTrue(mainApp.facade.hasCommand("dynamic_view"));
+			assertTrue(mainApp.facade.hasProxy(DynamicExampleProxy.NAME));
+			assertTrue(mainApp.facade.hasProxy(DynamicExampleProxy2.NAME));
+			assertTrue(mainApp.facade.hasMediator(DynamicExampleViewMediator.NAME));
 			}
 			
 		public function testPureMVCSimpleCommandStartup():void{
@@ -506,9 +528,15 @@ package org.toshiroioc.core
 			//test simple startup command
 			var mainApp:ToshiroApplicationFacadeTest = new ToshiroApplicationFacadeTest();
 			var xml:XML;
-			xml = constructXMLFromEmbed(PureMVCXMLClass2);
-			mainApp.onCreationComplete("simpleCommand", xml);
-		
+			xml = constructXMLFromEmbed(PureMVCXMLClass1);
+			mainApp.onCreationComplete("simpleCommand", xml)
+			var testCommand: TestCommand = mainApp.facade.getContext().getObject("testCommand") as TestCommand;
+			var toshiroApplicationFacadeTestMediator: ToshiroApplicationFacadeTestMediator = mainApp.facade.getContext()
+				.getObject("toshiroApplicationFacadeTestMediator") as ToshiroApplicationFacadeTestMediator;
+			var exampleViewMediator : ExampleViewMediator =  mainApp.facade.getContext()
+				.getObject("exampleViewMediator") as ExampleViewMediator;
+ 			//test macro startup command
+
 			//test if postprocessor registers commands
 			assertTrue(mainApp.facade.hasCommand("model"));
 			assertTrue(mainApp.facade.hasCommand("view"));
@@ -521,11 +549,9 @@ package org.toshiroioc.core
 			assertTrue(mainApp.facade.hasMediator(ExampleViewMediator.NAME));
 			//tests sending notification
 			mainApp.facade.sendNotification("test", 5);
-			var test:TestCommand = (mainApp.facade.getContext()
-				.getObject("testCommand") as TestCommand);
-			assertEquals(5, test.executed);
+			assertEquals(5, testCommand.executed);
 			//tests if commands from startup macro command has been executed
-			assertEquals(1, (mainApp.facade.getContext().getObject("testCommand") as TestCommand).testNoteFromCommand);
+			assertEquals(1, testCommand.testNoteFromCommand);
 			// tests onRegister on proxy1 and note proxy --> mediator
 			assertNotNull(mainApp.exampleView.view_grid.dataProvider);
 			//tests if note has been sent between mediators
@@ -533,16 +559,63 @@ package org.toshiroioc.core
 			// tests onRegister on proxy2 and note proxy --> mediator
 			assertEquals(mainApp.exampleView.view_lbl2.text, "5");
 			//test if main app has been set by notification from PrepViewCommand
-			assertNotNull((mainApp.facade.retrieveMediator(ToshiroApplicationFacadeTestMediator.NAME) 
-				as ToshiroApplicationFacadeTestMediator).app);
+			assertNotNull(toshiroApplicationFacadeTestMediator.app);
 			//test if notification from proxy has been sent
-			assertTrue((mainApp.facade.retrieveMediator(ToshiroApplicationFacadeTestMediator.NAME) 
-				as ToshiroApplicationFacadeTestMediator).exProxyOnRegister);  
+			assertTrue(toshiroApplicationFacadeTestMediator.exProxyOnRegister);
 			// receive note from mediator on register
-			assertEquals(0, (mainApp.facade.getContext().getObject("testCommand") as TestCommand).notRegisteredNoteCounter);
-			assertEquals(1, (mainApp.facade.getContext().getObject("testCommand") as TestCommand).noteFromMediator);
-			 
-		} 
+			assertEquals(0, testCommand.notRegisteredNoteCounter);
+			assertEquals(1, testCommand.noteFromMediator);
+			
+			//test dynamically loaded config
+			xml = constructXMLFromEmbed(PureMVCDynamicSimpleStartupXMLClass);
+			mainApp.facade.getContext().loadDynamicConfig(xml);
+			
+			var dynamicTestCommand: DynamicTestCommand = mainApp.facade.getContext().getObject("dynamicTestCommand") as DynamicTestCommand;
+			var dynamicExampleViewMediator:DynamicExampleViewMediator = mainApp.facade.getContext()
+				.getObject("dynamicExampleViewMediator") as DynamicExampleViewMediator;
+			
+			mainApp.dynamicModule = mainApp.facade.getContext().getObject("dynamicModule") as DynamicModule;
+			assertNotNull(mainApp.dynamicModule); //todo optional and lazy injection
+			mainApp.facade.sendNotification("custom_startup");
+			//tests notes from command to new and old commands
+			assertEquals(2, dynamicTestCommand.noteFromCmd); 
+			assertEquals(2, testCommand.testNoteFromCommand);
+			//tests note new cmd -> old cmd prototype -> new mediator
+			assertEquals(1, dynamicExampleViewMediator.runsCount);
+			//tests dynamic mediator on register
+			assertEquals("set", dynamicExampleViewMediator.example_view.dynamic_view_lbl.text);
+			//tests notes between dynamic and old mediators
+			assertEquals(1, toshiroApplicationFacadeTestMediator.noteFromDynMed);
+			assertEquals(1, exampleViewMediator.noteFromDynMed);
+			//notes dynamic mediator -> new and old command
+			assertEquals(2, testCommand.noteFromMediator);
+			assertEquals(1, dynamicTestCommand.noteFromMediator);
+			// notes proxies -> mediators
+			assertEquals(3, exampleViewMediator.notesFromProxies);
+			assertEquals(1, dynamicExampleViewMediator.notesFromProxies);
+			//notes proxies -> commands
+			assertEquals(0, testCommand.notRegisteredNoteCounter);
+			assertEquals(1, testCommand.noteFromProxies);
+			assertEquals(1, dynamicTestCommand.noteFromProxies);
+			
+			//tests if not overrided
+			assertTrue(mainApp.facade.hasCommand("model"));
+			assertTrue(mainApp.facade.hasCommand("view"));
+			assertTrue(mainApp.facade.hasCommand("test"));
+			//test if postprocessor registers proxies
+			assertTrue(mainApp.facade.hasProxy(ExampleProxy.NAME));
+			assertTrue(mainApp.facade.hasProxy(ExampleProxy2.NAME));
+			//test if postprocessor registers mediators
+			assertTrue(mainApp.facade.hasMediator(ToshiroApplicationFacadeTestMediator.NAME));
+			assertTrue(mainApp.facade.hasMediator(ExampleViewMediator.NAME));
+			
+			
+			assertTrue(mainApp.facade.hasCommand("dynamic_model"));
+			assertTrue(mainApp.facade.hasCommand("dynamic_view"));
+			assertTrue(mainApp.facade.hasProxy(DynamicExampleProxy.NAME));
+			assertTrue(mainApp.facade.hasProxy(DynamicExampleProxy2.NAME));
+			assertTrue(mainApp.facade.hasMediator(DynamicExampleViewMediator.NAME));
+			}
 		
 		public function testMetatagContextInjection():void{
 			var xml:XML = constructXMLFromEmbed(ContextInjectionXMLClass);
@@ -690,12 +763,7 @@ package org.toshiroioc.core
 				fail("prototype objects should be different but are the same");
 			}
 			//assertNotEquals(object2.someChild, object3.someChild);
-			
-			
 		}
-		
-
-		
 		
 		public function testInstantiateBeanByID():void{
 			var xml:XML = constructXMLFromEmbed(SimpleObjectSetterClass);
@@ -728,8 +796,6 @@ package org.toshiroioc.core
 			assertNull(bean);
 			assertTrue(exceptionThrown);
 		}
-		
-		
 		
 		public function testSetterNumber():void{
 			var xml:XML = constructXMLFromEmbed(SimpleObjectSetterClass);
@@ -1290,8 +1356,10 @@ package org.toshiroioc.core
 
 		 	retval.push(new XMLBeanFactoryTestCase("testMetatagContextInjection"));
  			retval.push(new XMLBeanFactoryTestCase("testIDNotUnique"));
+			
 			retval.push(new XMLBeanFactoryTestCase("testPureMVCMacroCommandStartup"));
 			retval.push(new XMLBeanFactoryTestCase("testPureMVCSimpleCommandStartup"));
+			
 			retval.push(new XMLBeanFactoryTestCase("testDynamicContextLoadFailed"));
  			retval.push(new XMLBeanFactoryTestCase("testDynamicContextSimpleLoad"));
 			retval.push(new XMLBeanFactoryTestCase("testDynamicContextRefToBeanFrom2ndConfig"));
