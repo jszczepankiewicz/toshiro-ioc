@@ -6,13 +6,11 @@ package org.toshiroioc.test.puremvc.command
 
 	public class DynamicPrepModelCommand extends SimpleCommand implements ICommand
 	{
+		public static const RUN_DYNAMIC_TEST_COMMAND:String = "runDynamicTestCommand"
 		
 		override public function execute( note:INotification ):void
 		{
-			sendNotification("runDynTestCmd");
+			sendNotification(RUN_DYNAMIC_TEST_COMMAND);
 		}
-		
-		
-		
 	}
 }

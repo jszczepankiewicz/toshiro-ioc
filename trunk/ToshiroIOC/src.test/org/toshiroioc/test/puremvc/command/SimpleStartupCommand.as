@@ -6,9 +6,11 @@ package org.toshiroioc.test.puremvc.command
 
 	public class SimpleStartupCommand extends SimpleCommand implements ICommand
 	{
+		public static const SIMPLE_STARTUP:String = 'simple_startup';
+		
 		override public function execute(note:INotification):void
         {
-        	sendNotification(ToshiroApplicationFacadeTest.SIMPLE_STARTUP, note.getBody());
+        	sendNotification(SIMPLE_STARTUP, note.getBody());
         }
 	}
 }

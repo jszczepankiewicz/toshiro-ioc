@@ -9,7 +9,7 @@ package org.toshiroioc.test.puremvc.command
 		override public function execute( note:INotification ):void
 		{
 			switch(note.getName()){
-				case ("runCmds"):
+				case (DynamicPrepViewCommand.RUN_COMMANDS):
 					sendNotification("runDynMed");
 					break;
 				default:

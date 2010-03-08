@@ -6,24 +6,12 @@ package org.toshiroioc.test.puremvc.command
 
 	public class PrepModelCommand extends SimpleCommand implements ICommand
 	{
-		//private var exProxy:ExampleProxy;
 
+		public static const RUN_TEST_COMMAND:String = "runTestCommand";
+		
 		override public function execute( note:INotification ):void
 		{
-			// Instantiate :: proxies
-
-					sendNotification("test2");
-			//facade.registerProxy( exProxy );
+			sendNotification(RUN_TEST_COMMAND);
 		}
-		
-		
-		
-		/* [Required]
-		public function set exampleProxy(proxy:ExampleProxy):void{
-			this.exProxy = proxy;
-		}
-		public function get exampleProxy():ExampleProxy{
-			return this.exProxy;
-		} */
 	}
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+	
+	<object id="objectChild" class="org.toshiroioc.test.beans.SimpleDependencyObject">
+		<property name="someString" value="false"/>
+		<property name="someChild" ref="objectChildrenDependency"/>				
+	</object>	
+	
+	<object id="objectChild2" class="org.toshiroioc.test.beans.SimpleDependencyObject">
+		<property name="someString" value="false"/>
+		<property name="someChild" ref="objectChildrenDependency"/>				
+	</object>	
+	
+	<object id="objectChildrenDependency" class="org.toshiroioc.test.beans.BeanWithConstructor">
+		<constructor-arg value="-99999"/>
+		<constructor-arg value="1111"/>		
+		<constructor-arg value="some123String"/>
+		<constructor-arg value="true"/>		
+		<property name="someAdditionalString" value="false"/>		
+	</object>	
+	
+	
+		
+</objects>

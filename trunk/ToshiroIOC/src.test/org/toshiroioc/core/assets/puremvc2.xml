@@ -33,19 +33,19 @@
 					<property name="command" class="org.toshiroioc.test.puremvc.command.TestCommand"/>
 				</object>
 				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" value="test2"/>
+					<property name="notification" const="org.toshiroioc.test.puremvc.command.PrepModelCommand.RUN_TEST_COMMAND"/>
 					<property name="command" class="org.toshiroioc.test.puremvc.command.TestCommand"/>
 				</object>
 				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" const="ToshiroApplicationFacadeTest.SIMPLE_STARTUP"/>
+					<property name="notification" const="org.toshiroioc.test.puremvc.command.SimpleStartupCommand.SIMPLE_STARTUP"/>
 					<property name="command" class="org.toshiroioc.test.puremvc.command.PrepModelCommand"/>
 				</object>
 				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" const="ToshiroApplicationFacadeTest.SIMPLE_STARTUP"/>
+					<property name="notification" const="org.toshiroioc.test.puremvc.command.SimpleStartupCommand.SIMPLE_STARTUP"/>
 					<property name="command" class="org.toshiroioc.test.puremvc.command.PrepViewCommand"/>
 				</object>
 				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" value="ExViewMedOnReg"/>
+					<property name="notification" const="org.toshiroioc.test.puremvc.mediator.ExampleViewMediator.EX_VIEW_MEDIATOR_ON_REGISTER"/>
 					<property name="command" class="org.toshiroioc.test.puremvc.command.TestCommand"/>
 				</object>
 			</array>		

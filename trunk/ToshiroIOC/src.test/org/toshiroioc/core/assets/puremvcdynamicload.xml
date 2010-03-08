@@ -28,35 +28,35 @@
 					<property name="command" class="org.toshiroioc.test.puremvc.command.DynamicPrepViewCommand"/>
 				</object>
 				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" value="runDynTestCmd"/>
+					<property name="notification" const="org.toshiroioc.test.puremvc.command.DynamicPrepModelCommand.RUN_DYNAMIC_TEST_COMMAND"/>
 					<property name="command" class="org.toshiroioc.test.puremvc.command.DynamicTestCommand"/>
 				</object>
 				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" value="runCmds"/>
+					<property name="notification" const="org.toshiroioc.test.puremvc.command.DynamicPrepViewCommand.RUN_COMMANDS"/>
 					<property name="command" class="org.toshiroioc.test.puremvc.command.DynamicTestCommand"/>
 				</object>
 				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" value="dynMedOnReg"/>
+					<property name="notification" const="org.toshiroioc.test.puremvc.mediator.DynamicExampleViewMediator.DYNAMIC_MEDIATOR_ON_REGISTER"/>
 					<property name="command" class="org.toshiroioc.test.puremvc.command.DynamicTestCommand"/>
 				</object>
 				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" value="dynMedOnReg"/>
+					<property name="notification" const="org.toshiroioc.test.puremvc.mediator.DynamicExampleViewMediator.DYNAMIC_MEDIATOR_ON_REGISTER"/>
 					<property name="command" class="org.toshiroioc.test.puremvc.command.TestCommand"/>
 				</object>
 				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" value="dynExProxy2OnReg"/>
+					<property name="notification" const="org.toshiroioc.test.puremvc.model.DynamicExampleProxy2.DYNAMIC_PROXY_2_ON_REGISTER"/>
 					<property name="command" class="org.toshiroioc.test.puremvc.command.DynamicTestCommand"/>
 				</object>
 				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" value="dynExProxy2OnReg"/>
+					<property name="notification" const="org.toshiroioc.test.puremvc.model.DynamicExampleProxy2.DYNAMIC_PROXY_2_ON_REGISTER"/>
 					<property name="command" class="org.toshiroioc.test.puremvc.command.TestCommand"/>
 				</object>
 				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" value="runCmds"/>
+					<property name="notification" const="org.toshiroioc.test.puremvc.command.DynamicPrepViewCommand.RUN_COMMANDS"/>
 					<property name="command" class="org.toshiroioc.test.puremvc.command.TestCommand"/>
 				</object>
 				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" value="runCmds"/>
+					<property name="notification" const="org.toshiroioc.test.puremvc.command.DynamicPrepViewCommand.RUN_COMMANDS"/>
 					<property name="command" class="org.toshiroioc.test.puremvc.command.PrepViewCommand"/>
 				</object>
 				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
@@ -70,7 +70,9 @@
 	<!-- Views -->
 	
 	<object id="dynamicModule" class="org.DynamicModule"/>
-	<object id="dynamicExampleView" class="org.toshiroioc.test.puremvc.view.DynamicExampleView"/>
+	<object id="dynamicExampleView" class="org.toshiroioc.test.puremvc.view.DynamicExampleView">
+		<property name="exampleView" ref="exampleView"/>
+	</object>
 	
 	<!-- Mediators-->
 	
