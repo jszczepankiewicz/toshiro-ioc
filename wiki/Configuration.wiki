@@ -32,9 +32,10 @@ and the xml configuration looks like:
 
 === Object retrieval ===
 
-Container allows two ways for retrieving objects:
-  * without type checking
-  * retrieve object with type check
+Container allows three ways for retrieving objects:
+  * retrieve single object by id without type checking
+  * retrieve single object by id with type checking
+  * retrieve all objects of specified class
 
 The method `getObject(id:String):*` returns initialized object without type check. Example:
 {{{
@@ -49,6 +50,8 @@ var object4:ParentOfSimpleDependencyObject = context.getTypedObject("object4", c
 
 if the object4 would be not expected type (i.e. `org.toshiroioc.test.beans.ParentOfSimpleDependencyObject`), then the ContainerError will be thrown.
 
+The method `getObjectsByClass(clazz:Class):Vector.<Object>` returns all instances of objects of the given class or throws ContainerError, if none found.
+
 === Injecting simple types ===
 Example setter injection:
 {{{
@@ -60,6 +63,7 @@ Example setter injection:
 		<property name="intItem" value="-99999"/>
 		<property name="uintItem" value="1111"/>
 		<property name="numberItem" value="9999.00001"/>
+		<property name="staticRefItem" const="org.toshiroioc.core.FieldDescription.FIELD_TYPE_UINT"/>
 	</object>
 </objects>
 }}}
@@ -73,14 +77,14 @@ Example constructor injection:
 		<constructor-arg value="1111"/>		
 		<constructor-arg value="some123String"/>
 		<constructor-arg value="true"/>		
-		
+		<constructor-arg const="org.toshiroioc.core.FieldDescription.FIELD_TYPE_UINT"/>
 		...
-		
 	</object>
 </objects>	
 }}}
 
 *Constructor arguments order should be keeped as in the object constructor definition.*
+*In order to pass static constans as an argument, one has to use `const` attribute.*
 
 === Injecting date type ===
 In case of date argument special format must be keep. Currently Toshiro-IOC support date formatted in JAXB style.
@@ -128,11 +132,29 @@ Example setter injection:
 <objects>
 
 	<object id="objectOne" class="org.toshiroioc.test.beans.SimpleBean">
-		<property name="clazzItem" value="flash.display.Sprite"/>	
+		<property name="clazzItem" class="flash.display.Sprite"/>	
 	</object>
 	
 </objects>
 }}}
+
+Example constructor injection:
+{{{
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+	<object id="objectOne" class="org.toshiroioc.test.beans.BeanWithConstructor">
+		<constructor-arg value="-99999"/>
+		<constructor-arg value="1111"/>		
+		<constructor-arg value="some123String"/>
+		<constructor-arg value="true"/>		
+		<constructor-arg const="org.toshiroioc.core.FieldDescription.FIELD_TYPE_UINT"/>
+		<constructor-arg class="org.toshiroioc.test.beans.SimpleBean"/>
+		...		
+	</object>
+</objects>	
+}}}
+
+*In order to pass Class object as an argument, one has to use `class` attribute.*
 
 === Injecting objects  ===
 The primary purpose of every DI engine is injection of objects.
@@ -198,6 +220,8 @@ Example constructor injection:
 
 </objects>
 }}}
+
+
 
 === Object lifecycle  ===
 Toshiro-IOC supports both singleton and prototype mode. Singleton mode is default. In order to make the bean to behave like prototype the bean should be marked with attribute `lifecycle="prototype"`.
