@@ -87,7 +87,7 @@ Example constructor injection:
 }}}
 
 *Constructor arguments order should be keeped as in the object constructor definition.*
-*In order to pass static constans as an argument, one has to use `const` attribute.*
+*To pass static constans as an argument, one has to use `const` attribute.*
 
 === Injecting date type ===
 In case of date argument special format must be keep. Currently Toshiro-IOC support date formatted in JAXB style.
