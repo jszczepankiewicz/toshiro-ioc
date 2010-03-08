@@ -14,6 +14,7 @@ package org.toshiroioc.core
 	import org.toshiroioc.test.BaseTestCase;
 	import org.toshiroioc.test.beans.BeanWithConstructor;
 	import org.toshiroioc.test.beans.BeanWithDate;
+	import org.toshiroioc.test.beans.ComplexDependencyObject;
 	import org.toshiroioc.test.beans.CyclicConstructor;
 	import org.toshiroioc.test.beans.CyclicConstructorAndSetter;
 	import org.toshiroioc.test.beans.CyclicSetter;
@@ -38,6 +39,7 @@ package org.toshiroioc.core
 	import org.toshiroioc.test.puremvc.model.DynamicExampleProxy2;
 	import org.toshiroioc.test.puremvc.model.ExampleProxy;
 	import org.toshiroioc.test.puremvc.model.ExampleProxy2;
+	import org.toshiroioc.test.puremvc.view.DynamicExampleView;
 
 	/*
 	 * TODO:	replace * types with direct types, test bean dependency without ref
@@ -112,6 +114,9 @@ package org.toshiroioc.core
 		[Embed(source="assets/dependencynotexistingsimplesetter.xml", mimeType="application/octet-stream")]
 		private var SetterWithoutDependencyXMLClass:Class;
 		
+		[Embed(source="assets/dependencynotexistingconstructor.xml", mimeType="application/octet-stream")]
+		private var ConstructorWithoutDependencyXMLClass:Class;
+		
 		[Embed(source="assets/requiredmetatag.xml", mimeType="application/octet-stream")]
 		private var RequiredMetatagXMLClass:Class;
 		
@@ -141,7 +146,6 @@ package org.toshiroioc.core
 		
 		[Embed(source="assets/puremvcdynamicloadsimplestartupcmd.xml", mimeType="application/octet-stream")]
 		private var PureMVCDynamicSimpleStartupXMLClass:Class;
-		
 		
 		[Embed(source="assets/simpledependencyxmlmissing.xml", mimeType="application/octet-stream")]
 		private var XMLMissingXMLClass:Class;
@@ -194,12 +198,60 @@ package org.toshiroioc.core
 		[Embed(source="assets/contextinjection.xml", mimeType="application/octet-stream")]
 		private var ContextInjectionXMLClass:Class;
 		
-
+ 		[Embed(source="assets/refoptionallazyloaded.xml", mimeType="application/octet-stream")]
+		private var OptionalRefLazyLoadedXMLClass:Class;
+		
+		[Embed(source="assets/refoptionaldynamicload.xml", mimeType="application/octet-stream")]
+		private var OptionalRefDynamicLoadXMLClass:Class; 
+		
+		[Embed(source="assets/refoptionalwrongargument.xml", mimeType="application/octet-stream")]
+		private var OptionalRefWrongArgumentXMLClass:Class;
+		
 		public function XMLBeanFactoryTestCase(methodName:String){
 			super(methodName);
 		}
 		
-
+		
+		public function testRefOptionalWrongArgument():void{
+			var xml:XML = constructXMLFromEmbed(OptionalRefWrongArgumentXMLClass);
+			var context:XMLBeanFactory = new XMLBeanFactory(xml);
+			var error: ArgumentError;
+			try{
+				context.initialize();	
+			}catch(err:ArgumentError){
+				error = err;
+			}
+			assertNotNull(error);
+			assertTrue(error.message.indexOf("Wrong [optional] attribute") != -1);
+		}
+		
+		public function testRefOptional():void{
+			var xml:XML = constructXMLFromEmbed(OptionalRefLazyLoadedXMLClass);
+			var context:XMLBeanFactory = new XMLBeanFactory(xml);
+			context.initialize();
+			var object1:ComplexDependencyObject = context.getObject("object1") as ComplexDependencyObject;
+			var object2:ComplexDependencyObject = context.getObject("object2") as ComplexDependencyObject;
+			
+			assertNotNull(object1);
+			assertNull(object1.someChild);
+			assertNotNull(object1.someChild2);
+			assertNotNull(object1.someChild2.someChild);
+			assertNotNull(object2);
+			assertNull(object2.someChild2);
+			assertNotNull(object2.someChild);
+			assertNotNull(object2.someChild.someChild);
+			assertFalse(context.containsObject("objectChild"));
+			
+			xml = constructXMLFromEmbed(OptionalRefDynamicLoadXMLClass);
+			context.loadDynamicConfig(xml);
+			
+			assertNotNull(object1.someChild);
+			assertNotNull(object2.someChild2);
+			assertNotNull(object1.someChild.someChild);
+			assertNotNull(object2.someChild2.someChild);
+			assertTrue(context.containsObject("objectChild"));
+		}
+	
 		
 		
 		public function testIDNotUnique():void{
@@ -514,13 +566,13 @@ package org.toshiroioc.core
 			//test if postprocessor registers mediators
 			assertTrue(mainApp.facade.hasMediator(ToshiroApplicationFacadeTestMediator.NAME));
 			assertTrue(mainApp.facade.hasMediator(ExampleViewMediator.NAME));
-			
-			
 			assertTrue(mainApp.facade.hasCommand("dynamic_model"));
 			assertTrue(mainApp.facade.hasCommand("dynamic_view"));
 			assertTrue(mainApp.facade.hasProxy(DynamicExampleProxy.NAME));
 			assertTrue(mainApp.facade.hasProxy(DynamicExampleProxy2.NAME));
 			assertTrue(mainApp.facade.hasMediator(DynamicExampleViewMediator.NAME));
+			//test injection ref to main config
+			assertNotNull((mainApp.facade.getContext().getObject("dynamicExampleView") as DynamicExampleView).exampleView);
 			}
 			
 		public function testPureMVCSimpleCommandStartup():void{
@@ -528,7 +580,7 @@ package org.toshiroioc.core
 			//test simple startup command
 			var mainApp:ToshiroApplicationFacadeTest = new ToshiroApplicationFacadeTest();
 			var xml:XML;
-			xml = constructXMLFromEmbed(PureMVCXMLClass1);
+			xml = constructXMLFromEmbed(PureMVCXMLClass2);
 			mainApp.onCreationComplete("simpleCommand", xml)
 			var testCommand: TestCommand = mainApp.facade.getContext().getObject("testCommand") as TestCommand;
 			var toshiroApplicationFacadeTestMediator: ToshiroApplicationFacadeTestMediator = mainApp.facade.getContext()
@@ -608,13 +660,13 @@ package org.toshiroioc.core
 			//test if postprocessor registers mediators
 			assertTrue(mainApp.facade.hasMediator(ToshiroApplicationFacadeTestMediator.NAME));
 			assertTrue(mainApp.facade.hasMediator(ExampleViewMediator.NAME));
-			
-			
 			assertTrue(mainApp.facade.hasCommand("dynamic_model"));
 			assertTrue(mainApp.facade.hasCommand("dynamic_view"));
 			assertTrue(mainApp.facade.hasProxy(DynamicExampleProxy.NAME));
 			assertTrue(mainApp.facade.hasProxy(DynamicExampleProxy2.NAME));
 			assertTrue(mainApp.facade.hasMediator(DynamicExampleViewMediator.NAME));
+			//test injection ref to main config
+			assertNotNull((mainApp.facade.getContext().getObject("dynamicExampleView") as DynamicExampleView).exampleView);
 			}
 		
 		public function testMetatagContextInjection():void{
@@ -704,8 +756,23 @@ package org.toshiroioc.core
 			assertNotNull(simpleBeanWithRequired.dependencyItem2);
 		} 
 		
-		public function testDependencyNotExistingInConfig():void{
+		public function testDependencyNotExistingSetter():void{
 			var xml:XML = constructXMLFromEmbed(SetterWithoutDependencyXMLClass);
+			var context:XMLBeanFactory = new XMLBeanFactory(xml);
+			var error: ContainerError;
+			
+			try{
+				context.initialize();
+			}
+			catch(err: ContainerError){
+				error = err; 
+			} 
+			assertNotNull(error);
+			assertEquals(ContainerError.ERROR_OBJECT_NOT_FOUND, error.errorCode);
+		}
+		
+		public function testDependencyNotExistingContructor():void{
+			var xml:XML = constructXMLFromEmbed(ConstructorWithoutDependencyXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			var error: ContainerError;
 			
@@ -1354,12 +1421,13 @@ package org.toshiroioc.core
 		public static function getTestsArr():Vector.<Test>{
 			var retval:Vector.<Test> = new Vector.<Test>();	
 
-		 	retval.push(new XMLBeanFactoryTestCase("testMetatagContextInjection"));
+	
+ 			retval.push(new XMLBeanFactoryTestCase("testRefOptional"));
+	 	 	retval.push(new XMLBeanFactoryTestCase("testRefOptionalWrongArgument"));
+			retval.push(new XMLBeanFactoryTestCase("testMetatagContextInjection"));
  			retval.push(new XMLBeanFactoryTestCase("testIDNotUnique"));
-			
 			retval.push(new XMLBeanFactoryTestCase("testPureMVCMacroCommandStartup"));
 			retval.push(new XMLBeanFactoryTestCase("testPureMVCSimpleCommandStartup"));
-			
 			retval.push(new XMLBeanFactoryTestCase("testDynamicContextLoadFailed"));
  			retval.push(new XMLBeanFactoryTestCase("testDynamicContextSimpleLoad"));
 			retval.push(new XMLBeanFactoryTestCase("testDynamicContextRefToBeanFrom2ndConfig"));
@@ -1372,7 +1440,8 @@ package org.toshiroioc.core
 			retval.push(new XMLBeanFactoryTestCase("testMetatagRequiredNotSatisfied"));
 			retval.push(new XMLBeanFactoryTestCase("testMetatagRequiredSatisfied"));
 			retval.push(new XMLBeanFactoryTestCase("testBeforeAndAfterMetatagsExtended"));
-			retval.push(new XMLBeanFactoryTestCase("testDependencyNotExistingInConfig")); 
+			retval.push(new XMLBeanFactoryTestCase("testDependencyNotExistingSetter"));
+			retval.push(new XMLBeanFactoryTestCase("testDependencyNotExistingContructor"));  
 			retval.push(new XMLBeanFactoryTestCase("testInstantiateBeanByID"));			
 			retval.push(new XMLBeanFactoryTestCase("testSetterNumber"));
 			retval.push(new XMLBeanFactoryTestCase("testSetterString"));
@@ -1409,7 +1478,7 @@ package org.toshiroioc.core
 			retval.push(new XMLBeanFactoryTestCase("testCyclicDependencyFromConstructorToSetterComplex"));
 			retval.push(new XMLBeanFactoryTestCase("testCyclicDependencyFromSetterToConstructorComplex"));
 			retval.push(new XMLBeanFactoryTestCase("testStaticReferenceInConstructor"));
-			retval.push(new XMLBeanFactoryTestCase("testStaticReferenceInSetter"));                      
+			retval.push(new XMLBeanFactoryTestCase("testStaticReferenceInSetter"));                          
 			  
   			
 			/*

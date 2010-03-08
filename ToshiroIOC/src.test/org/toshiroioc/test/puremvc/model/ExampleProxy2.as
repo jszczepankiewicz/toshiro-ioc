@@ -10,6 +10,7 @@ package org.toshiroioc.test.puremvc.model
 	public class ExampleProxy2 extends Proxy implements IProxy
 	{
 		public static const NAME:String = 'ExampleProxy2';
+		public static const EX_PROXY2_ON_REGISTER:String = 'exampleProxy2OnRegister';
 		
 		public function ExampleProxy2()
 		{
@@ -18,7 +19,7 @@ package org.toshiroioc.test.puremvc.model
 		
 		override public function onRegister():void
 		{			
-			sendNotification(ToshiroApplicationFacadeTest.EX_PROXY2_ON_REGISTER, "5");
+			sendNotification(EX_PROXY2_ON_REGISTER, "5");
 		}
 	}
 }

@@ -10,6 +10,7 @@ package org.toshiroioc.test.puremvc.model
 	public class ExampleProxy extends Proxy implements IProxy
 	{
 		public static const NAME:String = 'ExampleProxy';
+		public static const EXAMPLE_PROXY_ON_REGISTER:String = 'exampleProxyOnRegister';
 		
 		private var name_arr:Array = ["simon", "bailey"]
 		
@@ -26,7 +27,7 @@ package org.toshiroioc.test.puremvc.model
 		override public function onRegister():void
 		{			
 			data = buildNameObjectArray();
-			sendNotification(ToshiroApplicationFacadeTest.EX_PROXY_ON_REGISTER, data);
+			sendNotification(EXAMPLE_PROXY_ON_REGISTER, data);
 		}
 		
 		protected function buildNameObjectArray():ArrayCollection

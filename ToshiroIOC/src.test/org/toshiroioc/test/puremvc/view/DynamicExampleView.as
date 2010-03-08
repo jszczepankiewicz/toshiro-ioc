@@ -9,6 +9,7 @@ package org.toshiroioc.test.puremvc.view
 		public var dynamic_view_grid : DataGrid;
 		public var dynamic_view_lbl : Label;
 		public var dynamic_view_lbl2 : Label;
+		private var example : ExampleView;
 		
 		public function DynamicExampleView()
 		{
@@ -24,6 +25,15 @@ package org.toshiroioc.test.puremvc.view
 			var column : DataGridColumn = new DataGridColumn("View Grid");
 			view_grid.columns = [column]; */
 			
+		}
+		
+		
+		public function set exampleView(value:ExampleView):void{
+			example = value;
+		}
+		
+		public function get exampleView():ExampleView{
+			return example;
 		}
 		
 	}

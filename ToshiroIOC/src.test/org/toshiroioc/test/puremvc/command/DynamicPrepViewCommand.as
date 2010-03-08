@@ -6,9 +6,11 @@ package org.toshiroioc.test.puremvc.command
 
 	public class DynamicPrepViewCommand extends SimpleCommand implements ICommand
 	{
+		public static const RUN_COMMANDS:String = "runCommands"
+		
 		override public function execute( note:INotification ):void
 		{
-			sendNotification("runCmds");
+			sendNotification(RUN_COMMANDS);
 		}
 	}
 }

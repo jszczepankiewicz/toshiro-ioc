@@ -74,6 +74,8 @@ package org.toshiroioc.core
 		
 		private var registeredPostprocessors:Vector.<IClassPostprocessor>;
 		
+		private var optionalRefParentsMap:Object = new Object();
+		
 		public function XMLBeanFactory(xml:XML){			
 			xmlSource = xml;		
 		}
@@ -93,6 +95,26 @@ package org.toshiroioc.core
 			dispatchEvent(new Event(Event.COMPLETE));
 		}
 		
+		private function injectOptionalRefs(oldBeansCount:Number):void{
+			
+			var arr:Array;
+			var newBeanId:String;
+			var parents:Array;
+			//check new beans names if were registered as child of optional ref
+			for (var i:Number = oldBeansCount; i<nodeNamesClassesMap.length; i++){
+				arr = nodeNamesClassesMap[i];
+				newBeanId = arr[0];
+				parents = optionalRefParentsMap[newBeanId];
+				//if they were, inject them to parents which are not prototypes
+				if(parents){
+					for each(var parentPropNameMap : Array in parents){
+						if(!isPrototype(parentPropNameMap[0])){
+							getObject(parentPropNameMap[0])[parentPropNameMap[1]] = getObject(newBeanId);
+						}
+					}
+				} 
+			}
+		}
 	
 		//TODO: Unregister commands when failed
 		public function loadDynamicConfig(xml:XML):void{
@@ -104,6 +126,7 @@ package org.toshiroioc.core
 				clearEverythingFromNewBeans(oldNodeNamesClassesMap);
 				throw err;
 			}
+			injectOptionalRefs(oldNodeNamesClassesMap.length);
 			runPostprocessorsOnContextLoaded();
 			dispatchEvent(new Event(Event.COMPLETE));
 		}
@@ -117,7 +140,7 @@ package org.toshiroioc.core
 			for each (var arr:Array in oldNodeNamesClassesMap){
 				oldBeansNames.push(arr[0]);
 			}
-			//c
+
 			for each (var oldBeanId: String in oldBeansNames){
 				
 				newBeansMap[oldBeanId] = beansMap[oldBeanId];
@@ -267,12 +290,48 @@ package org.toshiroioc.core
 			
 		}
 		
+		private function filterAndValidateOptionalAttribute(refProperties:XMLList):XMLList{
+			if (refProperties.length() == 0){
+				return refProperties;
+			}
+			var beanId:String = ((refProperties[0] as XML).parent() as XML).attribute("id").toXMLString();
+			var optionalAttrib:String;
+			var filteredList:XMLList = new XMLList();
+			for each (var property:XML in refProperties){
+				switch(property.attribute("optional").length()){
+					case 0:
+						//forward
+						filteredList += property;
+						break;
+					case 1:
+						switch(property.attribute("optional").toXMLString()){
+							case "true":
+								//do not forward
+								break;
+							case "false":
+								//forward
+								filteredList += property;
+								break;
+							default:
+								throw new ArgumentError("Wrong [optional] attribute:["
+									+ property.attribute("optional").toXMLString()+"]");
+						}
+						break;
+					default:
+						//if too many [optional] arguments, error is thrown by xml parser
+				}
+			}
+			return filteredList;
+			
+		}
+		
 		private function hasDependencies(beanXML:XML):Boolean{
-			
-			//	filtering by optional "ref" attribute
-			var propertiesDependent:XMLList = beanXML.child("property").(attribute("ref").toXMLString().length > 0);
-			
+			var test:*;
+			//	filtering by required "ref" attribute 
+			var propertiesDependent:XMLList = beanXML.child("property").(attribute("ref").toXMLString().length > 0); 
+			propertiesDependent = filterAndValidateOptionalAttribute(propertiesDependent);
 			if(propertiesDependent.length() > 0){
+				
 				var id:String = beanXML.attribute("id");
 				//take from cache if previously created by parents ref
 				var depNode:DINode = nodes[id];
@@ -286,7 +345,8 @@ package org.toshiroioc.core
 				}
 				this.nodeNamesClassesMap.push([id, getDefinitionByName(beanXML.attribute("class"))]);
 				for each (var property:XML in propertiesDependent){	
-				
+										
+
 					var dependentS:String = property.attribute("ref");
 					depNode.addNodeDependency(getNode(dependentS));
 				}
@@ -474,9 +534,22 @@ package org.toshiroioc.core
 			return arrayOfInnerObjects;
 		}
 		
+		private function manageOptionalRef(parent:String, ref:String, propertyName:String):void{
+			var parents:Array = optionalRefParentsMap[ref] as Array;
+			if(parents){
+				parents.push([parent, propertyName]);
+			}
+			else{
+				parents = [[parent, propertyName]];
+				optionalRefParentsMap[ref] = parents;
+			}
+		}
 		 
 		private function processBeanProperties(clazz:Class, bean:*, properties:XMLList, processDependencies:Boolean = false):void{
 			var fieldDescriptionMap:Object = FieldDescription.getClassDescription(clazz);
+			if (properties.length()>0){
+				var beanId : String = ((properties[0] as XML).parent() as XML).attribute("id").toXMLString();			
+			}
 			
 			
 			// call method tagged [BeforeConfigure]
@@ -494,10 +567,18 @@ package org.toshiroioc.core
 				var constProp:String = property.attribute("const").toXMLString();
 				
 				if(processDependencies && refProp.length > 0){
+					var optional:String = property.attribute("optional").toXMLString();
+												
 					
-					//	late initialization for ref property										
-					bean[propertyName] = getObject(refProp, true);
-					continue;
+					if(!(optional == "true")){		
+						//	late initialization for ref property	
+						bean[propertyName] = getObject(refProp, true);
+						continue;
+					}
+					else if(optional == "true"){
+						manageOptionalRef(beanId, refProp, propertyName);
+						continue;
+					}
 				}
 				
 				if(constProp.length>0){

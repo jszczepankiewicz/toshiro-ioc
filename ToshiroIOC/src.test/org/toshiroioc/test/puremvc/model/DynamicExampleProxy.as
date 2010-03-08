@@ -10,6 +10,7 @@ package org.toshiroioc.test.puremvc.model
 	public class DynamicExampleProxy extends Proxy implements IProxy
 	{
 		public static const NAME:String = 'DynamicExampleProxy';
+		public static const DYNAMIC_EXAMPLE_PROXY_ON_REGISTER:String = "dynamicExampleProxyOnRegister"
 		
 		public function DynamicExampleProxy()
 		{
@@ -18,7 +19,7 @@ package org.toshiroioc.test.puremvc.model
 		
 		override public function onRegister():void
 		{
-			sendNotification("dynExProxyOnReg");			
+			sendNotification(DYNAMIC_EXAMPLE_PROXY_ON_REGISTER);			
 		}
 		
 	}

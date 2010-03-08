@@ -5,7 +5,9 @@ package org.toshiroioc.test.puremvc.mediator
 	import org.puremvc.as3.multicore.interfaces.IMediator;
 	import org.puremvc.as3.multicore.interfaces.INotification;
 	import org.puremvc.as3.multicore.patterns.mediator.Mediator;
+	import org.toshiroioc.test.puremvc.model.DynamicExampleProxy;
 	import org.toshiroioc.test.puremvc.model.ExampleProxy;
+	import org.toshiroioc.test.puremvc.model.ExampleProxy2;
 	import org.toshiroioc.test.puremvc.view.ExampleView;
 
 
@@ -16,6 +18,7 @@ package org.toshiroioc.test.puremvc.mediator
 		private var examplePrx:ExampleProxy; 
 		public var noteFromDynMed : Number =0;
 		public var notesFromProxies : Number = 0;
+		public static const EX_VIEW_MEDIATOR_ON_REGISTER:String = "exViewMediatorOnRegister";
 		
 		public function ExampleViewMediator( viewComponent:ExampleView)
 		{
@@ -24,16 +27,17 @@ package org.toshiroioc.test.puremvc.mediator
 		
 		override public function onRegister():void
 		{
-			sendNotification("ExViewMedOnReg", true);
+			sendNotification(EX_VIEW_MEDIATOR_ON_REGISTER, true);
 		}		
 		
 		override public function listNotificationInterests():Array
 		{
 			return [
 						ToshiroApplicationFacadeTest.BUTTON_CLICK,
-						ToshiroApplicationFacadeTest.EX_PROXY2_ON_REGISTER,
-						ToshiroApplicationFacadeTest.EX_PROXY_ON_REGISTER,
-						"dynMedOnReg", "dynExProxyOnReg"
+						ExampleProxy2.EX_PROXY2_ON_REGISTER,
+						ExampleProxy.EXAMPLE_PROXY_ON_REGISTER,
+						DynamicExampleViewMediator.DYNAMIC_MEDIATOR_ON_REGISTER, 
+						DynamicExampleProxy.DYNAMIC_EXAMPLE_PROXY_ON_REGISTER
 					];
 		}
 		
@@ -44,15 +48,15 @@ package org.toshiroioc.test.puremvc.mediator
 				case ToshiroApplicationFacadeTest.BUTTON_CLICK:
 					example_view.view_lbl.text = String( note.getBody() ).toUpperCase();
 				    break;
-				case ToshiroApplicationFacadeTest.EX_PROXY2_ON_REGISTER:
+				case ExampleProxy2.EX_PROXY2_ON_REGISTER:
 					example_view.view_lbl2.text = String( note.getBody() ).toUpperCase();
 					notesFromProxies++;
 				    break;
-				case ToshiroApplicationFacadeTest.EX_PROXY_ON_REGISTER:
+				case ExampleProxy.EXAMPLE_PROXY_ON_REGISTER:
 					example_view.view_grid.dataProvider = note.getBody() as ArrayCollection;
 					notesFromProxies++;
 				    break;
-				case "dynExProxyOnReg":
+				case DynamicExampleProxy.DYNAMIC_EXAMPLE_PROXY_ON_REGISTER:
 					notesFromProxies++;
 				    break;
 				default:
@@ -65,15 +69,5 @@ package org.toshiroioc.test.puremvc.mediator
 		{
 			return viewComponent as ExampleView;
 		}
-		
-/* 		public function get exampleProxy():ExampleProxy 
-		{
-			return examplePrx as ExampleProxy;
-		}
-		
-		public function set exampleProxy(value:ExampleProxy):void 
-		{
-			examplePrx = value;
-		} */
 	}
 }

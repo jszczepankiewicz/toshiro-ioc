@@ -3,6 +3,9 @@ package org.toshiroioc.test.puremvc.command
 	import org.puremvc.as3.multicore.interfaces.ICommand;
 	import org.puremvc.as3.multicore.interfaces.INotification;
 	import org.puremvc.as3.multicore.patterns.command.SimpleCommand;
+	import org.toshiroioc.test.puremvc.mediator.DynamicExampleViewMediator;
+	import org.toshiroioc.test.puremvc.mediator.ExampleViewMediator;
+	import org.toshiroioc.test.puremvc.model.DynamicExampleProxy2;
 	
 	public class TestCommand extends SimpleCommand implements ICommand
 	{
@@ -19,19 +22,19 @@ package org.toshiroioc.test.puremvc.command
 				case "test":
 					executed=note.getBody() as Number;
 					break;
-				case "test2":
+				case PrepModelCommand.RUN_TEST_COMMAND:
 					testNoteFromCommand++;
 					break;	
-				case "runCmds":
+				case DynamicPrepViewCommand.RUN_COMMANDS:
 					testNoteFromCommand++;
 					break;	
-				case("ExViewMedOnReg"):
+				case ExampleViewMediator.EX_VIEW_MEDIATOR_ON_REGISTER:
 					noteFromMediator++
 					break;
-				case "dynMedOnReg":
+				case DynamicExampleViewMediator.DYNAMIC_MEDIATOR_ON_REGISTER:
 					noteFromMediator++
 					break;
-				case "dynExProxy2OnReg":
+				case DynamicExampleProxy2.DYNAMIC_PROXY_2_ON_REGISTER:
 					noteFromProxies++;
 					break;
 				default:
