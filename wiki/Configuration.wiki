@@ -51,6 +51,9 @@ var object4:ParentOfSimpleDependencyObject = context.getTypedObject("object4", c
 if the object4 would be not expected type (i.e. `org.toshiroioc.test.beans.ParentOfSimpleDependencyObject`), then the ContainerError will be thrown.
 
 The method `getObjectsByClass(clazz:Class):Vector.<Object>` returns all instances of objects of the given class or throws ContainerError, if none found.
+{{{
+var objectVector:Vector.<Object> = context.getObjectsByClass(getDefinitionByName("org.toshiroioc.plugins.puremvc.multicore.SetterMap")as Class);
+}}}
 
 === Injecting simple types ===
 Example setter injection:
