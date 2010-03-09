@@ -166,44 +166,63 @@ Example setter injection:
 {{{
 <object id="setterWithArray" class="org.toshiroioc.test.beans.SetterWithArrays">
 	<property name="booleanItem" value="true"/>
-  <property name="objectsArrayItem">
-    <array>
-<entry>
-        <object class="org.toshiroioc.test.beans.SetterWithArrays">
-          <property name="simpleArrayItem">
-            <array>
-	       <entry>
-								<Number>
-									13
-								</Number>
-							</entry>
-							<entry>
-								<String>
-									innerArrayOfInnerObjectOfInnerArray
-								</String>
-							</entry>
-							<entry>
-								<object class="org.toshiroioc.test.beans.SimpleBean">
-									<property name="stringItem" value="deepEnough"/>
-								</object>
-							</entry>
-						</array>
-          </property>
-        </object>
-			</entry>
-			<entry>
-				<Number>
-					2
-				</Number>
-			</entry>
+	<property name="simpleArrayItem">
+		<array>
 			<entry>
 				<object class="org.toshiroioc.test.beans.SimpleBean">
-					<property name="numberItem" value="3"/>
+					<property name="numberItem" value="2"/>
 				</object>
+			</entry>
+			<entry>
+				<const>
+					org.toshiroioc.core.FieldDescription.FIELD_TYPE_UINT
+				</const>
+			</entry>
+			<entry>
+				<array>
+					<entry>
+						<number>
+							12
+						</number>
+					</entry>
+					<entry>
+						<object class="org.toshiroioc.test.beans.SetterWithArrays">
+							<property name="simpleArrayItem">
+								<array>
+									<entry>
+										<number>
+											13
+										</number>
+									</entry>
+									<entry>
+										<string>
+											innerArrayOfInnerObjectOfInnerArray
+										</string>
+									</entry>
+									<entry>
+										<object class="org.toshiroioc.test.beans.SimpleBean">
+											<property name="stringItem" value="deepEnough"/>
+										</object>
+									</entry>
+								</array>
+							</property>
+						</object>
+					</entry>
+				</array>
+			</entry>
+		</array>
+	</property>	
+	<property name="objectsArrayItem">
+		<array>
+			<entry>
+				<number>
+					2
+				</number>
 			</entry>
 		</array>
 	</property>
 </object>
+
 }}}
 Example constructor injection:
 {{{
