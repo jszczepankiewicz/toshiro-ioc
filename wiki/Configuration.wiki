@@ -439,4 +439,4 @@ Toshiro-IOC already supports four tags, which can be used directly in your code 
   *`[`BeforeConfigure`] - lifecycle metatag, public methods labelled with it will be called after object instantiation but before it is configured. The sequence of the calls is undefined.
   *`[`AfterConfigure`] - lifecycle metatag, public methods labelled with it will be called after object instantiation and configuration. The sequence of the calls is undefined.
   *`[`Required`] - if public setter labelled with it is not called by container (property is not configured and set) a ContainerError will be thrown. 
-  *`[`ToshiroIOCFactory`] - public setter labelled with it will be called with current XMLBeanFactory as an argument.
+  *`[`ToshiroIOCFactory`] - public setter with IBeanFactory as an argument labelled with it will be called with current XMLBeanFactory (injection of current context).
