@@ -1,23 +1,237 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <objects>
-	<object id="object1" class="org.toshiroioc.test.beans.SetterWithArrays">
-		<property name="booleanItem"><value>true</value></property>
+	<object id="setterWithArray" class="org.toshiroioc.test.beans.SetterWithArrays">
+		<property name="booleanItem" value="true"/>
 		
-		<property name="simpleArrayString">
+		<property name="simpleArrayItem">
 			<array>
-				<entry>1</entry>
-				<entry>2</entry>
-				<entry>2</entry>
+				<entry>
+					<String>
+						3
+					</String>
+				</entry>
+				<entry>
+					<Boolean>
+						true
+					</Boolean>
+				</entry>
+				<entry>
+					<Number>
+						1
+					</Number>
+				</entry>
+				<entry>
+					<date>
+						2009-09-20T21:45:49.296+02:00
+					</date>
+				</entry>
+				<entry>
+					<int>
+						5
+					</int>
+				</entry>
+				<entry>
+					<uint>
+						7
+					</uint>
+				</entry>
+				<entry>
+					<class>
+						org.toshiroioc.test.beans.SimpleBean
+					</class>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.test.beans.SimpleBean">
+						<property name="numberItem" value="2"/>
+					</object>
+				</entry>
+				<entry>
+					<const>
+						org.toshiroioc.core.FieldDescription.FIELD_TYPE_UINT
+					</const>
+				</entry>
+				<entry>
+					<array>
+						<entry>
+							<Number>
+								12
+							</Number>
+						</entry>
+						<entry>
+							<const>
+								org.toshiroioc.core.FieldDescription.FIELD_TYPE_CONST
+							</const>
+						</entry>
+						<entry>
+							<object class="org.toshiroioc.test.beans.SimpleBean">
+								<property name="stringItem" value="innerObjectOfInnerArray"/>
+							</object>
+						</entry>
+						<entry>
+							<object class="org.toshiroioc.test.beans.SetterWithArrays">
+								<property name="simpleArrayItem">
+									<array>
+										<entry>
+											<Number>
+												13
+											</Number>
+										</entry>
+										<entry>
+											<String>
+												innerArrayOfInnerObjectOfInnerArray
+											</String>
+										</entry>
+										<entry>
+											<object class="org.toshiroioc.test.beans.SimpleBean">
+												<property name="stringItem" value="deepEnough"/>
+											</object>
+										</entry>
+									</array>
+								</property>
+							</object>
+						</entry>
+					</array>
+				</entry>
 			</array>
 		</property>
 		
-		<property name="simpleArrayDate">
+		<property name="objectsArrayItem">
 			<array>
-				<entry>1</entry>
-				<entry>2</entry>
-				<entry>2</entry>
+				<entry>
+					<object class="org.toshiroioc.test.beans.SimpleBean">
+						<property name="numberItem" value="1"/>
+					</object>
+				</entry>
+				<entry>
+					<Number>
+						2
+					</Number>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.test.beans.SimpleBean">
+						<property name="numberItem" value="3"/>
+					</object>
+				</entry>
 			</array>
 		</property>
+		
 	</object>
 	
+	<object id="secondSetterWithArray" class="org.toshiroioc.test.beans.SetterWithArrays">
+		<property name="booleanItem" value="true"/>
+		
+		<property name="simpleArrayItem">
+			<array>
+				<entry>
+					<String>
+						3
+					</String>
+				</entry>
+				<entry>
+					<Boolean>
+						true
+					</Boolean>
+				</entry>
+				<entry>
+					<Number>
+						1
+					</Number>
+				</entry>
+				<entry>
+					<date>
+						2009-09-20T21:45:49.296+02:00
+					</date>
+				</entry>
+				<entry>
+					<int>
+						5
+					</int>
+				</entry>
+				<entry>
+					<uint>
+						7
+					</uint>
+				</entry>
+				<entry>
+					<class>
+						org.toshiroioc.test.beans.SimpleBean
+					</class>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.test.beans.SimpleBean">
+						<property name="numberItem" value="2"/>
+					</object>
+				</entry>
+				<entry>
+					<const>
+						org.toshiroioc.core.FieldDescription.FIELD_TYPE_UINT
+					</const>
+				</entry>
+				<entry>
+					<array>
+						<entry>
+							<Number>
+								12
+							</Number>
+						</entry>
+						<entry>
+							<const>
+								org.toshiroioc.core.FieldDescription.FIELD_TYPE_CONST
+							</const>
+						</entry>
+						<entry>
+							<object class="org.toshiroioc.test.beans.SimpleBean">
+								<property name="stringItem" value="innerObjectOfInnerArray"/>
+							</object>
+						</entry>
+						<entry>
+							<object class="org.toshiroioc.test.beans.SetterWithArrays">
+								<property name="simpleArrayItem">
+									<array>
+										<entry>
+											<Number>
+												13
+											</Number>
+										</entry>
+										<entry>
+											<String>
+												innerArrayOfInnerObjectOfInnerArray
+											</String>
+										</entry>
+										<entry>
+											<object class="org.toshiroioc.test.beans.SimpleBean">
+												<property name="stringItem" value="deepEnough"/>
+											</object>
+										</entry>
+									</array>
+								</property>
+							</object>
+						</entry>
+					</array>
+				</entry>
+			</array>
+		</property>
+		
+		<property name="objectsArrayItem">
+			<array>
+				<entry>
+					<object class="org.toshiroioc.test.beans.SimpleBean">
+						<property name="numberItem" value="1"/>
+					</object>
+				</entry>
+				<entry>
+					<Number>
+						2
+					</Number>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.test.beans.SimpleBean">
+						<property name="numberItem" value="3"/>
+					</object>
+				</entry>
+			</array>
+		</property>
+		
+	</object>
+
 </objects>

@@ -47,6 +47,7 @@ package org.toshiroioc.core
 		public static const FIELD_TYPE_INT:uint	= 8;
 		public static const FIELD_TYPE_CLASS:uint	= 9;
 		public static const FIELD_TYPE_ARRAY:uint = 10;
+		public static const FIELD_TYPE_CONST:uint = 11;
 		public static const METATAG_BEFORE_CONFIGURE:String	= "BeforeConfigure";
 		public static const METATAG_AFTER_CONFIGURE:String	= "AfterConfigure";
 		public static const METATAG_REQUIRED:String	= "Required";
@@ -168,6 +169,59 @@ package org.toshiroioc.core
 			return null;
 		}
 		
+		public static function getArrayEntriesDescription(entries:XMLList):Array{
+			var typesArray:Array = new Array();
+			var objectType:String;
+
+			for each(var entry:XML in entries){
+				switch(entry.children().length()){
+					case 0:
+						throw new ArgumentError("Empty entry in:["+entries+"]");
+					case 1:
+						objectType = (entry.children()[0] as XML).localName() as String;
+						break;
+					default:
+						throw new ArgumentError("Too many arguments for entry:["+entry+"]");					
+				}
+
+				switch(objectType){
+					case ("Number"):
+							typesArray.push(FIELD_TYPE_NUMBER);
+							break;
+					case ("int"):						
+							typesArray.push(FIELD_TYPE_INT);
+							break;
+					case ("uint"):						
+							typesArray.push(FIELD_TYPE_UINT);
+							break;
+					case ("String"):
+							typesArray.push(FIELD_TYPE_STRING)
+							break;
+					case ("Boolean"):
+							typesArray.push(FIELD_TYPE_BOOLEAN);
+							break;
+					case ("date"):
+							typesArray.push(FIELD_TYPE_DATE);
+							break;
+					case ("class"):
+							typesArray.push(FIELD_TYPE_CLASS);
+							break;
+					case ("array"):
+							typesArray.push(FIELD_TYPE_ARRAY);
+							break; 
+					case ("object"):
+							typesArray.push(FIELD_TYPE_CUSTOM_OBJECT);
+							break; 
+					case ("const"):
+						typesArray.push(FIELD_TYPE_CONST);
+						break;
+					default:
+						throw new ArgumentError("Not supported array item type:["+objectType+"]");
+				}
+			}
+			return typesArray;	
+		}
+		
 		public static function getClassDescription(clazz:Class):Object{
 			//	check if adding cache for getQualifiedClassName speeds up
 			var qualifiedClazzName:String = getQualifiedClassName(clazz);
@@ -236,8 +290,9 @@ package org.toshiroioc.core
 								break;
 						}
 					// don't look for other tags in the accessor
-					if (tagFound)
-						break;
+						if (tagFound){
+							break;
+						}
 					} 
 					switch (variable.@type.toString()){
 						
@@ -246,20 +301,16 @@ package org.toshiroioc.core
 							break;
 						case ("int"):						
 							fieldsInfo[variable.@name] = FIELD_TYPE_INT;
-							
 							break;
 						case ("uint"):						
 							fieldsInfo[variable.@name] = FIELD_TYPE_UINT;
-							
 							break;
 						case ("String"):
 							fieldsInfo[variable.@name] = FIELD_TYPE_STRING;
 							break;
-						
 						case ("Boolean"):
 							fieldsInfo[variable.@name] = FIELD_TYPE_BOOLEAN;
 							break;
-						
 						case ("Date"):
 							fieldsInfo[variable.@name] = FIELD_TYPE_DATE;
 							break;

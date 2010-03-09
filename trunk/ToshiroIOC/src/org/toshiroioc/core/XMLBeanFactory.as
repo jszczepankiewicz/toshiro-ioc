@@ -212,12 +212,16 @@ package org.toshiroioc.core
 			
 			//	checking for class constructor param
 			var className:String = xml.attribute("class").toXMLString();
-			 
 			if(className.length>0){
 				
 				//	constructor with class argument
 				return getClass(className);				
-				
+			}
+			
+			//	checking for array constructor param
+			if(xml.child("array").toXMLString().length>0){
+				//	constructor with array to parse
+				return parseArray(xml.child("array").child("entry"));				
 			}
 			
 			//	checking for special type date
@@ -226,7 +230,6 @@ package org.toshiroioc.core
 			if(dateAsString!=null){
 				return JAXBDate.fromJAXB(String(dateAsString));	
 			}
-			
 			
 			var val:* = xml.attribute("value")[0];
 			
@@ -506,7 +509,10 @@ package org.toshiroioc.core
 				
 				//	checking for beans with dependencies
 				if(hasDependencies(beanXML)){ //if already initialized, should be injected
-				//	do nothing
+					//if inner object, throw error if reference found
+					if(!isRoot)
+						throw new ArgumentError("References not supported for inner objects");
+					//else do nothing
 					continue;
 				}
 				
@@ -592,17 +598,13 @@ package org.toshiroioc.core
 					continue;
 				}
  				if (property.child("array").length()!=0){
-					bean[propertyName] = parseArrayOfObjects(property.child("array")[0] as XML);
+					bean[propertyName] = parseArray(property.child("array").child("entry") as XMLList);
 					continue;
 				} 
 								
-				var propertyType:uint = fieldDescriptionMap[propertyName];
-				var editor:IPropertyEditor = propertyEditorsMap[propertyType];
-
-				if(editor == null){
-					throw new ContainerError("Property editor for property: [" + propertyName + "], type: [" + propertyType +"]");	
-				}
-				bean[propertyName] = editor.parseProperty(propertyType, property);				
+	
+				
+				bean[propertyName] = parseProperty(fieldDescriptionMap[propertyName], property);				
 			}
 			// call method tagged [AfterConfigure]
 			var afterConfigureMethodName:String = FieldDescription.getAfterConfigureMethodName(clazz);
@@ -634,42 +636,57 @@ package org.toshiroioc.core
 			}
 		}
 		
- 		private function parseArrayOfObjects(innerObjects:XML):Array{
- 			
- 			var arrayOfInnerObjects:Array;
- 			arrayOfInnerObjects = startParseBeans(innerObjects);
- 			if (innerObjects.localName().toString() == "array"){
- 					return arrayOfInnerObjects;
- 			}
- 			return null;
- 		}
+		private function parseProperty(propertyType:uint, property:XML):*{
+				var editor:IPropertyEditor = propertyEditorsMap[propertyType];
+
+				if(editor == null){
+					throw new ContainerError("Property editor for property: [" + property.attribute("name") + "], type: [" + propertyType +"]");	
+				}
+				return editor.parseProperty(propertyType, property);		
+		}
+		
+		private function parseArray(entries:XMLList):Array{
+			var typesArray : Array = FieldDescription.getArrayEntriesDescription(entries);
+			var returnArray : Array = new Array();
+			var entry:XML;
+			var value:*;
+			for (var i:int; i<entries.length(); i++){
+				entry = entries[i] as XML;
+				value = (entry.children()[0] as XML).children()[0];
+				
+				switch(typesArray[i]){
+					case FieldDescription.FIELD_TYPE_CUSTOM_OBJECT:
+						entry = entries[i]; // pass the object to parse
+						returnArray.push(startParseBeans(entry)[0]); //and add to array
+						continue;
+					// WARNING: when nested, no bean id
+					case FieldDescription.FIELD_TYPE_CONST:
+						var property:XML= ((entries.parent() as XML).parent() as XML);
+						returnArray.push(parseConstAttribute(value, 
+							(property.parent() as XML).attribute("id")+"."+property.attribute("name")));
+						continue;
+					case FieldDescription.FIELD_TYPE_ARRAY:
+						returnArray.push(parseArray(entry.child("array").child("entry")));
+						continue;
+					case FieldDescription.FIELD_TYPE_CLASS:
+						//add attribute class
+						entry['@class'] = value;
+						break;
+					case FieldDescription.FIELD_TYPE_DATE:
+						//add attribute date
+						entry.@date = value;
+						break;
+					default:
+						//add attribute value
+						entry.@value = value;
+				}
+				returnArray.push(parseProperty(typesArray[i], entry));
+			}
+			return returnArray;
+		}
  		
-/*  		private function createArrayOfInnerObjects(innerObjects:Array):Array{
- 			var array:Array = new Array();
- 			for each (var bean:* in innerObjects){
- 				array.push(bean);
- 			}
- 			return array;
- 		} */
- 				
-			/* var entries:XMLList = vectorXML.child("entry");
-			var vector.<Array> = new Vector.<Array>();
-			for each (var entry:XML in entries){
-				var arr:Array = new Array(2);
-				if (entry.attribute("key").length()>0){
-					arr[0] = entry.attribute("key");
-				}
-				if (entry.attribute("keyconst").length()>0){
-					arr[0] = parseConstAttribute(entry.attribute("keyconst"), 
-						(((entry.parent() as XML).parent() as XML).parent() as XML).attribute("id");
-				}
-				if (entry.attribute("ref").length()>0){
-					arr[1] = parseConstAttribute(entry.attribute("keyconst"), 
-						(((entry.parent() as XML).parent() as XML).parent() as XML).attribute("id");
-				}
-					
-					
-			} */
+
+
 		public function runPostprocessorsOnContextLoaded():void{
 			for each(var postprocessor:IClassPostprocessor in registeredPostprocessors){
 				postprocessor.onContextLoaded();
