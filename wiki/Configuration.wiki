@@ -435,7 +435,7 @@ Full example:
 }}}
 
 === AS3 metatags ===
-Toshiro-IOC already supports four tags, which can be used directly in your code to provide you with special configuration options. 
+Toshiro-IOC already supports four tags, which can be used directly in your code to provide you with special configuration options. Metatags are not extended from parent class.
   *`[`BeforeConfigure`] - lifecycle metatag, public methods labelled with it will be called after object instantiation but before it is configured. The sequence of the calls is undefined.
   *`[`AfterConfigure`] - lifecycle metatag, public methods labelled with it will be called after object instantiation and configuration. The sequence of the calls is undefined.
   *`[`Required`] - if public setter labelled with it is not called by container (property is not configured and set) a ContainerError will be thrown. 
