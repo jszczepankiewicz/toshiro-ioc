@@ -86,8 +86,9 @@ Example constructor injection:
 </objects>	
 }}}
 
+To pass static constans as an argument, one has to use `const` attribute.
 *Constructor arguments order should be keeped as in the object constructor definition.*
-*To pass static constans as an argument, one has to use `const` attribute.*
+
 
 === Injecting date type ===
 In case of date argument special format must be keep. Currently Toshiro-IOC support date formatted in JAXB style.
@@ -157,8 +158,135 @@ Example constructor injection:
 </objects>	
 }}}
 
-*In order to pass Class object as an argument, one has to use `class` attribute.*
+To pass Class object as an argument, one has to use `class` attribute.
 
+=== Injecting array objects ===
+Toshiro-IOC is capable of injecting nested array objects. Number of nested levels is unlimited.
+Example setter injection:
+{{{
+<object id="setterWithArray" class="org.toshiroioc.test.beans.SetterWithArrays">
+	<property name="booleanItem" value="true"/>
+    <property name="objectsArrayItem">
+		<array>
+			<entry>
+				<object class="org.toshiroioc.test.beans.SetterWithArrays">
+					<property name="simpleArrayItem">
+						<array>
+							<entry>
+								<Number>
+									13
+								</Number>
+							</entry>
+							<entry>
+								<String>
+									innerArrayOfInnerObjectOfInnerArray
+								</String>
+							</entry>
+							<entry>
+								<object class="org.toshiroioc.test.beans.SimpleBean">
+									<property name="stringItem" value="deepEnough"/>
+								</object>
+							</entry>
+						</array>
+					</property>
+         		</object>
+			</entry>
+			<entry>
+				<Number>
+					2
+				</Number>
+			</entry>
+			<entry>
+				<object class="org.toshiroioc.test.beans.SimpleBean">
+					<property name="numberItem" value="3"/>
+				</object>
+			</entry>
+		</array>
+	</property>
+</object>
+}}}
+Example constructor injection:
+{{{
+<object id="objectTwo" class="org.toshiroioc.test.beans.ConstructorWithArrays">
+		<constructor-arg value="-99999.6"/>
+		<constructor-arg>
+			<array>
+				<entry>
+					<array>
+						<entry>
+							<Number>
+								12
+							</Number>
+						</entry>
+						<entry>
+							<const>
+								org.toshiroioc.core.FieldDescription.FIELD_TYPE_CONST
+							</const>
+						</entry>
+						<entry>
+							<object class="org.toshiroioc.test.beans.SimpleBean">
+								<property name="stringItem" value="innerObjectOfInnerArray"/>
+							</object>
+						</entry>
+						<entry>
+							<object class="org.toshiroioc.test.beans.ConstructorWithArrays">
+								<constructor-arg>
+									5																
+								</constructor-arg>
+								<constructor-arg>
+									<array>
+										<entry>
+											<Number>
+												13
+											</Number>
+										</entry>
+										<entry>
+											<object class="org.toshiroioc.test.beans.SimpleBean">
+												<property name="stringItem" value="deepEnough"/>
+											</object>
+										</entry>
+									</array>
+								</constructor-arg>
+								<constructor-arg>
+									<array>
+										<entry>
+											<object class="org.toshiroioc.test.beans.SimpleBean">
+												<property name="stringItem" value="test2"/>
+											</object>
+										</entry>
+									</array>
+								</constructor-arg>
+							</object>
+						</entry>
+					</array>
+				</entry>
+			</array>
+		</constructor-arg>
+		<constructor-arg>
+			<array>
+				<entry>
+					<object class="org.toshiroioc.test.beans.SimpleBean">
+						<property name="numberItem" value="1"/>
+					</object>
+				</entry>
+				<entry>
+					<Number>
+						2
+					</Number>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.test.beans.SimpleBean">
+						<property name="numberItem" value="3"/>
+					</object>
+				</entry>
+			</array>
+		</constructor-arg>
+		<property name="someAdditionalString" value="enedueRikeFake"/>
+	</object>
+}}}
+Tags are: 
+Each element of an array has to be embraced with <entry> tag.
+References from inner beans are not supported (yet).
 === Injecting objects  ===
 The primary purpose of every DI engine is injection of objects.
 
