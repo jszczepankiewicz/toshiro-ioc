@@ -166,12 +166,12 @@ Example setter injection:
 {{{
 <object id="setterWithArray" class="org.toshiroioc.test.beans.SetterWithArrays">
 	<property name="booleanItem" value="true"/>
-    <property name="objectsArrayItem">
-		<array>
-			<entry>
-				<object class="org.toshiroioc.test.beans.SetterWithArrays">
-					<property name="simpleArrayItem">
-						<array>
+  <property name="objectsArrayItem">
+    <array>
+      <entry>
+        <object class="org.toshiroioc.test.beans.SetterWithArrays">
+          <property name="simpleArrayItem">
+            <array>
 							<entry>
 								<Number>
 									13
@@ -188,8 +188,8 @@ Example setter injection:
 								</object>
 							</entry>
 						</array>
-					</property>
-         		</object>
+          </property>
+        </object>
 			</entry>
 			<entry>
 				<Number>
