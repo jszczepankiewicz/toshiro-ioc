@@ -364,7 +364,7 @@ context.loadDynamicConfig(xml);
 After successful load of dynamic config, an `Event.COMPLETE` is being dispatched, otherwise an Error, which was the reason of unsuccessful load is being thrown and context is being restored to previous state, without beans from unsuccessfully loaded configuration file.
 
 === Optional bean reference ===
-It is possible to configure beans in a way, that reference to a bean is being satisfied after dynamic context load. If you wish Toshiro-IOC to inject a bean to a property, when it's become available in a context, after dynamically loaded configuration file, you have to mark parent's property with defined reference with `optional` attribute set to true.
+It is possible to configure beans in a way, that reference to a bean is being satisfied after dynamic context load. If you wish Toshiro-IOC to inject a bean to a property, when it become available in a context, after dynamically loaded configuration file, you have to mark parent's property with defined reference with `optional` attribute set to true.
 Main config bean example:
 {{{
 <object id="object1" class="org.toshiroioc.test.beans.ComplexDependencyObject">	
@@ -380,6 +380,21 @@ Dynamically loaded config bean example:
 </object>	
 }}}
 
+=== Class postprocessors ===
+With Toshiro-IOC you are able to register class postprocessors implementing IClassPostprocessor with registerClassPostprocessor(postprocessor:IClassPostprocessor):void and therefore gain possibility to call some additional configuration  logic just after object configuration (and after `[AfterConfigure]` methods) and at the end of context initialization or load. Such a postprocessor is called everytime, when object of a class listed in listClassInterests has been configured. There is a possibility of registering multiple postprocessors for a single class, which in the case are called in register order and with output of previous postprocessor piped to input of next in a queue.
+Example registration:
+{{{
+context.registerClassPostprocessor(new PureMVCClassPostprocessor(this));
+}}}
+and IClassPostprocessor:
+{{{
+public interface IClassPostprocessor
+	{
+		function listClassInterests():Vector.<Class>;
+		function postprocessObject(object:*):*;
+		function onContextLoaded():void;	
+	}
+}}}
 
 === Object lifecycle  ===
 Toshiro-IOC supports both singleton and prototype mode. Singleton mode is default. In order to make the bean to behave like prototype the bean should be marked with attribute `lifecycle="prototype"`.
