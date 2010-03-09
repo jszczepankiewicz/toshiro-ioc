@@ -5,19 +5,19 @@
 		<constructor-arg>
 			<array>
 				<entry>
-					<String>
+					<string>
 						3
-					</String>
+					</string>
 				</entry>
 				<entry>
-					<Boolean>
+					<boolean>
 						true
-					</Boolean>
+					</boolean>
 				</entry>
 				<entry>
-					<Number>
+					<number>
 						1
-					</Number>
+					</number>
 				</entry>
 				<entry>
 					<date>
@@ -52,9 +52,9 @@
 				<entry>
 					<array>
 						<entry>
-							<Number>
+							<number>
 								12
-							</Number>
+							</number>
 						</entry>
 						<entry>
 							<const>
@@ -74,14 +74,14 @@
 								<constructor-arg>
 									<array>
 										<entry>
-											<Number>
+											<number>
 												13
-											</Number>
+											</number>
 										</entry>
 										<entry>
-											<String>
+											<string>
 												innerArrayOfInnerObjectOfInnerArray
-											</String>
+											</string>
 										</entry>
 										<entry>
 											<object class="org.toshiroioc.test.beans.SimpleBean">
@@ -113,9 +113,9 @@
 					</object>
 				</entry>
 				<entry>
-					<Number>
+					<number>
 						2
-					</Number>
+					</number>
 				</entry>
 				<entry>
 					<object class="org.toshiroioc.test.beans.SimpleBean">
@@ -134,19 +134,19 @@
 				<constructor-arg>
 			<array>
 				<entry>
-					<String>
+					<string>
 						3
-					</String>
+					</string>
 				</entry>
 				<entry>
-					<Boolean>
+					<boolean>
 						true
-					</Boolean>
+					</boolean>
 				</entry>
 				<entry>
-					<Number>
+					<number>
 						1
-					</Number>
+					</number>
 				</entry>
 				<entry>
 					<date>
@@ -181,9 +181,9 @@
 				<entry>
 					<array>
 						<entry>
-							<Number>
+							<number>
 								12
-							</Number>
+							</number>
 						</entry>
 						<entry>
 							<const>
@@ -203,14 +203,14 @@
 								<constructor-arg>
 									<array>
 										<entry>
-											<Number>
+											<number>
 												13
-											</Number>
+											</number>
 										</entry>
 										<entry>
-											<String>
+											<string>
 												innerArrayOfInnerObjectOfInnerArray
-											</String>
+											</string>
 										</entry>
 										<entry>
 											<object class="org.toshiroioc.test.beans.SimpleBean">
@@ -242,9 +242,9 @@
 					</object>
 				</entry>
 				<entry>
-					<Number>
+					<number>
 						2
-					</Number>
+					</number>
 				</entry>
 				<entry>
 					<object class="org.toshiroioc.test.beans.SimpleBean">

@@ -185,7 +185,7 @@ package org.toshiroioc.core
 				}
 
 				switch(objectType){
-					case ("Number"):
+					case ("number"):
 							typesArray.push(FIELD_TYPE_NUMBER);
 							break;
 					case ("int"):						
@@ -194,10 +194,10 @@ package org.toshiroioc.core
 					case ("uint"):						
 							typesArray.push(FIELD_TYPE_UINT);
 							break;
-					case ("String"):
+					case ("string"):
 							typesArray.push(FIELD_TYPE_STRING)
 							break;
-					case ("Boolean"):
+					case ("boolean"):
 							typesArray.push(FIELD_TYPE_BOOLEAN);
 							break;
 					case ("date"):
