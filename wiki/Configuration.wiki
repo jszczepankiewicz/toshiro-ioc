@@ -364,7 +364,7 @@ context.loadDynamicConfig(xml);
 After successful load of dynamic config, an `Event.COMPLETE` is being dispatched, otherwise an Error, which was the reason of unsuccessful load is being thrown and context is being restored to previous state, without beans from unsuccessfully loaded configuration file.
 
 === Optional bean reference ===
-It is possible to configure beans in a way, that reference to a bean is being satisfied after dynamic context load. If you wish Toshiro-IOC to inject a bean to a property, when it become available in a context, after dynamically loaded configuration file, you have to mark parent's property with defined reference with `optional` attribute set to true.
+It is possible to configure beans in a way, that reference to a bean is being satisfied after dynamic context load. If you wish Toshiro-IOC to inject a bean to a property, when it becomes available in a context, after dynamically loaded configuration file, you have to mark parent's property with defined reference with `optional` attribute set to true.
 Main config bean example:
 {{{
 <object id="object1" class="org.toshiroioc.test.beans.ComplexDependencyObject">	
