@@ -1,0 +1,84 @@
+#summary Describes usage of pureMVC framework with Toshiro-IOC.
+
+=== Introduction ===
+
+With Toshiro-IOC it is possible to configure and start pureMVC framework basing solely on xml configuration and dependency injection. PureMVC multicore version is supported. 
+
+=== Configuration  ===
+Example configuration xml:
+{{{
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+	
+	<!-- Commands	-->
+	<object id="pureMVCStartupCommand" class="org.toshiroioc.test.puremvc.command.MacroStartupCommand" lifecycle="prototype"/>
+	<object id="prepModelCommand" class="org.toshiroioc.test.puremvc.command.PrepModelCommand" lifecycle="prototype"/>
+	<object id="testCommand" class="org.toshiroioc.test.puremvc.command.TestCommand" />
+	<object id="prepViewCommand" class="org.toshiroioc.test.puremvc.command.PrepViewCommand" lifecycle="prototype"/>
+	
+	<!-- Commands - notifications mappings -->	
+	<object id="beanWithSetterMap" class="org.toshiroioc.plugins.puremvc.multicore.SetterMap">
+		<property name="mappings">
+			<array>
+				<entry>
+					<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+						<property name="notification" value="model"/>
+						<property name="command" class="org.toshiroioc.test.puremvc.command.PrepModelCommand"/>
+					</object>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+						<property name="notification" value="view"/>
+						<property name="command" class="org.toshiroioc.test.puremvc.command.PrepViewCommand"/>
+					</object>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+						<property name="notification" value="test"/>
+						<property name="command" class="org.toshiroioc.test.puremvc.command.TestCommand"/>
+					</object>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+						<property name="notification" const="org.toshiroioc.test.puremvc.command.PrepModelCommand.RUN_TEST_COMMAND"/>
+						<property name="command" class="org.toshiroioc.test.puremvc.command.TestCommand"/>
+					</object>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+						<property name="notification" const="org.toshiroioc.test.puremvc.mediator.ExampleViewMediator.EX_VIEW_MEDIATOR_ON_REGISTER"/>
+						<property name="command" class="org.toshiroioc.test.puremvc.command.TestCommand"/>
+					</object>
+				</entry>
+			</array>		
+		</property>
+	</object>
+
+	<!-- Proxies -->
+	<object id="exampleProxy" class="org.toshiroioc.test.puremvc.model.ExampleProxy"/>
+	<object id="exampleProxy2" class="org.toshiroioc.test.puremvc.model.ExampleProxy2"/>
+	
+	<!-- Views -->
+	
+	<object id="exampleView" class="org.toshiroioc.test.puremvc.view.ExampleView"/>
+	
+	<!-- Mediators-->
+	
+	<object id="toshiroApplicationFacadeTestMediator" class="org.toshiroioc.test.puremvc.mediator.ToshiroApplicationFacadeTestMediator"/>
+	<object id="exampleViewMediator" class="org.toshiroioc.test.puremvc.mediator.ExampleViewMediator">
+		<constructor-arg ref="exampleView"/>
+	</object>
+</objects>
+}}}
+Let's start from beginning. 
+ *The "pureMVCStartupCommand" bean has to be provided, with exactly such a name. It is only bean name reserved for Toshiro-IOC. It is a startup command, which is going to be called by the Toshiro-IOC framework after context initialization. It has to be of a SimpleCommand or ToshiroIocMacroCommand type.
+ *If you wish commands to be instantiated every time when reffered to, as in standard use case of pureMVC, add `lifecycle="prototype"` to the bean definition.
+ *  The "beanWithSetterMap" is kind of container, where mappings between notifications and commands are kept. It has to be of org.toshiroioc.plugins.puremvc.multicore.SetterMap type. Mappings are specified by array of org.toshiroioc.plugins.puremvc.multicore.CommandMap objects and kept in mappings property of the SetterMap. Each CommandMap corresponds to a single mapping, and specifies two properties. One of them is "notification" with a name provided directly by string value or by reference to public static const.  
+
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
