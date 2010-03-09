@@ -70,8 +70,8 @@ Example configuration xml:
 	</object>
 </objects>
 }}}
-Let's start from beginning. 
- * The "pureMVCStartupCommand" bean has to be provided, with exactly such a name. It is only bean name reserved for Toshiro-IOC. It is a startup command, which is going to be called by the Toshiro-IOC framework after context initialization. It has to be of a `SimpleCommand` or `ToshiroIocMacroCommand` type.
+Let's start from the beginning: 
+ * The "pureMVCStartupCommand" bean has to be provided, with exactly such a name. It is the only bean name reserved for Toshiro-IOC. It is a startup command, which is going to be called by the Toshiro-IOC framework after context initialization. It has to be of a `SimpleCommand` or `ToshiroIocMacroCommand` type.
  * "pureMVCStartupCommand" 's `execute(note:INotification):void` method, called at framework startup, receives reference to main application view in note's body. So, if you wish to register mediator for main application, which is outside of the container, then you have to respond to notification sent from startup command with passed reference to main application view in note's body. 
  * If you opt for commands to be instantiated every time when reffered to, as in standard use case of pureMVC, add `lifecycle="prototype"` to the command bean definition.
  * The "beanWithSetterMap" is kind of container, where mappings between notifications and commands are kept. It has to be of `SetterMap` type. Mappings are specified by array of `CommandMap` objects and kept in mappings property of the SetterMap. Each CommandMap corresponds to a single mapping and specifies two properties. One of them is "notification" with a notification name provided directly by string value or by reference to public static const by `const` attribute. Second property is "command" with fully qualified class name provided by `class` attribute.
