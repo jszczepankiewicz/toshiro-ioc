@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute"
+	creationComplete="onCreationComplete()">
+	
+	<mx:Script>
+		<![CDATA[
+
+			[Embed(source="applicationContext.xml", mimeType="application/octet-stream")]
+			private var contextXMLClass:Class;
+			
+			import mx.core.ByteArrayAsset;
+			import org.toshiroioc.plugins.puremvc.multicore.ToshiroApplicationFacade;
+			
+			public static const NAME:String = "ToshiroApplicationFacadeTestUserInterface"
+			
+			public static const ADD_MAIN_APP:String = 'add_main_app';
+			
+			private var facade:ToshiroApplicationFacade;
+			private var contextXML:XML;
+			
+			public function onCreationComplete():void{
+				contextXML = constructXMLFromEmbed(contextXMLClass);
+				facade = ToshiroApplicationFacade.getInstance(NAME, this);
+				facade.addEventListener(Event.COMPLETE, startupApp);
+				facade.initializeContext(contextXML);
+			}
+			
+			private function startupApp(ev:Event):void {
+        		facade.removeEventListener(Event.COMPLETE, startupApp);
+        		//additional logic
+   			}
+      		
+      		public function constructXMLFromEmbed(clazz:Class):XML{		
+				var byteArrayAsset:ByteArrayAsset = ByteArrayAsset(new clazz());			
+				return new XML(byteArrayAsset.toString());
+			}
+		]]>
+	</mx:Script>
+</mx:Application>>
