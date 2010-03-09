@@ -168,11 +168,11 @@ Example setter injection:
 	<property name="booleanItem" value="true"/>
   <property name="objectsArrayItem">
     <array>
-      <entry>
+<entry>
         <object class="org.toshiroioc.test.beans.SetterWithArrays">
           <property name="simpleArrayItem">
             <array>
-							<entry>
+	       <entry>
 								<Number>
 									13
 								</Number>
