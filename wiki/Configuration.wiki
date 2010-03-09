@@ -363,6 +363,23 @@ context.loadDynamicConfig(xml);
 }}} 
 After successful load of dynamic config, an `Event.COMPLETE` is being dispatched, otherwise an Error, which was the reason of unsuccessful load is being thrown and context is being restored to previous state, without beans from unsuccessfully loaded configuration file.
 
+=== Optional bean reference ===
+It is possible to configure beans in a way, that reference to a bean is being satisfied after dynamic context load. If you wish Toshiro-IOC to inject a bean to a property, when it's become available in a context, after dynamically loaded configuration file, you have to mark parent's property with defined reference with `optional` attribute set to true.
+Main config bean example:
+{{{
+<object id="object1" class="org.toshiroioc.test.beans.ComplexDependencyObject">	
+	<property name="someChild" ref="objectChild" optional="true"/>
+	<property name="someChild2" ref="objectChildNotOptional" />
+	<property name="someString" value="someString" />
+</object>	 
+}}}
+Dynamically loaded config bean example:
+{{{
+<object id="objectChild" class="org.toshiroioc.test.beans.SimpleDependencyObject">
+	<property name="someString" value="false"/>			
+</object>	
+}}}
+
 
 === Object lifecycle  ===
 Toshiro-IOC supports both singleton and prototype mode. Singleton mode is default. In order to make the bean to behave like prototype the bean should be marked with attribute `lifecycle="prototype"`.
@@ -405,6 +422,6 @@ Full example:
 === AS3 metatags ===
 Toshiro-IOC already supports four tags, which can be used directly in your code to provide you with special configuration options. 
   *`[`BeforeConfigure`] - lifecycle metatag, methods labelled with it will be called after object instantiation but before it is configured.
-  *`[`AfterConfigure`] - lifecycle metatag, methods labelled with it will be called after object instantiation and injection of dependencies.
+  *`[`AfterConfigure`] - lifecycle metatag, methods labelled with it will be called after object instantiation and configuration.
   *`[`Required`] - if setter labelled with it is not called by container (property is not configured and set) a ContainerError will be thrown. 
   *`[`ToshiroIOCFactory`] - setter labelled with it will be called with current XMLBeanFactory as an argument
