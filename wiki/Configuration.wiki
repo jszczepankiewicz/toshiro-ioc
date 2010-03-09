@@ -16,6 +16,8 @@ context.initialize();
 var beanOne:SimpleBean = context.getObject("objectOne");
 }}}
 
+After successful initialization, an `Event.COMPLETE` is being dispatched.
+
 and the xml configuration looks like:
 {{{
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -359,7 +361,7 @@ context.initialize();
 xml = constructXMLFromEmbed(SimpleDynamicConfigXMLClass2);
 context.loadDynamicConfig(xml);
 }}} 
-After successful load of dynamic config, Event.COMPLETE is being dispatched, otherwise an Error, which was the reason of unsuccessful load is being thrown and context is being restored to previous state, without beans from unsuccessfully loaded configuration file.
+After successful load of dynamic config, an `Event.COMPLETE` is being dispatched, otherwise an Error, which was the reason of unsuccessful load is being thrown and context is being restored to previous state, without beans from unsuccessfully loaded configuration file.
 
 
 === Object lifecycle  ===
