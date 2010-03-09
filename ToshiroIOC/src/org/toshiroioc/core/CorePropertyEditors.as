@@ -89,7 +89,8 @@ package org.toshiroioc.core
 					return JAXBDate.fromJAXB(child.child("date").toString());
 					break;
 					
-				case FieldDescription.FIELD_TYPE_CLASS:					
+				case FieldDescription.FIELD_TYPE_CLASS:		
+					trace(child.attribute("class").toString())			
 					return Class(getDefinitionByName(child.attribute("class").toString()));
 					break;
 				/* case FieldDescription.FIELD_TYPE_VECTOR:

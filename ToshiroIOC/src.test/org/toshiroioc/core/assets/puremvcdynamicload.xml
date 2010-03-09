@@ -19,50 +19,72 @@
 	<object id="dynamicBeanWithSetterMap" class="org.toshiroioc.plugins.puremvc.multicore.SetterMap">
 		<property name="mappings">
 			<array>
-				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" value="dynamic_model"/>
-					<property name="command" class="org.toshiroioc.test.puremvc.command.DynamicPrepModelCommand"/>
-				</object>
-				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" value="dynamic_view"/>
-					<property name="command" class="org.toshiroioc.test.puremvc.command.DynamicPrepViewCommand"/>
-				</object>
-				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" const="org.toshiroioc.test.puremvc.command.DynamicPrepModelCommand.RUN_DYNAMIC_TEST_COMMAND"/>
-					<property name="command" class="org.toshiroioc.test.puremvc.command.DynamicTestCommand"/>
-				</object>
-				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" const="org.toshiroioc.test.puremvc.command.DynamicPrepViewCommand.RUN_COMMANDS"/>
-					<property name="command" class="org.toshiroioc.test.puremvc.command.DynamicTestCommand"/>
-				</object>
-				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" const="org.toshiroioc.test.puremvc.mediator.DynamicExampleViewMediator.DYNAMIC_MEDIATOR_ON_REGISTER"/>
-					<property name="command" class="org.toshiroioc.test.puremvc.command.DynamicTestCommand"/>
-				</object>
-				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" const="org.toshiroioc.test.puremvc.mediator.DynamicExampleViewMediator.DYNAMIC_MEDIATOR_ON_REGISTER"/>
-					<property name="command" class="org.toshiroioc.test.puremvc.command.TestCommand"/>
-				</object>
-				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" const="org.toshiroioc.test.puremvc.model.DynamicExampleProxy2.DYNAMIC_PROXY_2_ON_REGISTER"/>
-					<property name="command" class="org.toshiroioc.test.puremvc.command.DynamicTestCommand"/>
-				</object>
-				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" const="org.toshiroioc.test.puremvc.model.DynamicExampleProxy2.DYNAMIC_PROXY_2_ON_REGISTER"/>
-					<property name="command" class="org.toshiroioc.test.puremvc.command.TestCommand"/>
-				</object>
-				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" const="org.toshiroioc.test.puremvc.command.DynamicPrepViewCommand.RUN_COMMANDS"/>
-					<property name="command" class="org.toshiroioc.test.puremvc.command.TestCommand"/>
-				</object>
-				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" const="org.toshiroioc.test.puremvc.command.DynamicPrepViewCommand.RUN_COMMANDS"/>
-					<property name="command" class="org.toshiroioc.test.puremvc.command.PrepViewCommand"/>
-				</object>
-				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" value="custom_startup"/>
-					<property name="command" class="org.toshiroioc.test.puremvc.command.DynamicMacroOnLoadCommand"/>
-				</object>
+				<entry>
+					<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+						<property name="notification" value="dynamic_model"/>
+						<property name="command" class="org.toshiroioc.test.puremvc.command.DynamicPrepModelCommand"/>
+					</object>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+						<property name="notification" value="dynamic_view"/>
+						<property name="command" class="org.toshiroioc.test.puremvc.command.DynamicPrepViewCommand"/>
+					</object>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+						<property name="notification" const="org.toshiroioc.test.puremvc.command.DynamicPrepModelCommand.RUN_DYNAMIC_TEST_COMMAND"/>
+						<property name="command" class="org.toshiroioc.test.puremvc.command.DynamicTestCommand"/>
+					</object>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+						<property name="notification" const="org.toshiroioc.test.puremvc.command.DynamicPrepViewCommand.RUN_COMMANDS"/>
+						<property name="command" class="org.toshiroioc.test.puremvc.command.DynamicTestCommand"/>
+					</object>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+						<property name="notification" const="org.toshiroioc.test.puremvc.mediator.DynamicExampleViewMediator.DYNAMIC_MEDIATOR_ON_REGISTER"/>
+						<property name="command" class="org.toshiroioc.test.puremvc.command.DynamicTestCommand"/>
+					</object>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+						<property name="notification" const="org.toshiroioc.test.puremvc.mediator.DynamicExampleViewMediator.DYNAMIC_MEDIATOR_ON_REGISTER"/>
+						<property name="command" class="org.toshiroioc.test.puremvc.command.TestCommand"/>
+					</object>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+						<property name="notification" const="org.toshiroioc.test.puremvc.model.DynamicExampleProxy2.DYNAMIC_PROXY_2_ON_REGISTER"/>
+						<property name="command" class="org.toshiroioc.test.puremvc.command.DynamicTestCommand"/>
+					</object>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+						<property name="notification" const="org.toshiroioc.test.puremvc.model.DynamicExampleProxy2.DYNAMIC_PROXY_2_ON_REGISTER"/>
+						<property name="command" class="org.toshiroioc.test.puremvc.command.TestCommand"/>
+					</object>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+						<property name="notification" const="org.toshiroioc.test.puremvc.command.DynamicPrepViewCommand.RUN_COMMANDS"/>
+						<property name="command" class="org.toshiroioc.test.puremvc.command.TestCommand"/>
+					</object>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+						<property name="notification" const="org.toshiroioc.test.puremvc.command.DynamicPrepViewCommand.RUN_COMMANDS"/>
+						<property name="command" class="org.toshiroioc.test.puremvc.command.PrepViewCommand"/>
+					</object>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+						<property name="notification" value="custom_startup"/>
+						<property name="command" class="org.toshiroioc.test.puremvc.command.DynamicMacroOnLoadCommand"/>
+					</object>
+				</entry>
 			</array>		
 		</property>
 	</object>

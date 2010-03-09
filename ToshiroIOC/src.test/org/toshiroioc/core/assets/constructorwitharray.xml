@@ -1,24 +1,258 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <objects>
-	<object id="objectOne" class="org.toshiroioc.test.beans.BeanWithConstructor">
-		<constructor-arg><value>-99999</value></constructor-arg>
-		<constructor-arg><value>1111</value></constructor-arg>		
-		<constructor-arg><value>some123String</value></constructor-arg>
-		<constructor-arg><value>true</value></constructor-arg>		
-		
-		<property name="someAdditionalString"><value>false</value></property>
+	<object id="objectOne" class="org.toshiroioc.test.beans.ConstructorWithArrays">
+		<constructor-arg value="-99999"/>
+		<constructor-arg>
+			<array>
+				<entry>
+					<String>
+						3
+					</String>
+				</entry>
+				<entry>
+					<Boolean>
+						true
+					</Boolean>
+				</entry>
+				<entry>
+					<Number>
+						1
+					</Number>
+				</entry>
+				<entry>
+					<date>
+						2009-09-20T21:45:49.296+02:00
+					</date>
+				</entry>
+				<entry>
+					<int>
+						5
+					</int>
+				</entry>
+				<entry>
+					<uint>
+						7
+					</uint>
+				</entry>
+				<entry>
+					<class>
+						org.toshiroioc.test.beans.SimpleBean
+					</class>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.test.beans.SimpleBean">
+						<property name="numberItem" value="2"/>
+					</object>
+				</entry>
+				<entry>
+					<const>
+						org.toshiroioc.core.FieldDescription.FIELD_TYPE_UINT
+					</const>
+				</entry>
+				<entry>
+					<array>
+						<entry>
+							<Number>
+								12
+							</Number>
+						</entry>
+						<entry>
+							<const>
+								org.toshiroioc.core.FieldDescription.FIELD_TYPE_CONST
+							</const>
+						</entry>
+						<entry>
+							<object class="org.toshiroioc.test.beans.SimpleBean">
+								<property name="stringItem" value="innerObjectOfInnerArray"/>
+							</object>
+						</entry>
+						<entry>
+							<object class="org.toshiroioc.test.beans.ConstructorWithArrays">
+								<constructor-arg>
+									5																
+								</constructor-arg>
+								<constructor-arg>
+									<array>
+										<entry>
+											<Number>
+												13
+											</Number>
+										</entry>
+										<entry>
+											<String>
+												innerArrayOfInnerObjectOfInnerArray
+											</String>
+										</entry>
+										<entry>
+											<object class="org.toshiroioc.test.beans.SimpleBean">
+												<property name="stringItem" value="deepEnough"/>
+											</object>
+										</entry>
+									</array>
+								</constructor-arg>
+								<constructor-arg>
+									<array>
+										<entry>
+											<object class="org.toshiroioc.test.beans.SimpleBean">
+												<property name="stringItem" value="test"/>
+											</object>
+										</entry>
+									</array>
+								</constructor-arg>
+							</object>
+						</entry>
+					</array>
+				</entry>
+			</array>
+		</constructor-arg>
+		<constructor-arg>
+			<array>
+				<entry>
+					<object class="org.toshiroioc.test.beans.SimpleBean">
+						<property name="numberItem" value="1"/>
+					</object>
+				</entry>
+				<entry>
+					<Number>
+						2
+					</Number>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.test.beans.SimpleBean">
+						<property name="numberItem" value="3"/>
+					</object>
+				</entry>
+			</array>
+		</constructor-arg>
+				
+		<property name="someAdditionalString" value="objectsOne"/>
 		
 	</object>	
 	
-	<object id="objectTwo" class="org.toshiroioc.test.beans.BeanWithConstructor">
-		<constructor-arg><value>-99999.6</value></constructor-arg>
-		<!--<constructor-arg value="-99999.6"/>-->
-		<constructor-arg><value>1111</value></constructor-arg>		
-		<constructor-arg><null/></constructor-arg>
-		<constructor-arg><value>false</value></constructor-arg>		
-		
-		<property name="someAdditionalString"><value>enedueRikeFake</value></property>
-		
+	<object id="objectTwo" class="org.toshiroioc.test.beans.ConstructorWithArrays">
+		<constructor-arg value="-99999.6"/>
+				<constructor-arg>
+			<array>
+				<entry>
+					<String>
+						3
+					</String>
+				</entry>
+				<entry>
+					<Boolean>
+						true
+					</Boolean>
+				</entry>
+				<entry>
+					<Number>
+						1
+					</Number>
+				</entry>
+				<entry>
+					<date>
+						2009-09-20T21:45:49.296+02:00
+					</date>
+				</entry>
+				<entry>
+					<int>
+						5
+					</int>
+				</entry>
+				<entry>
+					<uint>
+						7
+					</uint>
+				</entry>
+				<entry>
+					<class>
+						org.toshiroioc.test.beans.SimpleBean
+					</class>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.test.beans.SimpleBean">
+						<property name="numberItem" value="2"/>
+					</object>
+				</entry>
+				<entry>
+					<const>
+						org.toshiroioc.core.FieldDescription.FIELD_TYPE_UINT
+					</const>
+				</entry>
+				<entry>
+					<array>
+						<entry>
+							<Number>
+								12
+							</Number>
+						</entry>
+						<entry>
+							<const>
+								org.toshiroioc.core.FieldDescription.FIELD_TYPE_CONST
+							</const>
+						</entry>
+						<entry>
+							<object class="org.toshiroioc.test.beans.SimpleBean">
+								<property name="stringItem" value="innerObjectOfInnerArray"/>
+							</object>
+						</entry>
+						<entry>
+							<object class="org.toshiroioc.test.beans.ConstructorWithArrays">
+								<constructor-arg>
+									5																
+								</constructor-arg>
+								<constructor-arg>
+									<array>
+										<entry>
+											<Number>
+												13
+											</Number>
+										</entry>
+										<entry>
+											<String>
+												innerArrayOfInnerObjectOfInnerArray
+											</String>
+										</entry>
+										<entry>
+											<object class="org.toshiroioc.test.beans.SimpleBean">
+												<property name="stringItem" value="deepEnough"/>
+											</object>
+										</entry>
+									</array>
+								</constructor-arg>
+								<constructor-arg>
+									<array>
+										<entry>
+											<object class="org.toshiroioc.test.beans.SimpleBean">
+												<property name="stringItem" value="test2"/>
+											</object>
+										</entry>
+									</array>
+								</constructor-arg>
+							</object>
+						</entry>
+					</array>
+				</entry>
+			</array>
+		</constructor-arg>
+		<constructor-arg>
+			<array>
+				<entry>
+					<object class="org.toshiroioc.test.beans.SimpleBean">
+						<property name="numberItem" value="1"/>
+					</object>
+				</entry>
+				<entry>
+					<Number>
+						2
+					</Number>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.test.beans.SimpleBean">
+						<property name="numberItem" value="3"/>
+					</object>
+				</entry>
+			</array>
+		</constructor-arg>
+		<property name="someAdditionalString" value="enedueRikeFake"/>
 	</object>	
-	
 </objects>

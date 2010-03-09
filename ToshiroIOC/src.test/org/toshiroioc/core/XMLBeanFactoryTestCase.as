@@ -15,12 +15,14 @@ package org.toshiroioc.core
 	import org.toshiroioc.test.beans.BeanWithConstructor;
 	import org.toshiroioc.test.beans.BeanWithDate;
 	import org.toshiroioc.test.beans.ComplexDependencyObject;
+	import org.toshiroioc.test.beans.ConstructorWithArrays;
 	import org.toshiroioc.test.beans.CyclicConstructor;
 	import org.toshiroioc.test.beans.CyclicConstructorAndSetter;
 	import org.toshiroioc.test.beans.CyclicSetter;
 	import org.toshiroioc.test.beans.ObjectConstructorDate;
 	import org.toshiroioc.test.beans.ObjectWithConstructorDependency;
 	import org.toshiroioc.test.beans.ParentOfSimpleDependencyObject;
+	import org.toshiroioc.test.beans.SetterWithArrays;
 	import org.toshiroioc.test.beans.SimpleBean;
 	import org.toshiroioc.test.beans.SimpleBeanWithContextInjection;
 	import org.toshiroioc.test.beans.SimpleBeanWithMetatags;
@@ -207,9 +209,182 @@ package org.toshiroioc.core
 		[Embed(source="assets/refoptionalwrongargument.xml", mimeType="application/octet-stream")]
 		private var OptionalRefWrongArgumentXMLClass:Class;
 		
+		[Embed(source="assets/setterwitharray.xml", mimeType="application/octet-stream")]
+		private var SetterWithArrayXMLClass:Class;
+		
+		[Embed(source="assets/setterwitharrayemptyentry.xml", mimeType="application/octet-stream")]
+		private var SetterWithArrayEmptyEntryXMLClass:Class;
+		
+		[Embed(source="assets/setterwitharraytoomuchargsinentry.xml", mimeType="application/octet-stream")]
+		private var SetterWithArrayTooMuchArgsInEntryXMLClass:Class;
+		
+		[Embed(source="assets/constructorwitharray.xml", mimeType="application/octet-stream")]
+		private var ConstructorWithArrayXMLClass:Class;
+		
 		public function XMLBeanFactoryTestCase(methodName:String){
 			super(methodName);
 		}
+		
+		public function testConstructorArrayInjection():void{
+			var xml:XML = constructXMLFromEmbed(ConstructorWithArrayXMLClass);
+			var context:XMLBeanFactory = new XMLBeanFactory(xml);
+			var constructorWithArray:ConstructorWithArrays;
+			var secondConstructorWithArray:ConstructorWithArrays;
+			context.initialize();
+			//first object
+			constructorWithArray = context.getObject("objectOne") as ConstructorWithArrays;
+			assertEquals(-99999, constructorWithArray.someNumber);
+			assertEquals("objectsOne", constructorWithArray.someAdditionalString);
+			var array:Array = constructorWithArray.simpleArrayItem;
+			assertTrue(array.length > 0);
+			assertEquals(3, array[0]);
+			assertEquals(true, array[1]);
+			assertEquals(1, array[2]);
+			assertNotNull(array[3]); //date
+			assertEquals(5, array[4]);
+			assertEquals(7, array[5]);
+			assertEquals(SimpleBean, array[6]);
+			assertEquals(2, (array[7] as SimpleBean).numberItem);
+			assertEquals(org.toshiroioc.core.FieldDescription.FIELD_TYPE_UINT, array[8]);
+			var innerArray:Array = array[9];
+			assertEquals(12, innerArray[0]);
+			assertEquals(FieldDescription.FIELD_TYPE_CONST, innerArray[1]);
+			assertEquals("innerObjectOfInnerArray", (innerArray[2] as SimpleBean).stringItem);
+			var deepObjectWithArray:ConstructorWithArrays = innerArray[3] as ConstructorWithArrays;
+			var innerArrayOfInnerArray:Array = deepObjectWithArray.simpleArrayItem;
+			assertEquals(13, innerArrayOfInnerArray[0]);
+			assertEquals("innerArrayOfInnerObjectOfInnerArray", innerArrayOfInnerArray[1]);
+			assertTrue(innerArrayOfInnerArray[2] is SimpleBean);
+			assertEquals("deepEnough", (innerArrayOfInnerArray[2] as SimpleBean).stringItem);
+			array = constructorWithArray.objectsArrayItem;
+			assertEquals(1, (array[0] as SimpleBean).numberItem);
+			assertEquals(2, array[1]);
+			assertEquals(3, (array[2] as SimpleBean).numberItem);
+			
+			//second object
+			secondConstructorWithArray = context.getObject("objectTwo") as ConstructorWithArrays;
+			assertEquals(-99999.6, secondConstructorWithArray.someNumber);
+			assertEquals("enedueRikeFake", secondConstructorWithArray.someAdditionalString);
+			array = secondConstructorWithArray.simpleArrayItem;
+			assertTrue(array.length > 0);
+			assertEquals(3, array[0]);
+			assertEquals(true, array[1]);
+			assertEquals(1, array[2]);
+			assertNotNull(array[3]); //date
+			assertEquals(5, array[4]);
+			assertEquals(7, array[5]);
+			assertEquals(SimpleBean, array[6]);
+			assertEquals(2, (array[7] as SimpleBean).numberItem);
+			assertEquals(org.toshiroioc.core.FieldDescription.FIELD_TYPE_UINT, array[8]);
+			innerArray = array[9];
+			assertEquals(12, innerArray[0]);
+			assertEquals(FieldDescription.FIELD_TYPE_CONST, innerArray[1]);
+			assertEquals("innerObjectOfInnerArray", (innerArray[2] as SimpleBean).stringItem);
+			deepObjectWithArray = innerArray[3] as ConstructorWithArrays;
+			innerArrayOfInnerArray = deepObjectWithArray.simpleArrayItem;
+			assertEquals(13, innerArrayOfInnerArray[0]);
+			assertEquals("innerArrayOfInnerObjectOfInnerArray", innerArrayOfInnerArray[1]);
+			assertTrue(innerArrayOfInnerArray[2] is SimpleBean);
+			assertEquals("deepEnough", (innerArrayOfInnerArray[2] as SimpleBean).stringItem);
+			array = secondConstructorWithArray.objectsArrayItem;
+			assertEquals(1, (array[0] as SimpleBean).numberItem);
+			assertEquals(2, array[1]);
+			assertEquals(3, (array[2] as SimpleBean).numberItem);
+			
+		} 
+		
+		
+		public function testErrorsInArray():void{
+			var xml:XML = constructXMLFromEmbed(SetterWithArrayEmptyEntryXMLClass);
+			var context:XMLBeanFactory = new XMLBeanFactory(xml);
+			var error:ArgumentError;
+			try{
+				context.initialize();
+			}
+			catch(err:ArgumentError){
+				error = err;
+			}
+			assertNotNull(error);
+			assertTrue(error.message.indexOf("Empty entry") != -1);
+			
+			xml = constructXMLFromEmbed(SetterWithArrayTooMuchArgsInEntryXMLClass);
+			context = new XMLBeanFactory(xml);
+			error = null;
+			try{
+				context.initialize();
+			}
+			catch(err:ArgumentError){
+				error = err;
+			}
+			assertNotNull(error);
+			assertTrue(error.message.indexOf("Too many arguments for entry") != -1);
+		}
+		
+ 		public function testSetterArrayInjection():void{
+			var xml:XML = constructXMLFromEmbed(SetterWithArrayXMLClass);
+			var context:XMLBeanFactory = new XMLBeanFactory(xml);
+			var setterWithArray:SetterWithArrays;
+			var secondSetterWithArray:SetterWithArrays;
+			context.initialize();
+			//first object
+			setterWithArray = context.getObject("setterWithArray") as SetterWithArrays;
+			assertTrue(setterWithArray.booleanItem);
+			var array:Array = setterWithArray.simpleArrayItem;
+			assertTrue(array.length > 0);
+			assertEquals(3, array[0]);
+			assertEquals(true, array[1]);
+			assertEquals(1, array[2]);
+			assertNotNull(array[3]); //date
+			assertEquals(5, array[4]);
+			assertEquals(7, array[5]);
+			assertEquals(SimpleBean, array[6]);
+			assertEquals(2, (array[7] as SimpleBean).numberItem);
+			assertEquals(org.toshiroioc.core.FieldDescription.FIELD_TYPE_UINT, array[8]);
+			var innerArray:Array = array[9];
+			assertEquals(12, innerArray[0]);
+			assertEquals(FieldDescription.FIELD_TYPE_CONST, innerArray[1]);
+			assertEquals("innerObjectOfInnerArray", (innerArray[2] as SimpleBean).stringItem);
+			var deepObjectWithArray:SetterWithArrays = innerArray[3] as SetterWithArrays;
+			var innerArrayOfInnerArray:Array = deepObjectWithArray.simpleArrayItem;
+			assertEquals(13, innerArrayOfInnerArray[0]);
+			assertEquals("innerArrayOfInnerObjectOfInnerArray", innerArrayOfInnerArray[1]);
+			assertTrue(innerArrayOfInnerArray[2] is SimpleBean);
+			assertEquals("deepEnough", (innerArrayOfInnerArray[2] as SimpleBean).stringItem);
+			array = setterWithArray.objectsArrayItem;
+			assertEquals(1, (array[0] as SimpleBean).numberItem);
+			assertEquals(2, array[1]);
+			assertEquals(3, (array[2] as SimpleBean).numberItem);
+			
+			//second object
+			setterWithArray = context.getObject("secondSetterWithArray") as SetterWithArrays;
+			assertTrue(setterWithArray.booleanItem);
+			array = setterWithArray.simpleArrayItem;
+			assertTrue(array.length > 0);
+			assertEquals(3, array[0]);
+			assertEquals(true, array[1]);
+			assertEquals(1, array[2]);
+			assertNotNull(array[3]); //date
+			assertEquals(5, array[4]);
+			assertEquals(7, array[5]);
+			assertEquals(SimpleBean, array[6]);
+			assertEquals(2, (array[7] as SimpleBean).numberItem);
+			assertEquals(org.toshiroioc.core.FieldDescription.FIELD_TYPE_UINT, array[8]);
+			innerArray = array[9];
+			assertEquals(12, innerArray[0]);
+			assertEquals(FieldDescription.FIELD_TYPE_CONST, innerArray[1]);
+			assertEquals("innerObjectOfInnerArray", (innerArray[2] as SimpleBean).stringItem);
+			deepObjectWithArray = innerArray[3] as SetterWithArrays;
+			innerArrayOfInnerArray = deepObjectWithArray.simpleArrayItem;
+			assertEquals(13, innerArrayOfInnerArray[0]);
+			assertEquals("innerArrayOfInnerObjectOfInnerArray", innerArrayOfInnerArray[1]);
+			assertTrue(innerArrayOfInnerArray[2] is SimpleBean);
+			assertEquals("deepEnough", (innerArrayOfInnerArray[2] as SimpleBean).stringItem);
+			array = setterWithArray.objectsArrayItem;
+			assertEquals(1, (array[0] as SimpleBean).numberItem);
+			assertEquals(2, array[1]);
+			assertEquals(3, (array[2] as SimpleBean).numberItem);
+			
+		} 
 		
 		
 		public function testRefOptionalWrongArgument():void{
@@ -1051,32 +1226,18 @@ package org.toshiroioc.core
 		
 		/*
 		
-		public function testNotInstantiatePrototypes():void{
-			fail("unimplemented");
-		}
 		
 		public function testResolvingInnerObjectsReferences():void{
 			fail("unimplemented");
 		}
 		
-		public function testConstructorInjectionOfArray():void{
-			fail("unimplemented");
-		}
 		public function testInstantiateByConstructorNewClass():void{
 			fail("unimplemented");
 		}
 		
-		public function testConstructorWithArray():void{
-			fail("unimplemented");
-		}
-
 		public function testConstructorWithMap():void{
 			fail("unimplemented");
 		}	
-
-		public function testSetterWithArray():void{
-			fail("unimplemented");
-		}
 
 		public function testSetterWithMap():void{
 			fail("unimplemented");
@@ -1421,7 +1582,9 @@ package org.toshiroioc.core
 		public static function getTestsArr():Vector.<Test>{
 			var retval:Vector.<Test> = new Vector.<Test>();	
 
-	
+			retval.push(new XMLBeanFactoryTestCase("testConstructorArrayInjection"));
+			retval.push(new XMLBeanFactoryTestCase("testErrorsInArray"));
+			retval.push(new XMLBeanFactoryTestCase("testSetterArrayInjection"));
  			retval.push(new XMLBeanFactoryTestCase("testRefOptional"));
 	 	 	retval.push(new XMLBeanFactoryTestCase("testRefOptionalWrongArgument"));
 			retval.push(new XMLBeanFactoryTestCase("testMetatagContextInjection"));
@@ -1434,7 +1597,6 @@ package org.toshiroioc.core
 			retval.push(new XMLBeanFactoryTestCase("testDynamicContextRefToBeanFrom1stConfig"));
  			retval.push(new XMLBeanFactoryTestCase("testNotInitializePrototypeBeans"));
  			retval.push(new XMLBeanFactoryTestCase("testGetObjectsByClass"));
-			retval.push(new XMLBeanFactoryTestCase("testSetterInjectionOfArray"));
 			retval.push(new XMLBeanFactoryTestCase("testClassPostprocessor"));  	 	
 			retval.push(new XMLBeanFactoryTestCase("testMetatagsBeforeAndAfter"));
 			retval.push(new XMLBeanFactoryTestCase("testMetatagRequiredNotSatisfied"));
@@ -1478,7 +1640,7 @@ package org.toshiroioc.core
 			retval.push(new XMLBeanFactoryTestCase("testCyclicDependencyFromConstructorToSetterComplex"));
 			retval.push(new XMLBeanFactoryTestCase("testCyclicDependencyFromSetterToConstructorComplex"));
 			retval.push(new XMLBeanFactoryTestCase("testStaticReferenceInConstructor"));
-			retval.push(new XMLBeanFactoryTestCase("testStaticReferenceInSetter"));                          
+			retval.push(new XMLBeanFactoryTestCase("testStaticReferenceInSetter"));                            
 			  
   			
 			/*
@@ -1489,7 +1651,7 @@ package org.toshiroioc.core
 			retval.push(new XMLBeanFactoryTestCase("testSetterWithMap"));
 			retval.push(new XMLBeanFactoryTestCase("testScopePrototype"));
 			retval.push(new XMLBeanFactoryTestCase("testResolvingInnerObjectsReferences"));
-			retval.push(new XMLBeanFactoryTestCase("testConstructorInjectionOfArray"));*/
+			*/
 			
 			
 			

@@ -20,34 +20,48 @@
 	<object id="beanWithSetterMap" class="org.toshiroioc.plugins.puremvc.multicore.SetterMap">
 		<property name="mappings">
 			<array>
-				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" value="model"/>
-					<property name="command" class="org.toshiroioc.test.puremvc.command.PrepModelCommand"/>
-				</object>
-				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" value="view"/>
-					<property name="command" class="org.toshiroioc.test.puremvc.command.PrepViewCommand"/>
-				</object>
-				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" value="test"/>
-					<property name="command" class="org.toshiroioc.test.puremvc.command.TestCommand"/>
-				</object>
-				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" const="org.toshiroioc.test.puremvc.command.PrepModelCommand.RUN_TEST_COMMAND"/>
-					<property name="command" class="org.toshiroioc.test.puremvc.command.TestCommand"/>
-				</object>
-				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" const="org.toshiroioc.test.puremvc.command.SimpleStartupCommand.SIMPLE_STARTUP"/>
-					<property name="command" class="org.toshiroioc.test.puremvc.command.PrepModelCommand"/>
-				</object>
-				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" const="org.toshiroioc.test.puremvc.command.SimpleStartupCommand.SIMPLE_STARTUP"/>
-					<property name="command" class="org.toshiroioc.test.puremvc.command.PrepViewCommand"/>
-				</object>
-				<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
-					<property name="notification" const="org.toshiroioc.test.puremvc.mediator.ExampleViewMediator.EX_VIEW_MEDIATOR_ON_REGISTER"/>
-					<property name="command" class="org.toshiroioc.test.puremvc.command.TestCommand"/>
-				</object>
+				<entry>
+					<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+						<property name="notification" value="model"/>
+						<property name="command" class="org.toshiroioc.test.puremvc.command.PrepModelCommand"/>
+					</object>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+						<property name="notification" value="view"/>
+						<property name="command" class="org.toshiroioc.test.puremvc.command.PrepViewCommand"/>
+					</object>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+						<property name="notification" value="test"/>
+						<property name="command" class="org.toshiroioc.test.puremvc.command.TestCommand"/>
+					</object>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+						<property name="notification" const="org.toshiroioc.test.puremvc.command.PrepModelCommand.RUN_TEST_COMMAND"/>
+						<property name="command" class="org.toshiroioc.test.puremvc.command.TestCommand"/>
+					</object>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+						<property name="notification" const="org.toshiroioc.test.puremvc.command.SimpleStartupCommand.SIMPLE_STARTUP"/>
+						<property name="command" class="org.toshiroioc.test.puremvc.command.PrepModelCommand"/>
+					</object>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+						<property name="notification" const="org.toshiroioc.test.puremvc.command.SimpleStartupCommand.SIMPLE_STARTUP"/>
+						<property name="command" class="org.toshiroioc.test.puremvc.command.PrepViewCommand"/>
+					</object>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.plugins.puremvc.multicore.CommandMap">
+						<property name="notification" const="org.toshiroioc.test.puremvc.mediator.ExampleViewMediator.EX_VIEW_MEDIATOR_ON_REGISTER"/>
+						<property name="command" class="org.toshiroioc.test.puremvc.command.TestCommand"/>
+					</object>
+				</entry>
 			</array>		
 		</property>
 	</object>
