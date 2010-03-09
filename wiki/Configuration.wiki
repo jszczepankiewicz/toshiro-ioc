@@ -86,9 +86,10 @@ Example constructor injection:
 </objects>	
 }}}
 
-To pass static constans as an argument, one has to use `const` attribute.
 *Constructor arguments order should be keeped as in the object constructor definition.*
 
+=== Injecting constans variables ===
+In order to pass public static const variable, one has to use `const` attribute and it has to be done with fully qualified class name. Example can be viewed above.
 
 === Injecting date type ===
 In case of date argument special format must be keep. Currently Toshiro-IOC support date formatted in JAXB style.
@@ -278,10 +279,10 @@ Example constructor injection:
 	<property name="someAdditionalString" value="objectsOne"/>	
 </object>	
 }}}
-Tags are: 
-
+Following tags are supported: number, int, uint, string, boolean, date, class, array, object, const.
 Each element of an array has to be embraced with 'entry' tag.
-References from inner beans are not supported (yet).
+When 'entry' tag is empty or with multiple children error is thrown.
+*References from inner beans are not supported (yet).*
 === Injecting objects  ===
 The primary purpose of every DI engine is injection of objects.
 
