@@ -13,8 +13,9 @@
 			private function onCreationComplete():void{
   				var suite:TestSuite = new TestSuite();
   				testRunner.test = XMLBeanFactoryTestCase.suite();  				
-  				testRunner.startTest();   
+  				testRunner.startTest();    
   				
+  				//var xmlBeanFactoryTestCase:XMLBeanFactoryTestCase;
   			}				
 		]]>
 	</mx:Script>
@@ -22,5 +23,5 @@
 	<!-- FlexUnit GUI Component -->
 	
 	<flexunit:TestRunnerBase id="testRunner" width="100%" height="100%" />
-	<!--<local:ToshiroApplicationFacadeTest/>-->
+	<!--<local:ToshiroApplicationFacadeTestUserInterface/>-->
 </mx:Application>
