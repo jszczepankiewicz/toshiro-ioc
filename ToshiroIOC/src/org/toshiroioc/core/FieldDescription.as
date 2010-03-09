@@ -137,7 +137,7 @@ package org.toshiroioc.core
 		}
 		*/
 		
-		public static function getBeforeConfigureMethodName(clazz:Class):String{
+		public static function getBeforeConfigureMethodsName(clazz:Class):Vector.<String>{
 			var obj:Object = classMetatagsDescriptionCache[getQualifiedClassName(clazz)];
 			if (obj){
 				return obj[METATAG_BEFORE_CONFIGURE];
@@ -145,7 +145,7 @@ package org.toshiroioc.core
 			return null;
 		}
 		
-		public static function getAfterConfigureMethodName(clazz:Class):String{
+		public static function getAfterConfigureMethodsName(clazz:Class):Vector.<String>{
 			var obj:Object = classMetatagsDescriptionCache[getQualifiedClassName(clazz)];
 			if (obj){
 				return obj[METATAG_AFTER_CONFIGURE];
@@ -169,58 +169,6 @@ package org.toshiroioc.core
 			return null;
 		}
 		
-		public static function getArrayEntriesDescription(entries:XMLList):Array{
-			var typesArray:Array = new Array();
-			var objectType:String;
-
-			for each(var entry:XML in entries){
-				switch(entry.children().length()){
-					case 0:
-						throw new ArgumentError("Empty entry in:["+entries+"]");
-					case 1:
-						objectType = (entry.children()[0] as XML).localName() as String;
-						break;
-					default:
-						throw new ArgumentError("Too many arguments for entry:["+entry+"]");					
-				}
-
-				switch(objectType){
-					case ("number"):
-							typesArray.push(FIELD_TYPE_NUMBER);
-							break;
-					case ("int"):						
-							typesArray.push(FIELD_TYPE_INT);
-							break;
-					case ("uint"):						
-							typesArray.push(FIELD_TYPE_UINT);
-							break;
-					case ("string"):
-							typesArray.push(FIELD_TYPE_STRING)
-							break;
-					case ("boolean"):
-							typesArray.push(FIELD_TYPE_BOOLEAN);
-							break;
-					case ("date"):
-							typesArray.push(FIELD_TYPE_DATE);
-							break;
-					case ("class"):
-							typesArray.push(FIELD_TYPE_CLASS);
-							break;
-					case ("array"):
-							typesArray.push(FIELD_TYPE_ARRAY);
-							break; 
-					case ("object"):
-							typesArray.push(FIELD_TYPE_CUSTOM_OBJECT);
-							break; 
-					case ("const"):
-						typesArray.push(FIELD_TYPE_CONST);
-						break;
-					default:
-						throw new ArgumentError("Not supported array item type:["+objectType+"]");
-				}
-			}
-			return typesArray;	
-		}
 		
 		public static function getClassDescription(clazz:Class):Object{
 			//	check if adding cache for getQualifiedClassName speeds up
@@ -257,10 +205,16 @@ package org.toshiroioc.core
 				 		
 						switch (metadata.@name.toString()){
 							case (METATAG_BEFORE_CONFIGURE):
-								metatagsInfo[METATAG_BEFORE_CONFIGURE] = method.attribute("name").toString();
+								if(!metatagsInfo[METATAG_BEFORE_CONFIGURE]){
+									metatagsInfo[METATAG_BEFORE_CONFIGURE] = new Vector.<String>(); 
+								} 
+								(metatagsInfo[METATAG_BEFORE_CONFIGURE] as Vector.<String>).push(method.attribute("name").toString());
 								break;
 							case (METATAG_AFTER_CONFIGURE):
-								metatagsInfo[METATAG_AFTER_CONFIGURE] =  method.attribute("name").toString();
+								if(!metatagsInfo[METATAG_AFTER_CONFIGURE]){
+									metatagsInfo[METATAG_AFTER_CONFIGURE] = new Vector.<String>(); 
+								} 
+								(metatagsInfo[METATAG_AFTER_CONFIGURE] as Vector.<String>).push(method.attribute("name").toString());
 								break;
 						}
 				 	}
@@ -353,6 +307,59 @@ package org.toshiroioc.core
 			}
 			
 			return fieldsInfo;
+		}
+		
+				public static function getArrayEntriesDescription(entries:XMLList):Array{
+			var typesArray:Array = new Array();
+			var objectType:String;
+
+			for each(var entry:XML in entries){
+				switch(entry.children().length()){
+					case 0:
+						throw new ArgumentError("Empty entry in:["+entries+"]");
+					case 1:
+						objectType = (entry.children()[0] as XML).localName() as String;
+						break;
+					default:
+						throw new ArgumentError("Too many arguments for entry:["+entry+"]");					
+				}
+
+				switch(objectType){
+					case ("number"):
+							typesArray.push(FIELD_TYPE_NUMBER);
+							break;
+					case ("int"):						
+							typesArray.push(FIELD_TYPE_INT);
+							break;
+					case ("uint"):						
+							typesArray.push(FIELD_TYPE_UINT);
+							break;
+					case ("string"):
+							typesArray.push(FIELD_TYPE_STRING)
+							break;
+					case ("boolean"):
+							typesArray.push(FIELD_TYPE_BOOLEAN);
+							break;
+					case ("date"):
+							typesArray.push(FIELD_TYPE_DATE);
+							break;
+					case ("class"):
+							typesArray.push(FIELD_TYPE_CLASS);
+							break;
+					case ("array"):
+							typesArray.push(FIELD_TYPE_ARRAY);
+							break; 
+					case ("object"):
+							typesArray.push(FIELD_TYPE_CUSTOM_OBJECT);
+							break; 
+					case ("const"):
+						typesArray.push(FIELD_TYPE_CONST);
+						break;
+					default:
+						throw new ArgumentError("Not supported array item type:["+objectType+"]");
+				}
+			}
+			return typesArray;	
 		}
 		
 		

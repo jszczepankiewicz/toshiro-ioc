@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+	<object id="objectOne" class="org.toshiroioc.test.beans.BeanWithConstructorAndMetatags">
+		<constructor-arg value="-99999"/>
+		<constructor-arg value="1111"/>		
+		<constructor-arg value="some123String"/>
+		<constructor-arg value="true"/>		
+		
+		<property name = "numberItem" value = "3"/>
+		<property name="someAdditionalString" value="false"/>
+		<property name = "dependencyItem" ref= "simpleChild"/>
+	</object>	
+	
+	<object id="objectTwo" class="org.toshiroioc.test.beans.BeanWithConstructorAndMetatags">
+		<constructor-arg value="-99999.6"/>
+		<constructor-arg value="1111"/>		
+		<constructor-arg><null/></constructor-arg>
+		<constructor-arg value="false"/>		
+		
+		<property name="someAdditionalString" value="enedueRikeFake"/>
+		<property name = "numberItem" value = "3"/>
+		<property name = "dependencyItem" ref= "simpleChild"/>
+	</object>	
+	
+	
+	<object id="simpleChild" class="org.toshiroioc.test.beans.SimpleBean">
+		<property name="booleanItem"  value="false" />		
+		<property name="intItem" value="999"/>
+		<property name="uintItem" value="0"/>
+		<property name="numberItem" value="-123456.99987"/>		
+	</object>
+</objects>
