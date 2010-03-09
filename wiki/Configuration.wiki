@@ -89,7 +89,7 @@ Example constructor injection:
 *Constructor arguments order should be keeped as in the object constructor definition.*
 
 === Injecting constans variables ===
-In order to pass public static const variable, one has to use `const` attribute and it has to be done with fully qualified class name. Example can be viewed above.
+In order to pass public static const variable, one has to use `const` attribute and fully qualified class name has to be provided. Example can be viewed above.
 
 === Injecting date type ===
 In case of date argument special format must be keep. Currently Toshiro-IOC support date formatted in JAXB style.
