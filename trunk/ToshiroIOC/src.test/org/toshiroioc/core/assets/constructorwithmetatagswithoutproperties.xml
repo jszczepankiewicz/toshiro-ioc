@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+	<object id="objectOne" class="org.toshiroioc.test.beans.BeanWithConstructorAndMetatagsWithoutProperties">
+		<constructor-arg value="-99999"/>
+		<constructor-arg value="1111"/>		
+		<constructor-arg value="some123String"/>
+		<constructor-arg value="true"/>		
+	</object>	
+	
+	<object id="objectTwo" class="org.toshiroioc.test.beans.BeanWithConstructorAndMetatagsWithoutProperties">
+		<constructor-arg value="-99999.6"/>
+		<constructor-arg value="1111"/>		
+		<constructor-arg><null/></constructor-arg>
+		<constructor-arg value="false"/>		
+	</object>	
+</objects>

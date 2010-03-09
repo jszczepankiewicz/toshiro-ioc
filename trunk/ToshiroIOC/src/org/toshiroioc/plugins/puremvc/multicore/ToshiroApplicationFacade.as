@@ -34,7 +34,7 @@ package org.toshiroioc.plugins.puremvc.multicore
         public function initializeContext(contextXML:XML):void{
 			context = new XMLBeanFactory(contextXML);
 			initializeIocFacade();
-			context.registerObjectPostprocessor(new PureMVCClassPostprocessor(this));
+			context.registerClassPostprocessor(new PureMVCClassPostprocessor(this));
 			context.addEventListener(Event.COMPLETE, onContextLoad);
 			context.initialize(); 
 		}

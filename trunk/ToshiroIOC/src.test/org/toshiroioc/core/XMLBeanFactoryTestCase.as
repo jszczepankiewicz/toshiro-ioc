@@ -13,6 +13,8 @@ package org.toshiroioc.core
 	import org.toshiroioc.plugins.puremvc.multicore.SetterMap;
 	import org.toshiroioc.test.BaseTestCase;
 	import org.toshiroioc.test.beans.BeanWithConstructor;
+	import org.toshiroioc.test.beans.BeanWithConstructorAndMetatags;
+	import org.toshiroioc.test.beans.BeanWithConstructorAndMetatagsWithoutProperties;
 	import org.toshiroioc.test.beans.BeanWithDate;
 	import org.toshiroioc.test.beans.ComplexDependencyObject;
 	import org.toshiroioc.test.beans.ConstructorWithArrays;
@@ -111,7 +113,13 @@ package org.toshiroioc.core
 		private var SetterWithStaticReferenceXMLClass:Class;
 		
 		[Embed(source="assets/simplesettermetatags.xml", mimeType="application/octet-stream")]
-		private var MetatagsXMLClass:Class;
+		private var MetatagsSetterXMLClass:Class;
+		
+		[Embed(source="assets/constructorwithmetatagswithoutproperties.xml", mimeType="application/octet-stream")]
+		private var MetatagsConstructorWithoutPropertiesXMLClass:Class;
+		
+		[Embed(source="assets/constructorwithmetatags.xml", mimeType="application/octet-stream")]
+		private var MetatagsConstructorXMLClass:Class;
 		
 		[Embed(source="assets/dependencynotexistingsimplesetter.xml", mimeType="application/octet-stream")]
 		private var SetterWithoutDependencyXMLClass:Class;
@@ -524,8 +532,8 @@ package org.toshiroioc.core
 			var beanWithPostprocessor:SimpleBeanWithPostprocessor;
 			var beanConstructorWithPostprocessor:SimpleBeanWithPostprocessor;
 			
-			context.registerObjectPostprocessor(new TestClassPostprocessor());
-			context.registerObjectPostprocessor(new TestClassPostprocessor2());
+			context.registerClassPostprocessor(new TestClassPostprocessor());
+			context.registerClassPostprocessor(new TestClassPostprocessor2());
 			context.initialize();
 			
 			beanWithPostprocessor = context.getObject("objectSetter") as SimpleBeanWithPostprocessor;
@@ -877,22 +885,68 @@ package org.toshiroioc.core
 		}
 		
 		
-		public function testMetatagsBeforeAndAfter():void{
-			var xml:XML = constructXMLFromEmbed(MetatagsXMLClass);
+		public function testMetatagsBeforeAndAfterSetter():void{
+			var xml:XML = constructXMLFromEmbed(MetatagsSetterXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			
 			context.initialize();
 			
 			var simpleBeanWithMetatags:SimpleBeanWithMetatags = context.getObject("objectWithTags") as SimpleBeanWithMetatags;
 			assertNotNull(simpleBeanWithMetatags);
-			assertEquals(simpleBeanWithMetatags.beforeConfigureMethodInvocation, true);
-			assertEquals(simpleBeanWithMetatags.afterConfigureMethodInvocation, true);
+			assertTrue(simpleBeanWithMetatags.beforeConfigureMethodInvocation);
+			assertTrue(simpleBeanWithMetatags.afterConfigureMethodInvocation);
+			assertTrue(simpleBeanWithMetatags.secondAfterMethod);
+			assertTrue(simpleBeanWithMetatags.secondBeforeMethod);
 			
 			var simpleBeanWithoutMetatags:SimpleBeanWithoutMetatags = context.getObject("objectWithoutTags") as SimpleBeanWithoutMetatags;
 			assertNotNull(simpleBeanWithoutMetatags);
-			assertEquals(simpleBeanWithoutMetatags.beforeConfigureMethodInvocation, false);
-			assertEquals(simpleBeanWithoutMetatags.afterConfigureMethodInvocation, false);  
+			assertFalse(simpleBeanWithoutMetatags.beforeConfigureMethodInvocation);
+			assertFalse(simpleBeanWithoutMetatags.afterConfigureMethodInvocation);  
 			 
+		}
+		
+		public function testMetatagsBeforeAndAfterConstructor():void{
+			var xml:XML = constructXMLFromEmbed(MetatagsConstructorXMLClass);
+			var context:XMLBeanFactory = new XMLBeanFactory(xml);
+			
+			context.initialize();
+			
+			var constructorWithMetatags:BeanWithConstructorAndMetatags = context.getObject("objectOne") as BeanWithConstructorAndMetatags;
+			assertNotNull(constructorWithMetatags);
+			assertTrue(constructorWithMetatags.beforeConfigureMethodInvocation);
+			assertTrue(constructorWithMetatags.afterConfigureMethodInvocation);
+			assertTrue(constructorWithMetatags.secondAfterMethod);
+			assertTrue(constructorWithMetatags.secondBeforeMethod);
+			
+			constructorWithMetatags = context.getObject("objectTwo") as BeanWithConstructorAndMetatags;
+			assertNotNull(constructorWithMetatags);
+			assertTrue(constructorWithMetatags.beforeConfigureMethodInvocation);
+			assertTrue(constructorWithMetatags.afterConfigureMethodInvocation);
+			assertTrue(constructorWithMetatags.secondAfterMethod);
+			assertTrue(constructorWithMetatags.secondBeforeMethod);
+			
+		}
+		
+		public function testMetatagsBeforeAndAfterConstructorWithoutProperties():void{
+			var xml:XML = constructXMLFromEmbed(MetatagsConstructorWithoutPropertiesXMLClass);
+			var context:XMLBeanFactory = new XMLBeanFactory(xml);
+			
+			context.initialize();
+			
+			var constructorWithMetatags:BeanWithConstructorAndMetatagsWithoutProperties = context.getObject("objectOne") as BeanWithConstructorAndMetatagsWithoutProperties;
+			assertNotNull(constructorWithMetatags);
+			assertTrue(constructorWithMetatags.beforeConfigureMethodInvocation);
+			assertTrue(constructorWithMetatags.afterConfigureMethodInvocation);
+			assertTrue(constructorWithMetatags.secondAfterMethod);
+			assertTrue(constructorWithMetatags.secondBeforeMethod);
+			
+			constructorWithMetatags = context.getObject("objectTwo") as BeanWithConstructorAndMetatagsWithoutProperties;
+			assertNotNull(constructorWithMetatags);
+			assertTrue(constructorWithMetatags.beforeConfigureMethodInvocation);
+			assertTrue(constructorWithMetatags.afterConfigureMethodInvocation);
+			assertTrue(constructorWithMetatags.secondAfterMethod);
+			assertTrue(constructorWithMetatags.secondBeforeMethod);
+			
 		}
 		
 	 	// checks if tags are extendable
@@ -1590,6 +1644,7 @@ package org.toshiroioc.core
 		public static function getTestsArr():Vector.<Test>{
 			var retval:Vector.<Test> = new Vector.<Test>();	
 
+			retval.push(new XMLBeanFactoryTestCase("testMetatagsBeforeAndAfterConstructorWithoutProperties"));
 			retval.push(new XMLBeanFactoryTestCase("testConstructorArrayInjection"));
 			retval.push(new XMLBeanFactoryTestCase("testErrorsInArray"));
 			retval.push(new XMLBeanFactoryTestCase("testSetterArrayInjection"));
@@ -1606,7 +1661,8 @@ package org.toshiroioc.core
  			retval.push(new XMLBeanFactoryTestCase("testNotInitializePrototypeBeans"));
  			retval.push(new XMLBeanFactoryTestCase("testGetObjectsByClass"));
 			retval.push(new XMLBeanFactoryTestCase("testClassPostprocessor"));  	 	
-			retval.push(new XMLBeanFactoryTestCase("testMetatagsBeforeAndAfter"));
+			retval.push(new XMLBeanFactoryTestCase("testMetatagsBeforeAndAfterSetter"));
+			retval.push(new XMLBeanFactoryTestCase("testMetatagsBeforeAndAfterConstructor"));
 			retval.push(new XMLBeanFactoryTestCase("testMetatagRequiredNotSatisfied"));
 			retval.push(new XMLBeanFactoryTestCase("testMetatagRequiredSatisfied"));
 			retval.push(new XMLBeanFactoryTestCase("testBeforeAndAfterMetatagsExtended"));
@@ -1648,7 +1704,7 @@ package org.toshiroioc.core
 			retval.push(new XMLBeanFactoryTestCase("testCyclicDependencyFromConstructorToSetterComplex"));
 			retval.push(new XMLBeanFactoryTestCase("testCyclicDependencyFromSetterToConstructorComplex"));
 			retval.push(new XMLBeanFactoryTestCase("testStaticReferenceInConstructor"));
-			retval.push(new XMLBeanFactoryTestCase("testStaticReferenceInSetter"));                            
+			retval.push(new XMLBeanFactoryTestCase("testStaticReferenceInSetter"));                             
 			  
   			
 			/*

@@ -558,10 +558,14 @@ package org.toshiroioc.core
 			}
 			
 			
-			// call method tagged [BeforeConfigure]
-			var beforeConfigureMethodName:String = FieldDescription.getBeforeConfigureMethodName(clazz);
-			if (beforeConfigureMethodName)
-				bean[beforeConfigureMethodName]();
+			// call methods tagged [BeforeConfigure]
+			var beforeConfigureMethodNames:Vector.<String> = FieldDescription.getBeforeConfigureMethodsName(clazz);
+			if (beforeConfigureMethodNames){
+				for each(var methodName:String in beforeConfigureMethodNames){
+					bean[methodName]();
+				}
+			}
+				
 			
 			//	initializing
 			
@@ -607,10 +611,13 @@ package org.toshiroioc.core
 				bean[propertyName] = parseProperty(fieldDescriptionMap[propertyName], property);				
 			}
 			// call method tagged [AfterConfigure]
-			var afterConfigureMethodName:String = FieldDescription.getAfterConfigureMethodName(clazz);
-			if (afterConfigureMethodName){
-				bean[afterConfigureMethodName]();
+			var afterConfigureMethodNames:Vector.<String> = FieldDescription.getAfterConfigureMethodsName(clazz);
+			if (afterConfigureMethodNames){
+				for each(methodName in afterConfigureMethodNames){
+					bean[methodName]();
+				}
 			}
+				
 			
 			//if any required field not initialized throw an error
 			var reqFields:Array = FieldDescription.getRequiredFields(clazz);
@@ -808,7 +815,7 @@ package org.toshiroioc.core
 			return null;
 		}
 		
-		public function registerObjectPostprocessor(postprocessor:IClassPostprocessor):void{
+		public function registerClassPostprocessor(postprocessor:IClassPostprocessor):void{
 
 			
 			for each (var clazz:Class in postprocessor.listClassInterests()){

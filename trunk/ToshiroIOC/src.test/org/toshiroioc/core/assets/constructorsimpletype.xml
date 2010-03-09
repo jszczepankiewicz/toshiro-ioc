@@ -19,6 +19,6 @@
 		<constructor-arg class="org.toshiroioc.test.beans.SimpleBean"/>
 		<property name="someAdditionalString" value="enedueRikeFake"/>
 		
-	</object>-->	
+	</object>	
 	
 </objects>

@@ -8,6 +8,8 @@ package org.toshiroioc.test.beans{
 		private var numberField:Number;
 		public var beforeConfigureMethodInvocation:Boolean;
 		public var afterConfigureMethodInvocation:Boolean;
+		public var secondBeforeMethod:Boolean;
+		public var secondAfterMethod:Boolean;
 		
 		[BeforeConfigure]
 		public function methodBeforeConfigure():void{
@@ -20,6 +22,21 @@ package org.toshiroioc.test.beans{
 			if (numberField)
 				afterConfigureMethodInvocation = true;
 		}
+		
+		[BeforeConfigure]
+		public function secondBefore():void{
+			if (!numberField)
+				secondBeforeMethod = true;
+		}
+		
+		[AfterConfigure]
+		public function secondAfter():void{
+			if (numberField)
+				secondAfterMethod = secondBeforeMethod;
+		}
+		
+		
+		
 		
 		[Required]
 		public function set dependencyItem(value:SimpleBean):void{
