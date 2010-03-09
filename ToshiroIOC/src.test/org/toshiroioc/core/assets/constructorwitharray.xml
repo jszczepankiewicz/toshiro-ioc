@@ -255,4 +255,30 @@
 		</constructor-arg>
 		<property name="someAdditionalString" value="enedueRikeFake"/>
 	</object>	
+	<object id="objectWithEmptyArray" class="org.toshiroioc.test.beans.ConstructorWithArrays">
+		<constructor-arg value="5"/>
+		<constructor-arg>
+			<array>
+				<entry>
+					<object class="org.toshiroioc.test.beans.SimpleBean">
+						<property name="numberItem" value="1"/>
+					</object>
+				</entry>
+				<entry>
+					<number>
+						2
+					</number>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.test.beans.SimpleBean">
+						<property name="numberItem" value="3"/>
+					</object>
+				</entry>
+			</array>
+		</constructor-arg>
+		<constructor-arg>
+			<array>
+			</array>
+		</constructor-arg>
+	</object>
 </objects>
