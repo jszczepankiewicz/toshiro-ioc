@@ -391,5 +391,5 @@ Full example:
 
 === AS3 metatags ===
 Toshiro-IOC already supports four tags, which can be used directly in your code to provide you with special configuration options. 
-  *`[`BeforeConfigure`]` - lifecycle metatag, methods labelled with it will be called after object instantiation but before it is configured.
-  *`[`AfterConfigure`]` - lifecycle metatag, methods labelled with it will be called after object instantiation and injection of dependencies.
+  *`[`BeforeConfigure] - lifecycle metatag, methods labelled with it will be called after object instantiation but before it is configured.
+  *`[`AfterConfigure] - lifecycle metatag, methods labelled with it will be called after object instantiation and injection of dependencies.
