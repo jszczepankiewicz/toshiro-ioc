@@ -381,7 +381,7 @@ Dynamically loaded config bean example:
 }}}
 
 === Class postprocessors ===
-With Toshiro-IOC you are able to register class postprocessors implementing IClassPostprocessor with registerClassPostprocessor(postprocessor:IClassPostprocessor):void and therefore gain possibility to call some additional configuration  logic just after object configuration (and after `[AfterConfigure]` methods) and at the end of context initialization or load. Such a postprocessor is called every time, when object of a class listed in listClassInterests has been configured. There is a possibility of registering multiple postprocessors for a single class, which in the case are called in register order and with output of previous postprocessor piped to input of next in a queue.
+With Toshiro-IOC you are able to register class postprocessors implementing IClassPostprocessor with `registerClassPostprocessor(postprocessor:IClassPostprocessor):void` and therefore gain possibility to call some additional configuration  logic just after object configuration (and after `[AfterConfigure]` methods) and at the end of context initialization or load. Such a postprocessor is called every time, when object of a class listed in listClassInterests has been configured. There is a possibility of registering multiple postprocessors for a single class, which in the case are called in register order and with output of previous postprocessor piped to input of next in a queue.
 Example registration:
 {{{
 context.registerClassPostprocessor(new PureMVCClassPostprocessor(this));
