@@ -18,7 +18,7 @@ var beanOne:SimpleBean = context.getObject("objectOne");
 
 After successful initialization, an `Event.COMPLETE` is being dispatched.
 
-and the xml configuration looks like:
+The xml configuration looks like:
 {{{
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <objects>
