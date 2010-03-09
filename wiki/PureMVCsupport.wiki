@@ -122,8 +122,8 @@ Example application view:
 </mx:Application>>
 }}}
  * In `onCreationComplete` method:
-  # an XML object is created from embedded applicationContext.xml file
-  # an ToshiroApplicationFacade instance is received, if not yet created, that's the moment, when pureMVC framework starts.
+  # an XML object is created from embedded `applicationContext.xml` file
+  # an ToshiroApplicationFacade instance is received, if not yet created, that's the moment, when pureMVC framework starts
   # registration for an `Event.COMPLETE`, which is going to be dispatched after context initialization
   # call initializeContext on facade with xml configuration file as an argument
  * In `startupApp` method:
