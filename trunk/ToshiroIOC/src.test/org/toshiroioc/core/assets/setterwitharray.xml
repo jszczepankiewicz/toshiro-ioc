@@ -233,5 +233,19 @@
 		</property>
 		
 	</object>
-
+	<object id="objectWithEmptyArray" class="org.toshiroioc.test.beans.SetterWithArrays">
+		<property name="simpleArrayItem">
+			<array>
+				<entry>
+					<number>
+						3
+					</number>
+				</entry>
+			</array>
+		</property>
+		<property name="objectsArrayItem">
+			<array>
+			</array>
+		</property>
+	</object>
 </objects>

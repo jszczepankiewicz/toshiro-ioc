@@ -229,7 +229,6 @@ package org.toshiroioc.core
 			var xml:XML = constructXMLFromEmbed(ConstructorWithArrayXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			var constructorWithArray:ConstructorWithArrays;
-			var secondConstructorWithArray:ConstructorWithArrays;
 			context.initialize();
 			//first object
 			constructorWithArray = context.getObject("objectOne") as ConstructorWithArrays;
@@ -262,10 +261,10 @@ package org.toshiroioc.core
 			assertEquals(3, (array[2] as SimpleBean).numberItem);
 			
 			//second object
-			secondConstructorWithArray = context.getObject("objectTwo") as ConstructorWithArrays;
-			assertEquals(-99999.6, secondConstructorWithArray.someNumber);
-			assertEquals("enedueRikeFake", secondConstructorWithArray.someAdditionalString);
-			array = secondConstructorWithArray.simpleArrayItem;
+			constructorWithArray = context.getObject("objectTwo") as ConstructorWithArrays;
+			assertEquals(-99999.6, constructorWithArray.someNumber);
+			assertEquals("enedueRikeFake", constructorWithArray.someAdditionalString);
+			array = constructorWithArray.simpleArrayItem;
 			assertTrue(array.length > 0);
 			assertEquals(3, array[0]);
 			assertEquals(true, array[1]);
@@ -286,10 +285,15 @@ package org.toshiroioc.core
 			assertEquals("innerArrayOfInnerObjectOfInnerArray", innerArrayOfInnerArray[1]);
 			assertTrue(innerArrayOfInnerArray[2] is SimpleBean);
 			assertEquals("deepEnough", (innerArrayOfInnerArray[2] as SimpleBean).stringItem);
-			array = secondConstructorWithArray.objectsArrayItem;
+			array = constructorWithArray.objectsArrayItem;
 			assertEquals(1, (array[0] as SimpleBean).numberItem);
 			assertEquals(2, array[1]);
 			assertEquals(3, (array[2] as SimpleBean).numberItem);
+						//third object with empty arrays
+			constructorWithArray = context.getObject("objectWithEmptyArray") as ConstructorWithArrays;
+			assertNotNull(constructorWithArray.simpleArrayItem);
+			assertNotNull(constructorWithArray.objectsArrayItem);
+			assertEquals(2, constructorWithArray.simpleArrayItem[1]);
 			
 		} 
 		
@@ -324,7 +328,6 @@ package org.toshiroioc.core
 			var xml:XML = constructXMLFromEmbed(SetterWithArrayXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			var setterWithArray:SetterWithArrays;
-			var secondSetterWithArray:SetterWithArrays;
 			context.initialize();
 			//first object
 			setterWithArray = context.getObject("setterWithArray") as SetterWithArrays;
@@ -384,6 +387,11 @@ package org.toshiroioc.core
 			assertEquals(2, array[1]);
 			assertEquals(3, (array[2] as SimpleBean).numberItem);
 			
+			//third object with empty arrays
+			setterWithArray = context.getObject("objectWithEmptyArray") as SetterWithArrays;
+			assertNotNull(setterWithArray.simpleArrayItem);
+			assertNotNull(setterWithArray.objectsArrayItem);
+			assertEquals(3, setterWithArray.simpleArrayItem[0]);
 		} 
 		
 		
