@@ -349,6 +349,17 @@ Example constructor injection:
 </objects>
 }}}
 
+=== Dynamic context load ===
+Toshiro-IOC provides you with a possibility to load configuration xml files at a runtime.
+After context has been initialized, just call `loadDynamicConfig(xml:XML):void` method with configuration xml as an argument, whenever you wish to add beans' definitions to the context. Example:
+{{{
+var xml:XML = constructXMLFromEmbed(SimpleDynamicConfigXMLClass1);
+var context:XMLBeanFactory = new XMLBeanFactory(xml);
+context.initialize();
+xml = constructXMLFromEmbed(SimpleDynamicConfigXMLClass2);
+context.loadDynamicConfig(xml);
+}}} 
+After successful load of dynamic config, Event.COMPLETE is being dispatched, otherwise an Error, which was the reason of unsuccessful load is being thrown and context is being restored to previous state, without beans from unsuccessfully loaded configuration file.
 
 
 === Object lifecycle  ===
