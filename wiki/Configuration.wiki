@@ -279,10 +279,11 @@ Example constructor injection:
 	<property name="someAdditionalString" value="objectsOne"/>	
 </object>	
 }}}
-Following tags are supported: number, int, uint, string, boolean, date, class, array, object, const.
+Supported tags: number, int, uint, string, boolean, date, class, array, object, const.
 Each element of an array has to be embraced with 'entry' tag.
 When 'entry' tag is empty or with multiple children error is thrown.
 *References from inner beans are not supported (yet).*
+
 === Injecting objects  ===
 The primary purpose of every DI engine is injection of objects.
 
