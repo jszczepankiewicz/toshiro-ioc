@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd version="4.2.1" timestamp="Wed Mar 10 10:09:02 CET 2010">
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/BaseTestCase.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test" class="BaseTestCase.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/beans/BeanWithConstructor.as">
+      <violation beginline="3" endline="3" begincolumn="15" endcolumn="15" rule="adobe.ac.pmd.rules.sizing.TooManyFields" ruleset="Sizing Rules" package="org.toshiroioc.test.beans" class="BeanWithConstructor.as" externalInfoUrl="" priority="3">Too many field detected (5 maximum, but 8 actually). Classes that have too many fields could be redesigned to have fewer fields, possibly  through some nested object grouping of some of the information.  For example, a class with  city/state/zipcode fields could instead have one Address field</violation>
+      <violation beginline="23" endline="23" begincolumn="4" endcolumn="4" rule="adobe.ac.pmd.rules.sizing.TooManyParameters" ruleset="Sizing Rules" package="org.toshiroioc.test.beans" class="BeanWithConstructor.as" externalInfoUrl="" priority="3">Long parameter list detected (4 maximum, but 6 actually). Long parameter lists can indicate that a new object should be created to wrap the numerous parameters.  Basically, try to group the parameters together.
+      </violation>
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.beans" class="BeanWithConstructor.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/beans/BeanWithConstructorAndMetatags.as">
+      <violation beginline="3" endline="3" begincolumn="15" endcolumn="15" rule="adobe.ac.pmd.rules.sizing.TooManyFields" ruleset="Sizing Rules" package="org.toshiroioc.test.beans" class="BeanWithConstructorAndMetatags.as" externalInfoUrl="" priority="3">Too many field detected (5 maximum, but 14 actually). Classes that have too many fields could be redesigned to have fewer fields, possibly  through some nested object grouping of some of the information.  For example, a class with  city/state/zipcode fields could instead have one Address field</violation>
+      <violation beginline="72" endline="72" begincolumn="4" endcolumn="4" rule="adobe.ac.pmd.rules.sizing.TooManyParameters" ruleset="Sizing Rules" package="org.toshiroioc.test.beans" class="BeanWithConstructorAndMetatags.as" externalInfoUrl="" priority="3">Long parameter list detected (4 maximum, but 6 actually). Long parameter lists can indicate that a new object should be created to wrap the numerous parameters.  Basically, try to group the parameters together.
+      </violation>
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.beans" class="BeanWithConstructorAndMetatags.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/beans/BeanWithConstructorAndMetatagsWithoutProperties.as">
+      <violation beginline="13" endline="13" begincolumn="15" endcolumn="15" rule="adobe.ac.pmd.rules.unused.UnusedField" ruleset="Unused Rules" package="org.toshiroioc.test.beans" class="BeanWithConstructorAndMetatagsWithoutProperties.as" externalInfoUrl="" priority="1">This private attribute (dependencyField) does not seem to be used. 
+      </violation>
+      <violation beginline="14" endline="14" begincolumn="15" endcolumn="15" rule="adobe.ac.pmd.rules.unused.UnusedField" ruleset="Unused Rules" package="org.toshiroioc.test.beans" class="BeanWithConstructorAndMetatagsWithoutProperties.as" externalInfoUrl="" priority="1">This private attribute (numberField) does not seem to be used. 
+      </violation>
+      <violation beginline="3" endline="3" begincolumn="15" endcolumn="15" rule="adobe.ac.pmd.rules.sizing.TooManyFields" ruleset="Sizing Rules" package="org.toshiroioc.test.beans" class="BeanWithConstructorAndMetatagsWithoutProperties.as" externalInfoUrl="" priority="3">Too many field detected (5 maximum, but 11 actually). Classes that have too many fields could be redesigned to have fewer fields, possibly  through some nested object grouping of some of the information.  For example, a class with  city/state/zipcode fields could instead have one Address field</violation>
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.beans" class="BeanWithConstructorAndMetatagsWithoutProperties.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/beans/BeanWithDate.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.beans" class="BeanWithDate.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/beans/ComplexDependencyObject.as">
+      <violation beginline="6" endline="6" begincolumn="15" endcolumn="15" rule="adobe.ac.pmd.rules.naming.VariableNameEndingWithNumeric" ruleset="Naming Rules" package="org.toshiroioc.test.beans" class="ComplexDependencyObject.as" externalInfoUrl="" priority="3">Using digits at the end of a symbol does not help understanging the meaning of it</violation>
+      <violation beginline="18" endline="18" begincolumn="23" endcolumn="23" rule="adobe.ac.pmd.rules.naming.VariableNameEndingWithNumeric" ruleset="Naming Rules" package="org.toshiroioc.test.beans" class="ComplexDependencyObject.as" externalInfoUrl="" priority="3">Using digits at the end of a symbol does not help understanging the meaning of it</violation>
+      <violation beginline="22" endline="22" begincolumn="23" endcolumn="23" rule="adobe.ac.pmd.rules.naming.VariableNameEndingWithNumeric" ruleset="Naming Rules" package="org.toshiroioc.test.beans" class="ComplexDependencyObject.as" externalInfoUrl="" priority="3">Using digits at the end of a symbol does not help understanging the meaning of it</violation>
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.beans" class="ComplexDependencyObject.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/beans/ConstructorMap.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.beans" class="ConstructorMap.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/beans/ConstructorWithArrays.as">
+      <violation beginline="5" endline="5" begincolumn="15" endcolumn="15" rule="adobe.ac.pmd.rules.maintanability.ArrayFieldWithNoArrayElementType" ruleset="Maintanability Rules" package="org.toshiroioc.test.beans" class="ConstructorWithArrays.as" externalInfoUrl="" priority="3">ArrayElementType metadata is not specified for this array-type field (simpleArrayField). 
+        </violation>
+      <violation beginline="6" endline="6" begincolumn="15" endcolumn="15" rule="adobe.ac.pmd.rules.maintanability.ArrayFieldWithNoArrayElementType" ruleset="Maintanability Rules" package="org.toshiroioc.test.beans" class="ConstructorWithArrays.as" externalInfoUrl="" priority="3">ArrayElementType metadata is not specified for this array-type field (objectsArrayField). 
+        </violation>
+      <violation beginline="9" endline="9" begincolumn="60" endcolumn="60" rule="adobe.ac.pmd.rules.naming.VariableNameEndingWithNumeric" ruleset="Naming Rules" package="org.toshiroioc.test.beans" class="ConstructorWithArrays.as" externalInfoUrl="" priority="3">Using digits at the end of a symbol does not help understanging the meaning of it</violation>
+      <violation beginline="9" endline="9" begincolumn="74" endcolumn="74" rule="adobe.ac.pmd.rules.naming.VariableNameEndingWithNumeric" ruleset="Naming Rules" package="org.toshiroioc.test.beans" class="ConstructorWithArrays.as" externalInfoUrl="" priority="3">Using digits at the end of a symbol does not help understanging the meaning of it</violation>
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.beans" class="ConstructorWithArrays.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/beans/CyclicConstructor.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.beans" class="CyclicConstructor.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+      <violation beginline="8" endline="8" begincolumn="19" endcolumn="19" rule="adobe.ac.pmd.rules.style.ConstructorNonEmptyReturnType" ruleset="Style Rules" package="org.toshiroioc.test.beans" class="CyclicConstructor.as" externalInfoUrl="" priority="5">A constructor should not have a return type. Even if this is syntactically correct, there should not be a return type for a constructor</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/beans/CyclicConstructorAndSetter.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.beans" class="CyclicConstructorAndSetter.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/beans/CyclicSetter.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.beans" class="CyclicSetter.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/puremvc/model/DynamicExampleProxy.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.puremvc.model" class="DynamicExampleProxy.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/puremvc/model/DynamicExampleProxy2.as">
+      <violation beginline="13" endline="13" begincolumn="19" endcolumn="19" rule="adobe.ac.pmd.rules.naming.VariableNameEndingWithNumeric" ruleset="Naming Rules" package="org.toshiroioc.test.puremvc.model" class="DynamicExampleProxy2.as" externalInfoUrl="" priority="3">Using digits at the end of a symbol does not help understanging the meaning of it</violation>
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.puremvc.model" class="DynamicExampleProxy2.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/puremvc/view/DynamicExampleView.as">
+      <violation beginline="11" endline="11" begincolumn="14" endcolumn="14" rule="adobe.ac.pmd.rules.naming.VariableNameEndingWithNumeric" ruleset="Naming Rules" package="org.toshiroioc.test.puremvc.view" class="DynamicExampleView.as" externalInfoUrl="" priority="3">Using digits at the end of a symbol does not help understanging the meaning of it</violation>
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.puremvc.view" class="DynamicExampleView.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/puremvc/mediator/DynamicExampleViewMediator.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.puremvc.mediator" class="DynamicExampleViewMediator.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/puremvc/command/DynamicMacroOnLoadCommand.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.puremvc.command" class="DynamicMacroOnLoadCommand.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/DynamicModule.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org" class="DynamicModule.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/puremvc/command/DynamicPrepModelCommand.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.puremvc.command" class="DynamicPrepModelCommand.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/puremvc/command/DynamicPrepViewCommand.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.puremvc.command" class="DynamicPrepViewCommand.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/puremvc/command/DynamicSimpleStartupCommand.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.puremvc.command" class="DynamicSimpleStartupCommand.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/puremvc/command/DynamicTestCommand.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.puremvc.command" class="DynamicTestCommand.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/puremvc/model/ExampleProxy.as">
+      <violation beginline="15" endline="15" begincolumn="15" endcolumn="15" rule="adobe.ac.pmd.rules.maintanability.ArrayFieldWithNoArrayElementType" ruleset="Maintanability Rules" package="org.toshiroioc.test.puremvc.model" class="ExampleProxy.as" externalInfoUrl="" priority="3">ArrayElementType metadata is not specified for this array-type field (name_arr). 
+        </violation>
+      <violation beginline="41" endline="41" begincolumn="16" endcolumn="16" rule="adobe.ac.pmd.rules.performance.AvoidInstanciationInLoop" ruleset="Performance Rules" package="org.toshiroioc.test.puremvc.model" class="ExampleProxy.as" externalInfoUrl="" priority="3">Instanciating a variable in a loop can be expensive. </violation>
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.puremvc.model" class="ExampleProxy.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+      <violation beginline="35" endline="35" begincolumn="0" endcolumn="16" rule="adobe.ac.pmd.rules.naming.TooShortVariable" ruleset="Naming Rules" package="org.toshiroioc.test.puremvc.model" class="ExampleProxy.as" externalInfoUrl="" priority="5">This variable name is too short (3 characters minimum, but 1 actually). Detects when a field, local, or parameter has a very short name</violation>
+      <violation beginline="37" endline="37" begincolumn="0" endcolumn="50" rule="adobe.ac.pmd.rules.naming.TooShortVariable" ruleset="Naming Rules" package="org.toshiroioc.test.puremvc.model" class="ExampleProxy.as" externalInfoUrl="" priority="5">This variable name is too short (3 characters minimum, but 2 actually). Detects when a field, local, or parameter has a very short name</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/puremvc/model/ExampleProxy2.as">
+      <violation beginline="15" endline="15" begincolumn="19" endcolumn="19" rule="adobe.ac.pmd.rules.naming.VariableNameEndingWithNumeric" ruleset="Naming Rules" package="org.toshiroioc.test.puremvc.model" class="ExampleProxy2.as" externalInfoUrl="" priority="3">Using digits at the end of a symbol does not help understanging the meaning of it</violation>
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.puremvc.model" class="ExampleProxy2.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/puremvc/model/ExampleVO.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.puremvc.model" class="ExampleVO.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/puremvc/view/ExampleView.as">
+      <violation beginline="11" endline="11" begincolumn="14" endcolumn="14" rule="adobe.ac.pmd.rules.naming.VariableNameEndingWithNumeric" ruleset="Naming Rules" package="org.toshiroioc.test.puremvc.view" class="ExampleView.as" externalInfoUrl="" priority="3">Using digits at the end of a symbol does not help understanging the meaning of it</violation>
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.puremvc.view" class="ExampleView.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/puremvc/mediator/ExampleViewMediator.as">
+      <violation beginline="18" endline="18" begincolumn="15" endcolumn="15" rule="adobe.ac.pmd.rules.unused.UnusedField" ruleset="Unused Rules" package="org.toshiroioc.test.puremvc.mediator" class="ExampleViewMediator.as" externalInfoUrl="" priority="1">This private attribute (examplePrx) does not seem to be used. 
+      </violation>
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.puremvc.mediator" class="ExampleViewMediator.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/LinkageEnforcer.as">
+      <violation beginline="21" endline="21" begincolumn="17" endcolumn="17" rule="adobe.ac.pmd.rules.maintanability.forbiddentypes.UseObjectType" ruleset="Maintanability Rules" package="" class="LinkageEnforcer.as" externalInfoUrl="" priority="1">Do not use Object class. It is a bad practice to use the dynamic class Object. Prefer using strongly typed object, or marker interface in order to avoid silent compilation errors while refactoring</violation>
+      <violation beginline="21" endline="21" begincolumn="17" endcolumn="17" rule="adobe.ac.pmd.rules.unused.UnusedField" ruleset="Unused Rules" package="" class="LinkageEnforcer.as" externalInfoUrl="" priority="1">This private attribute (linkageEnforcer) does not seem to be used. 
+      </violation>
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="" class="LinkageEnforcer.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/puremvc/command/MacroStartupCommand.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.puremvc.command" class="MacroStartupCommand.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/errors/MethodInvocationTestError.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.errors" class="MethodInvocationTestError.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/beans/ObjectConstructorDate.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.beans" class="ObjectConstructorDate.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/beans/ObjectWithConstructorDependency.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.beans" class="ObjectWithConstructorDependency.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/beans/ParentOfSimpleDependencyObject.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.beans" class="ParentOfSimpleDependencyObject.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/puremvc/command/PrepModelCommand.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.puremvc.command" class="PrepModelCommand.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/puremvc/command/PrepViewCommand.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.puremvc.command" class="PrepViewCommand.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+      <violation beginline="11" endline="11" begincolumn="10" endcolumn="10" rule="adobe.ac.pmd.rules.switchrules.TooFewBrancheInSwitchStatement" ruleset="Switches Rules" package="org.toshiroioc.test.puremvc.command" class="PrepViewCommand.as" externalInfoUrl="" priority="5">There are too few branches in this switch statement (3 minimum, but 2 actual). Switch statements are designed for complex branches, and allow branches to share treatment. Using a switch for only 2 branches is ill advised, as switches are not as easy to understand as if. In this case, it's most likely is a good idea to use a if statement</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/beans/SetterWithArrays.as">
+      <violation beginline="5" endline="5" begincolumn="15" endcolumn="15" rule="adobe.ac.pmd.rules.maintanability.ArrayFieldWithNoArrayElementType" ruleset="Maintanability Rules" package="org.toshiroioc.test.beans" class="SetterWithArrays.as" externalInfoUrl="" priority="3">ArrayElementType metadata is not specified for this array-type field (simpleArrayField). 
+        </violation>
+      <violation beginline="6" endline="6" begincolumn="15" endcolumn="15" rule="adobe.ac.pmd.rules.maintanability.ArrayFieldWithNoArrayElementType" ruleset="Maintanability Rules" package="org.toshiroioc.test.beans" class="SetterWithArrays.as" externalInfoUrl="" priority="3">ArrayElementType metadata is not specified for this array-type field (objectsArrayField). 
+        </violation>
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.beans" class="SetterWithArrays.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/beans/SimpleBean.as">
+      <violation beginline="5" endline="5" begincolumn="15" endcolumn="15" rule="adobe.ac.pmd.rules.sizing.TooManyFields" ruleset="Sizing Rules" package="org.toshiroioc.test.beans" class="SimpleBean.as" externalInfoUrl="" priority="3">Too many field detected (5 maximum, but 8 actually). Classes that have too many fields could be redesigned to have fewer fields, possibly  through some nested object grouping of some of the information.  For example, a class with  city/state/zipcode fields could instead have one Address field</violation>
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.beans" class="SimpleBean.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/beans/SimpleBeanWithContextInjection.as">
+      <violation beginline="6" endline="6" begincolumn="15" endcolumn="15" rule="adobe.ac.pmd.rules.sizing.TooManyFields" ruleset="Sizing Rules" package="org.toshiroioc.test.beans" class="SimpleBeanWithContextInjection.as" externalInfoUrl="" priority="3">Too many field detected (5 maximum, but 6 actually). Classes that have too many fields could be redesigned to have fewer fields, possibly  through some nested object grouping of some of the information.  For example, a class with  city/state/zipcode fields could instead have one Address field</violation>
+      <violation beginline="9" endline="9" begincolumn="15" endcolumn="15" rule="adobe.ac.pmd.rules.naming.VariableNameEndingWithNumeric" ruleset="Naming Rules" package="org.toshiroioc.test.beans" class="SimpleBeanWithContextInjection.as" externalInfoUrl="" priority="3">Using digits at the end of a symbol does not help understanging the meaning of it</violation>
+      <violation beginline="38" endline="38" begincolumn="23" endcolumn="23" rule="adobe.ac.pmd.rules.naming.VariableNameEndingWithNumeric" ruleset="Naming Rules" package="org.toshiroioc.test.beans" class="SimpleBeanWithContextInjection.as" externalInfoUrl="" priority="3">Using digits at the end of a symbol does not help understanging the meaning of it</violation>
+      <violation beginline="42" endline="42" begincolumn="23" endcolumn="23" rule="adobe.ac.pmd.rules.naming.VariableNameEndingWithNumeric" ruleset="Naming Rules" package="org.toshiroioc.test.beans" class="SimpleBeanWithContextInjection.as" externalInfoUrl="" priority="3">Using digits at the end of a symbol does not help understanging the meaning of it</violation>
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.beans" class="SimpleBeanWithContextInjection.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/beans/SimpleBeanWithMetatags.as">
+      <violation beginline="4" endline="4" begincolumn="15" endcolumn="15" rule="adobe.ac.pmd.rules.sizing.TooManyFields" ruleset="Sizing Rules" package="org.toshiroioc.test.beans" class="SimpleBeanWithMetatags.as" externalInfoUrl="" priority="3">Too many field detected (5 maximum, but 7 actually). Classes that have too many fields could be redesigned to have fewer fields, possibly  through some nested object grouping of some of the information.  For example, a class with  city/state/zipcode fields could instead have one Address field</violation>
+      <violation beginline="7" endline="7" begincolumn="15" endcolumn="15" rule="adobe.ac.pmd.rules.naming.VariableNameEndingWithNumeric" ruleset="Naming Rules" package="org.toshiroioc.test.beans" class="SimpleBeanWithMetatags.as" externalInfoUrl="" priority="3">Using digits at the end of a symbol does not help understanging the meaning of it</violation>
+      <violation beginline="51" endline="51" begincolumn="23" endcolumn="23" rule="adobe.ac.pmd.rules.naming.VariableNameEndingWithNumeric" ruleset="Naming Rules" package="org.toshiroioc.test.beans" class="SimpleBeanWithMetatags.as" externalInfoUrl="" priority="3">Using digits at the end of a symbol does not help understanging the meaning of it</violation>
+      <violation beginline="55" endline="55" begincolumn="23" endcolumn="23" rule="adobe.ac.pmd.rules.naming.VariableNameEndingWithNumeric" ruleset="Naming Rules" package="org.toshiroioc.test.beans" class="SimpleBeanWithMetatags.as" externalInfoUrl="" priority="3">Using digits at the end of a symbol does not help understanging the meaning of it</violation>
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.beans" class="SimpleBeanWithMetatags.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/beans/SimpleBeanWithMetatagsExtended.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.beans" class="SimpleBeanWithMetatagsExtended.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/beans/SimpleBeanWithPostprocessor.as">
+      <violation beginline="7" endline="7" begincolumn="15" endcolumn="15" rule="adobe.ac.pmd.rules.naming.VariableNameEndingWithNumeric" ruleset="Naming Rules" package="org.toshiroioc.test.beans" class="SimpleBeanWithPostprocessor.as" externalInfoUrl="" priority="3">Using digits at the end of a symbol does not help understanging the meaning of it</violation>
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.beans" class="SimpleBeanWithPostprocessor.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+      <violation beginline="11" endline="11" begincolumn="19" endcolumn="19" rule="adobe.ac.pmd.rules.style.ConstructorNonEmptyReturnType" ruleset="Style Rules" package="org.toshiroioc.test.beans" class="SimpleBeanWithPostprocessor.as" externalInfoUrl="" priority="5">A constructor should not have a return type. Even if this is syntactically correct, there should not be a return type for a constructor</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/beans/SimpleBeanWithoutMetatags.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.beans" class="SimpleBeanWithoutMetatags.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/beans/SimpleDependencyObject.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.beans" class="SimpleDependencyObject.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/puremvc/command/SimpleStartupCommand.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.puremvc.command" class="SimpleStartupCommand.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/postprocessors/TestClassPostprocessor.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.postprocessors" class="TestClassPostprocessor.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/postprocessors/TestClassPostprocessor2.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.postprocessors" class="TestClassPostprocessor2.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/puremvc/command/TestCommand.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.puremvc.command" class="TestCommand.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/core/TestLinkageEnforcer.as">
+      <violation beginline="28" endline="28" begincolumn="17" endcolumn="17" rule="adobe.ac.pmd.rules.maintanability.forbiddentypes.UseObjectType" ruleset="Maintanability Rules" package="org.toshiroioc.core" class="TestLinkageEnforcer.as" externalInfoUrl="" priority="1">Do not use Object class. It is a bad practice to use the dynamic class Object. Prefer using strongly typed object, or marker interface in order to avoid silent compilation errors while refactoring</violation>
+      <violation beginline="28" endline="28" begincolumn="17" endcolumn="17" rule="adobe.ac.pmd.rules.unused.UnusedField" ruleset="Unused Rules" package="org.toshiroioc.core" class="TestLinkageEnforcer.as" externalInfoUrl="" priority="1">This private attribute (linkageEnforcer) does not seem to be used. 
+      </violation>
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.core" class="TestLinkageEnforcer.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/ToshiroApplicationFacadeTest.mxml">
+      <violation beginline="2" endline="2" begincolumn="7" endcolumn="7" rule="adobe.ac.pmd.rules.sizing.TooManyFields" ruleset="Sizing Rules" package="" class="ToshiroApplicationFacadeTest.mxml" externalInfoUrl="" priority="3">Too many field detected (5 maximum, but 6 actually). Classes that have too many fields could be redesigned to have fewer fields, possibly  through some nested object grouping of some of the information.  For example, a class with  city/state/zipcode fields could instead have one Address field</violation>
+      <violation beginline="34" endline="34" begincolumn="0" endcolumn="38" rule="adobe.ac.pmd.rules.mxml.MoreThanTwoEntryPointsInMxml" ruleset="Basic MXML Rules" package="" class="ToshiroApplicationFacadeTest.mxml" externalInfoUrl="" priority="3">There are more than 2 public variables in this MXML component</violation>
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="" class="ToshiroApplicationFacadeTest.mxml" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+      <violation beginline="15" endline="15" begincolumn="4" endcolumn="4" rule="adobe.ac.pmd.rules.css.UseCssInsteadOfEmbedMetaData" ruleset="CSS Rules" package="" class="ToshiroApplicationFacadeTest.mxml" externalInfoUrl="" priority="5">Embed metadata detected in source code where a stylesheet may be cleaner</violation>
+      <violation beginline="34" endline="34" begincolumn="0" endcolumn="38" rule="adobe.ac.pmd.rules.mxml.MoreThanOneEntryPointInMxml" ruleset="Basic MXML Rules" package="" class="ToshiroApplicationFacadeTest.mxml" externalInfoUrl="" priority="5">There is more than 1 public variable in this MXML component</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/test/puremvc/mediator/ToshiroApplicationFacadeTestMediator.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.test.puremvc.mediator" class="ToshiroApplicationFacadeTestMediator.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/ToshiroApplicationFacadeTestUserInterface.mxml">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="" class="ToshiroApplicationFacadeTestUserInterface.mxml" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+      <violation beginline="8" endline="8" begincolumn="4" endcolumn="4" rule="adobe.ac.pmd.rules.css.UseCssInsteadOfEmbedMetaData" ruleset="CSS Rules" package="" class="ToshiroApplicationFacadeTestUserInterface.mxml" externalInfoUrl="" priority="5">Embed metadata detected in source code where a stylesheet may be cleaner</violation>
+   </file>
+   <file name="C:/Users/mstrecker/Documents/Flex Builder 3/ToshiroIOC/java.libs/../src.test/org/toshiroioc/core/XMLBeanFactoryTestCase.as">
+      <violation beginline="-1" endline="-1" begincolumn="0" endcolumn="0" rule="adobe.ac.pmd.rules.style.CopyrightMissing" ruleset="Style Rules" package="org.toshiroioc.core" class="XMLBeanFactoryTestCase.as" externalInfoUrl="" priority="5">The copyright header is missing in this file</violation>
+   </file>
+</pmd>

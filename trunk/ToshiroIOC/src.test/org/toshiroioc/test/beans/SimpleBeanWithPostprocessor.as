@@ -8,7 +8,7 @@ package org.toshiroioc.test.beans{
 		private var propertyToSet:Number;
 		public var commonField:Number=0;
 		
-		public function SimpleBeanWithPostprocessor(value:Number=0):void{
+		public function SimpleBeanWithPostprocessor(value:Number=0){
 			this.propertyToSet = value;
 		}
 		

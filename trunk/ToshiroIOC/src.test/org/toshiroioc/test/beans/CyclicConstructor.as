@@ -5,7 +5,7 @@ package org.toshiroioc.test.beans{
 		private var childField:CyclicConstructor;
 		
 		
-		public function CyclicConstructor(childBean:CyclicConstructor):void{
+		public function CyclicConstructor(childBean:CyclicConstructor){
 			childField = childBean;
 		}
 		
