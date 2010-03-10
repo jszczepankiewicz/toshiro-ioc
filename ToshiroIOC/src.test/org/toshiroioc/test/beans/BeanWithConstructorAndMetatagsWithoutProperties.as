@@ -10,8 +10,6 @@ package org.toshiroioc.test.beans
 		
 		public var secondBeforeMethod:Boolean;
 		public var secondAfterMethod:Boolean;
-		private var dependencyField:SimpleBean;
-		private var numberField:Number;
 		public var beforeConfigureMethodInvocation:Boolean;
 		public var afterConfigureMethodInvocation:Boolean;
 		

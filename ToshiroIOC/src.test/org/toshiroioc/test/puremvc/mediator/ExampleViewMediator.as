@@ -15,7 +15,6 @@ package org.toshiroioc.test.puremvc.mediator
 	{
 		public static const NAME:String = 'ExampleViewMediator';
 		
-		private var examplePrx:ExampleProxy; 
 		public var noteFromDynMed : Number =0;
 		public var notesFromProxies : Number = 0;
 		public static const EX_VIEW_MEDIATOR_ON_REGISTER:String = "exViewMediatorOnRegister";
