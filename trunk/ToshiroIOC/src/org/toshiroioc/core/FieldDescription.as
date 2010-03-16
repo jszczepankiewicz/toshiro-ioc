@@ -48,6 +48,7 @@ package org.toshiroioc.core
 		public static const FIELD_TYPE_CLASS:uint	= 9;
 		public static const FIELD_TYPE_ARRAY:uint = 10;
 		public static const FIELD_TYPE_CONST:uint = 11;
+		public static const FIELD_TYPE_MAP:uint = 12;
 		public static const METATAG_BEFORE_CONFIGURE:String	= "BeforeConfigure";
 		public static const METATAG_AFTER_CONFIGURE:String	= "AfterConfigure";
 		public static const METATAG_REQUIRED:String	= "Required";
@@ -127,7 +128,8 @@ package org.toshiroioc.core
 				}
 			}
 			 
-			throw new ArgumentError("ClassRegistry can not resolve class for shortname: " + shortName + ", make sure you have registered the class binded to this xml object, and/or you have added collection hint for unmarshaller");
+			throw new ArgumentError("ClassRegistry can not resolve class for shortname: " + shortName 
+				+ ", make sure you have registered the class binded to this xml object, and/or you have added collection hint for unmarshaller");
 			
 		}
 		
@@ -309,7 +311,7 @@ package org.toshiroioc.core
 			return fieldsInfo;
 		}
 		
-				public static function getArrayEntriesDescription(entries:XMLList):Array{
+		public static function getArrayEntriesDescription(entries:XMLList):Array{
 			var typesArray:Array = new Array();
 			var objectType:String;
 
@@ -321,7 +323,7 @@ package org.toshiroioc.core
 						objectType = (entry.children()[0] as XML).localName() as String;
 						break;
 					default:
-						throw new ArgumentError("Too many arguments for entry:["+entry+"]");					
+						throw new ArgumentError("Too many arguments for a single array entry, allowed one. ["+entry+"]");					
 				}
 
 				switch(objectType){
@@ -354,6 +356,9 @@ package org.toshiroioc.core
 							break; 
 					case ("const"):
 						typesArray.push(FIELD_TYPE_CONST);
+						break;
+					case ("map"):
+						typesArray.push(FIELD_TYPE_MAP);
 						break;
 					default:
 						throw new ArgumentError("Not supported array item type:["+objectType+"]");

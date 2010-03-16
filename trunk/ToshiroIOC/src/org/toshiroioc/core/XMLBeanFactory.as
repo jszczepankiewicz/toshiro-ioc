@@ -553,6 +553,7 @@ package org.toshiroioc.core
 		 
 		private function processBeanProperties(clazz:Class, bean:*, properties:XMLList, processDependencies:Boolean = false):void{
 			var fieldDescriptionMap:Object = FieldDescription.getClassDescription(clazz);
+			
 			if (properties.length()>0){
 				var beanId : String = ((properties[0] as XML).parent() as XML).attribute("id").toXMLString();			
 			}
@@ -565,7 +566,6 @@ package org.toshiroioc.core
 					bean[methodName]();
 				}
 			}
-				
 			
 			//	initializing
 			
@@ -605,9 +605,17 @@ package org.toshiroioc.core
 					bean[propertyName] = parseArray(property.child("array").child("entry") as XMLList);
 					continue;
 				} 
-								
-	
 				
+				 if (property.child("map").length()!=0){
+					bean[propertyName] = parseMap(property.child("map").child("entry") as XMLList);
+					continue;
+				} 
+				
+/* 				if (property.child("vector").length()!=0){
+					bean[propertyName] = parseVector(property.child("vector").child("entry") as XMLList);
+					continue;
+				}  */
+								
 				bean[propertyName] = parseProperty(fieldDescriptionMap[propertyName], property);				
 			}
 			// call method tagged [AfterConfigure]
@@ -652,6 +660,39 @@ package org.toshiroioc.core
 				return editor.parseProperty(propertyType, property);		
 		}
 		
+/* 		private function parseVector(entries:XMLList):Vector<*>{
+			
+		} */
+		
+		private function parseMap(entries:XMLList):Object{
+			
+			var properties:XMLList;
+			var property:XML;
+			var object:Object = new Object();
+			var key:String;
+			var clazz:Class;
+			for each(var entry:XML in entries){
+				properties = entry.child("property");
+				switch(properties.length()){
+					case(0):
+						throw new ArgumentError("Empty entry in:["+entries+"]");
+						break;
+					case (1):
+						property = properties[0];
+						key = property.attribute("key").toXMLString();
+						
+						if(!key || key.length == 0){
+							throw new ArgumentError("Property:["+property+"] in entry:["+entry+"] has empty key" )
+						}
+						object[key] = getClass(property.attribute("class").toXMLString());	
+						break;
+					default:
+						throw new ArgumentError("Too many arguments for a single map entry, allowed one. ["+entry+"]");	
+				}
+			}
+			return object;
+		}
+		
 		private function parseArray(entries:XMLList):Array{
 			var typesArray : Array = FieldDescription.getArrayEntriesDescription(entries);
 			var returnArray : Array = new Array();
@@ -674,6 +715,9 @@ package org.toshiroioc.core
 						continue;
 					case FieldDescription.FIELD_TYPE_ARRAY:
 						returnArray.push(parseArray(entry.child("array").child("entry")));
+						continue;
+					case FieldDescription.FIELD_TYPE_MAP:
+						returnArray.push(parseMap(entry.child("map").child("entry")));
 						continue;
 					case FieldDescription.FIELD_TYPE_CLASS:
 						//add attribute class

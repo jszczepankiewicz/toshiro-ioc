@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+	<object id="setterWithArray" class="org.toshiroioc.test.beans.SetterWithArrays">
+		<property name="booleanItem" value="true"/>
+		
+		<property name="simpleArrayItem">
+			<array>
+				<entry>
+					<map>
+						<entry>
+							<property key="sth" class="org.toshiroioc.test.beans.SetterWithArrays"/>
+							<property key="sth2" class="org.toshiroioc.test.beans.SetterWithArrays"/>
+						</entry>
+					</map>
+				</entry>
+			</array>
+		</property>
+		
+		<property name="objectsArrayItem">
+			<array>
+				<entry>
+					<object class="org.toshiroioc.test.beans.SimpleBean">
+						<property name="numberItem" value="1"/>
+					</object>
+				</entry>
+				<entry>
+					<Number>
+						2
+					</Number>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.test.beans.SimpleBean">
+						<property name="numberItem" value="3"/>
+					</object>
+				</entry>
+			</array>
+		</property>
+		
+	</object>
+	
+
+</objects>
