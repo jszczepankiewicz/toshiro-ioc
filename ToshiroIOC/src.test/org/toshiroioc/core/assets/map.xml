@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+	<object id="setterWithArrays" class="org.toshiroioc.test.beans.SetterWithArrays">
+		<property name="booleanItem" value="true"/>
+		<property name="simpleArrayItem">
+			<array>
+				<entry>
+					<array>
+						<entry>
+							<string>
+								first
+							</string>
+						</entry>
+						<entry>
+							<map>
+								<entry>
+									<property key="someSimpleBean" class="org.toshiroioc.test.beans.SimpleBean"/>
+								</entry>
+								<entry>
+									<property key="someSetterWithArrays" class="org.toshiroioc.test.beans.SetterWithArrays"/>
+								</entry>
+							</map>
+						</entry>
+					</array>
+				</entry>
+			</array>
+		</property>
+		<property name="objectsArrayItem">
+			<array>
+				<entry>
+					<array>
+						<entry>
+							<string>
+								second
+							</string>
+						</entry>
+						<entry>
+							<map>
+								<entry>
+									<property key="someSimpleBean2" class="org.toshiroioc.test.beans.SimpleBean"/>
+								</entry>
+								<entry>
+									<property key="someSetterWithArrays2" class="org.toshiroioc.test.beans.SetterWithArrays"/>
+								</entry>
+							</map>
+						</entry>
+					</array>
+				</entry>
+			</array>
+		</property>
+	</object>
+	<object id="setterWithArrays2" class="org.toshiroioc.test.beans.SetterWithArrays">
+		<property name="booleanItem" value="true"/>
+		<property name="simpleArrayItem">
+			<array>
+				<entry>
+					<array>
+						<entry>
+							<string>
+								third
+							</string>
+						</entry>
+						<entry>
+							<map>
+								<entry>
+									<property key="someSetterWithArrays" class="org.toshiroioc.test.beans.SetterWithArrays"/>
+								</entry>
+								<entry>
+									<property key="someSimpleBean" class="org.toshiroioc.test.beans.SimpleBean"/>
+								</entry>
+							</map>
+						</entry>
+					</array>
+				</entry>
+			</array>
+		</property>
+		<property name="objectsArrayItem">
+			<array>
+				<entry>
+					<map>
+					</map>
+				</entry>
+			</array>
+		</property>
+	</object>
+</objects>

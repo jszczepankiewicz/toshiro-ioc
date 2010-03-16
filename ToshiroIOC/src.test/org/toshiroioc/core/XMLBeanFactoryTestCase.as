@@ -229,9 +229,81 @@ package org.toshiroioc.core
 		[Embed(source="assets/constructorwitharray.xml", mimeType="application/octet-stream")]
 		private var ConstructorWithArrayXMLClass:Class;
 		
+		[Embed(source="assets/setterwithvector.xml", mimeType="application/octet-stream")]
+		private var SetterWithVectorXMLClass:Class;
+		
+		[Embed(source="assets/map.xml", mimeType="application/octet-stream")]
+		private var MapXMLClass:Class;
+		
+		[Embed(source="assets/setterwithmapemptyentry.xml", mimeType="application/octet-stream")]
+		private var SetterWithMapEmptyEntryXMLClass:Class;
+		
+		[Embed(source="assets/setterwithmaptoomuchargsinentry.xml", mimeType="application/octet-stream")]
+		private var SetterWithMapTooMuchArgsInEntryXMLClass:Class;
+		
 		public function XMLBeanFactoryTestCase(methodName:String){
 			super(methodName);
 		}
+		
+		public function testErrorsInMap():void{
+			var xml:XML = constructXMLFromEmbed(SetterWithMapEmptyEntryXMLClass);
+			var context:XMLBeanFactory = new XMLBeanFactory(xml);
+			var error:ArgumentError;
+			try{
+				context.initialize();
+			}
+			catch(err:ArgumentError){
+				error = err;
+			}
+			assertNotNull(error);
+			assertTrue(error.message.indexOf("Empty entry") != -1);
+			
+			xml = constructXMLFromEmbed(SetterWithMapTooMuchArgsInEntryXMLClass);
+			context = new XMLBeanFactory(xml);
+			error = null;
+			try{
+				context.initialize();
+			}
+			catch(err:ArgumentError){
+				error = err;
+			}
+			assertNotNull(error);
+			assertTrue(error.message.indexOf("Too many arguments for a single map entry") != -1);
+		}
+		
+		public function testMap():void{
+			var xml:XML = constructXMLFromEmbed(MapXMLClass);
+			var context:XMLBeanFactory = new XMLBeanFactory(xml);
+			var setterWithArray:SetterWithArrays;
+			var setterWithArray2:SetterWithArrays;
+			var map:Object;
+			context.initialize();
+			setterWithArray = context.getObject("setterWithArrays") as SetterWithArrays;
+			setterWithArray2 = context.getObject("setterWithArrays2") as SetterWithArrays;
+			assertTrue(setterWithArray.booleanItem);
+			assertEquals(1, setterWithArray.simpleArrayItem.length);
+			assertEquals(2, (setterWithArray.simpleArrayItem[0] as Array).length);
+			assertEquals("first", (setterWithArray.simpleArrayItem[0] as Array)[0]);
+			map = (setterWithArray.simpleArrayItem[0] as Array)[1];
+			assertTrue(map["someSimpleBean"] as Class == getDefinitionByName("org.toshiroioc.test.beans.SimpleBean") as Class);
+			assertTrue(map["someSetterWithArrays"] as Class == getDefinitionByName("org.toshiroioc.test.beans.SetterWithArrays") as Class);
+			assertEquals("second", (setterWithArray.objectsArrayItem[0] as Array)[0]);
+			map = (setterWithArray.objectsArrayItem[0] as Array)[1];
+			assertTrue(map["someSimpleBean2"] as Class == getDefinitionByName("org.toshiroioc.test.beans.SimpleBean") as Class);
+			assertTrue(map["someSetterWithArrays2"] as Class == getDefinitionByName("org.toshiroioc.test.beans.SetterWithArrays") as Class);
+			
+			assertTrue(setterWithArray2.booleanItem);
+			assertEquals(1, setterWithArray2.simpleArrayItem.length);
+			assertEquals(2, (setterWithArray2.simpleArrayItem[0] as Array).length);
+			assertEquals("third", (setterWithArray2.simpleArrayItem[0] as Array)[0]);
+			map = (setterWithArray2.simpleArrayItem[0] as Array)[1];
+			assertTrue(map["someSimpleBean"] as Class == getDefinitionByName("org.toshiroioc.test.beans.SimpleBean") as Class);
+			assertTrue(map["someSetterWithArrays"] as Class == getDefinitionByName("org.toshiroioc.test.beans.SetterWithArrays") as Class);
+			
+			assertNotNull(setterWithArray2.objectsArrayItem[0]);
+			
+		}
+		
 		
 		public function testConstructorArrayInjection():void{
 			var xml:XML = constructXMLFromEmbed(ConstructorWithArrayXMLClass);
@@ -329,7 +401,7 @@ package org.toshiroioc.core
 				error = err;
 			}
 			assertNotNull(error);
-			assertTrue(error.message.indexOf("Too many arguments for entry") != -1);
+			assertTrue(error.message.indexOf("Too many arguments for a single array entry") != -1);
 		}
 		
  		public function testSetterArrayInjection():void{
@@ -1643,8 +1715,10 @@ package org.toshiroioc.core
 		
 		public static function getTestsArr():Vector.<Test>{
 			var retval:Vector.<Test> = new Vector.<Test>();	
-
-			retval.push(new XMLBeanFactoryTestCase("testMetatagsBeforeAndAfterConstructorWithoutProperties"));
+			
+			retval.push(new XMLBeanFactoryTestCase("testErrorsInMap"));
+			retval.push(new XMLBeanFactoryTestCase("testMap"));
+ 			retval.push(new XMLBeanFactoryTestCase("testMetatagsBeforeAndAfterConstructorWithoutProperties"));
 			retval.push(new XMLBeanFactoryTestCase("testConstructorArrayInjection"));
 			retval.push(new XMLBeanFactoryTestCase("testErrorsInArray"));
 			retval.push(new XMLBeanFactoryTestCase("testSetterArrayInjection"));
@@ -1704,7 +1778,7 @@ package org.toshiroioc.core
 			retval.push(new XMLBeanFactoryTestCase("testCyclicDependencyFromConstructorToSetterComplex"));
 			retval.push(new XMLBeanFactoryTestCase("testCyclicDependencyFromSetterToConstructorComplex"));
 			retval.push(new XMLBeanFactoryTestCase("testStaticReferenceInConstructor"));
-			retval.push(new XMLBeanFactoryTestCase("testStaticReferenceInSetter"));                             
+			retval.push(new XMLBeanFactoryTestCase("testStaticReferenceInSetter"));                               
 			  
   			
 			/*

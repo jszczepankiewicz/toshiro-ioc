@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+	<object id="setterWithVector" class="org.toshiroioc.test.beans.SetterWithVectors">
+		<property name="booleanItem" value="true"/>
+		
+		<property name="simpleVectorItem">
+			<vector>
+				<entry>
+					<string>
+						row
+					</string>
+				</entry>
+				<entry>
+					<string>
+						a
+					</string>
+				</entry>
+				<entry>
+					<string>
+						boat
+					</string>
+				</entry>
+			</vector>
+		</property>
+		
+		<property name="objectsVectorItem">
+			<vector>
+				<entry>
+					<object class="org.toshiroioc.test.beans.SimpleBean" lifecycle="prototype">
+						<property name="numberItem" value="1"/>
+					</object>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.test.beans.SimpleBean" lifecycle="prototype">
+						<property name="numberItem" value="3"/>
+					</object>
+				</entry>
+			</vector>
+		</property>
+	</object>
+	
+	<object id="secondSetterWithVector" class="org.toshiroioc.test.beans.SetterWithVectors">
+		<property name="booleanItem" value="true"/>
+		
+		<property name="simpleVectorItem">
+			<vector>
+				<entry>
+					<object class="org.toshiroioc.test.beans.SetterWithArrays">
+						<property name="simpleArrayItem">
+							<array>
+								<entry>
+									<number>
+										13
+									</number>
+								</entry>
+								<entry>
+									<string>
+										innerArrayOfInnerObjectOfInnerArray
+									</string>
+								</entry>
+								<entry>
+									<object class="org.toshiroioc.test.beans.SimpleBean">
+										<property name="stringItem" value="deepEnough"/>
+									</object>
+								</entry>
+							</array>
+						<property name="objectsArrayItem">
+							<array>
+								<entry>
+									<number>
+										131
+									</number>
+								</entry>
+								<entry>
+									<string>
+										innerArrayOfInnerObjectOfInnerArray21
+									</string>
+								</entry>
+								<entry>
+									<object class="org.toshiroioc.test.beans.SimpleBean">
+										<property name="stringItem" value="deepEnough234"/>
+									</object>
+								</entry>
+							</array>
+						</property>
+					</object>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.test.beans.SetterWithArrays">
+						<property name="simpleArrayItem">
+							<array>
+								<entry>
+									<number>
+										14
+									</number>
+								</entry>
+								<entry>
+									<string>
+										innerArrayOfInnerObjectOfInnerArray2
+									</string>
+								</entry>
+								<entry>
+									<object class="org.toshiroioc.test.beans.SimpleBean">
+										<property name="stringItem" value="deepEnough2"/>
+									</object>
+								</entry>
+							</array>
+						</property>
+					</object>
+				</entry>
+			</vector>
+		</property>
+		
+		<property name="objectsVectorItem">
+			<vector>
+				<entry>
+					<object class="org.toshiroioc.test.beans.SimpleBean">
+						<property name="numberItem" value="1"/>
+					</object>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.test.beans.SimpleBean">
+						<property name="numberItem" value="3"/>
+					</object>
+				</entry>
+			</vector>
+		</property>
+		
+	</object>
+	<object id="objectWithEmptyVector" class="org.toshiroioc.test.beans.SetterWithVectors">
+		<property name="simpleVectorItem">
+			<vector>
+				<entry>
+					<number>
+						3
+					</number>
+				</entry>
+			</vector>
+		</property>
+		<property name="objectsVectorItem">
+			<vector>
+			</vector>
+		</property>
+	</object>
+</objects>
