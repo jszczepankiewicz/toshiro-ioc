@@ -29,6 +29,10 @@
 	</taskdef>
 	<!-- ================ TARGETS ======================== -->
 
+	<target name="quality.and.dist" depends="pmd.show, dist.lib">
+		
+	</target>
+	
 	<target name="dist.lib">
 		<echo message="building distribution library" />
 
@@ -43,9 +47,9 @@
 	<target name="pmd.show">
 		<echo message="running pmd analysis..." />
 
-		<mkdir dir="quality" />
+		<mkdir dir="pmd.result" />
 
-		<flexPmd sourceDirectory="src" outputDirectory="quality" />
+		<flexPmd sourceDirectory="src" outputDirectory="pmd.result" />
 
 	</target>
 
