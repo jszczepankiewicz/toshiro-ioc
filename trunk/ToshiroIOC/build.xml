@@ -13,6 +13,7 @@
 
 	<!-- task defs -->
 	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
+	
 	<taskdef name="flexPmd" classname="com.adobe.ac.pmd.ant.FlexPmdAntTask" classpath="${flexpmd.dir}/flex-pmd-ant-task-${flexpmd.version}.jar">
 		<classpath>
 			<pathelement location="${flexpmd.dir}/flex-pmd-ruleset-api-${flexpmd.version}.jar" />
@@ -34,7 +35,7 @@
 	</target>
 	
 	<target name="dist.lib">
-		<echo message="building distribution library" />
+		<echo message="building distribution library using FLEX_HOME: ${FLEX_HOME}..." />
 
 		<mkdir dir="dist" />
 
