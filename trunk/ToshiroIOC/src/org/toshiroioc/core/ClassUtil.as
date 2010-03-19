@@ -37,7 +37,7 @@ package org.toshiroioc.core
 	 * Class used to do class related operations.
 	 */
 	public class ClassUtil{
-		public static function initializeClassWithNonDefConstructor(beanXML:XML, constructorArgs:XMLList, clazz:Class, factory:XMLBeanFactory):Object{
+		public static function initializeClassWithNonDefConstructor(beanXML:XML, constructorArgs:XMLList, clazz:Class, factory:XMLBeanFactory):*{
 			
 			var retval:Object;
 			var args:uint = constructorArgs.length();
