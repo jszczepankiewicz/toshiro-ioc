@@ -330,6 +330,7 @@ package org.toshiroioc.core
 		
 		private function hasDependencies(beanXML:XML):Boolean{
 			var test:*;
+			var dependentS:String;
 			//	filtering by required "ref" attribute 
 			var propertiesDependent:XMLList = beanXML.child("property").(attribute("ref").toXMLString().length > 0); 
 			propertiesDependent = filterAndValidateOptionalAttribute(propertiesDependent);
@@ -350,7 +351,7 @@ package org.toshiroioc.core
 				for each (var property:XML in propertiesDependent){	
 										
 
-					var dependentS:String = property.attribute("ref");
+					dependentS = property.attribute("ref");
 					depNode.addNodeDependency(getNode(dependentS));
 				}
 				return true;
@@ -375,7 +376,7 @@ package org.toshiroioc.core
 
 				for each (var constructor:XML in constructorDependent){	
 				
-					var dependentS:String = constructor.attribute("ref");					
+					dependentS = constructor.attribute("ref");					
 					depNode2.addNodeDependency(getNode(dependentS));
 				}
 				return true;
