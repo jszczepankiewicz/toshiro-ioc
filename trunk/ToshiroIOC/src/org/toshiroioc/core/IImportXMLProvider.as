@@ -31,7 +31,7 @@ package org.toshiroioc.core
 	public interface IImportXMLProvider{
 		
 		function getXMLDocument():XML; 
-		function function get availableXMLDocuments():int;
+		function get availableXMLDocuments():int;
 		
 	}
 }
