@@ -90,10 +90,8 @@ package org.toshiroioc.core
 				
 				var pos:int = fullname.toLowerCase().indexOf(shortName.toLowerCase());
 				
-				if(pos> -1){
+				if((pos> -1) && ((pos + shortName.length) == fullname.length)){
 					
-					//	TODO: add checking if the type was at the end (now when querying "User", might return
-					//	SomeUserOfMachine, which is error	
 					var retclazz:Class = registryValues[keyIndex];
 					 
 					//	saving to the cache
