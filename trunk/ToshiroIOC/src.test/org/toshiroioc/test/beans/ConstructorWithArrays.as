@@ -6,7 +6,7 @@ package org.toshiroioc.test.beans{
 		private var objectsArrayField:Array;
 		private var someNumberField:Number;
 
-		public function ConstructorWithArrays(someNumber:Number, array1:Array, array2:Array){
+		public function ConstructorWithArrays(someNumber:Number, array1:Array, array2:Array=null){
 				
 				simpleArrayField = array1;
 				objectsArrayField = array2;

@@ -131,7 +131,7 @@
 	
 	<object id="objectTwo" class="org.toshiroioc.test.beans.ConstructorWithArrays">
 		<constructor-arg value="-99999.6"/>
-				<constructor-arg>
+		<constructor-arg>
 			<array>
 				<entry>
 					<string>

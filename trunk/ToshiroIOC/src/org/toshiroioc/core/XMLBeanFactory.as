@@ -499,8 +499,10 @@ package org.toshiroioc.core
 			
 			for each(beanXML in beans){
 				var idString:String = String(beanXML.attribute("id")); 
-				if (nameExists(idString))
+				var hasId:Boolean = idString && idString.length > 0;
+				if (nameExists(idString)){
 					throw new ContainerError("Id: ["+idString+"] not unique",0,ContainerError.ERROR_MULTIPLE_BEANS_WITH_THE_SAME_ID);
+				}
 				bean = null;	
 				
 				//	checking for prototype
@@ -522,8 +524,32 @@ package org.toshiroioc.core
 					bean = initializeBean(beanXML, false);
 				}
 				
+				
+				if(hasId){
+					putObjectIntoNodeCache(bean, beanXML);
+				}
+				
+				if(bean){
+					if(hasId){
+						beansMap[idString] = bean;
+					}
+					if(!isRoot){
+						if (!arrayOfInnerObjects){
+							arrayOfInnerObjects = new Array();
+						}
+						arrayOfInnerObjects.push(bean);
+					}
+					
+				}
+			}			
+			if(isRoot){
+				resolveDependentBeans();
+			}
+			return arrayOfInnerObjects;
+				
+				
 				//	refill nodes
-				if(isRoot)
+				/* if(isRoot)
 					putObjectIntoNodeCache(bean, beanXML);
 				
 				if(bean!=null && isRoot){
@@ -538,7 +564,7 @@ package org.toshiroioc.core
 			if(isRoot){
 				resolveDependentBeans();
 			}
-			return arrayOfInnerObjects;
+			return arrayOfInnerObjects; */
 		}
 		
 		private function manageOptionalRef(parent:String, ref:String, propertyName:String):void{
