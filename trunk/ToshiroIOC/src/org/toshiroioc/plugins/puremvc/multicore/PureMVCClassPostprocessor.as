@@ -57,17 +57,15 @@ package org.toshiroioc.plugins.puremvc.multicore
 				facade.registerCommand(commandMap.notification, commandMap.command);
 			}
 			
-			var mediator : IMediator;
-			while(mediator = mediators.shift()){
-				facade.registerMediator(mediator);
-			}
-			
 			var proxy : IProxy;
 			while(proxy = proxies.shift()){
 				facade.registerProxy(proxy);
 			}
 			
-
+			var mediator : IMediator;
+			while(mediator = mediators.shift()){
+				facade.registerMediator(mediator);
+			}
 		}
 		
 	}
