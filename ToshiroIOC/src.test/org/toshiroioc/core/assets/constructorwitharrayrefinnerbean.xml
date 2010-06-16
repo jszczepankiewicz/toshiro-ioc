@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<objects>
+	<object id="objectOne" class="org.toshiroioc.test.beans.ConstructorWithArrays">
+		<constructor-arg>
+			<number>2</number>
+		</constructor-arg>
+		<constructor-arg>
+			<array>
+				<entry>
+					<object id="innerBean" class="org.toshiroioc.test.beans.SimpleDependencyObject">
+							<property name="someString" value="exampleString"/>
+					</object>
+				</entry>
+				<entry>
+					<object class="org.toshiroioc.test.beans.SimpleBean">
+						<property name="numberItem" value="2"/>
+					</object>
+				</entry>
+
+				<!--<entry>
+					<array>
+						
+						<entry>
+							<object class="org.toshiroioc.test.beans.SimpleBean">
+								<property
+					name="stringItem" value="innerObjectOfInnerArray"/>
+							</object>
+						</entry>
+						
+					</array>
+				</entry>-->
+			</array>
+		</constructor-arg>
+	</object>
+	
+	<object id="objectTwo" class="org.toshiroioc.test.beans.ParentOfSimpleDependencyObject">
+		<property name="nextChild" ref="innerBean"/>
+	</object>
+	
+</objects>

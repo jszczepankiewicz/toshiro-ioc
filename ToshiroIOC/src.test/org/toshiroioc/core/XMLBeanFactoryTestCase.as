@@ -229,6 +229,9 @@ package org.toshiroioc.core
 		[Embed(source="assets/constructorwitharray.xml", mimeType="application/octet-stream")]
 		private var ConstructorWithArrayXMLClass:Class;
 		
+		[Embed(source="assets/constructorwitharrayrefinnerbean.xml", mimeType="application/octet-stream")]
+		private var ConstructorWithArrayRefInnerBeanXMLClass:Class;
+		
 		[Embed(source="assets/setterwithvector.xml", mimeType="application/octet-stream")]
 		private var SetterWithVectorXMLClass:Class;
 		
@@ -244,6 +247,21 @@ package org.toshiroioc.core
 		public function XMLBeanFactoryTestCase(methodName:String){
 			super(methodName);
 		}
+		
+		public function testConstructorWithArrayRefInnerBean():void{
+			var xml:XML = constructXMLFromEmbed(ConstructorWithArrayRefInnerBeanXMLClass);
+			var context:XMLBeanFactory = new XMLBeanFactory(xml);
+			var constructorWithArray:ConstructorWithArrays;
+			var parent:ParentOfSimpleDependencyObject;
+			context.initialize();
+			//first object
+			constructorWithArray = context.getObject("objectOne") as ConstructorWithArrays;
+			parent = context.getObject("objectTwo") as ParentOfSimpleDependencyObject;
+			assertEquals(2, constructorWithArray.simpleArrayItem.length);
+			assertTrue(context.containsObject("innerBean"));
+			assertEquals(parent.nextChild, context.getObject("innerBean"));
+			
+		} 
 		
 		public function testErrorsInMap():void{
 			var xml:XML = constructXMLFromEmbed(SetterWithMapEmptyEntryXMLClass);
@@ -1716,13 +1734,16 @@ package org.toshiroioc.core
 		public static function getTestsArr():Vector.<Test>{
 			var retval:Vector.<Test> = new Vector.<Test>();	
 			
-			retval.push(new XMLBeanFactoryTestCase("testErrorsInMap"));
+			
+			/* retval.push(new XMLBeanFactoryTestCase("testErrorsInMap"));
 			retval.push(new XMLBeanFactoryTestCase("testMap"));
- 			retval.push(new XMLBeanFactoryTestCase("testMetatagsBeforeAndAfterConstructorWithoutProperties"));
+ 			retval.push(new XMLBeanFactoryTestCase("testMetatagsBeforeAndAfterConstructorWithoutProperties")); 
+ 			
 			retval.push(new XMLBeanFactoryTestCase("testConstructorArrayInjection"));
 			retval.push(new XMLBeanFactoryTestCase("testErrorsInArray"));
 			retval.push(new XMLBeanFactoryTestCase("testSetterArrayInjection"));
- 			retval.push(new XMLBeanFactoryTestCase("testRefOptional"));
+			
+ 		 	retval.push(new XMLBeanFactoryTestCase("testRefOptional"));
 	 	 	retval.push(new XMLBeanFactoryTestCase("testRefOptionalWrongArgument"));
 			retval.push(new XMLBeanFactoryTestCase("testMetatagContextInjection"));
  			retval.push(new XMLBeanFactoryTestCase("testIDNotUnique"));
@@ -1748,7 +1769,7 @@ package org.toshiroioc.core
 			retval.push(new XMLBeanFactoryTestCase("testSetterDate"));			
 			retval.push(new XMLBeanFactoryTestCase("testSetterWithBoolean"));
 			retval.push(new XMLBeanFactoryTestCase("testXMLMissing"));			
-			retval.push(new XMLBeanFactoryTestCase("testSetterWithClass"));			
+			retval.push(new XMLBeanFactoryTestCase("testSetterWithClass"));			 
 									
 			retval.push(new XMLBeanFactoryTestCase("testSetterWithImplicitNull"));
 			retval.push(new XMLBeanFactoryTestCase("testInstantiateByConstructorSimpleType"));
@@ -1790,6 +1811,7 @@ package org.toshiroioc.core
 			retval.push(new XMLBeanFactoryTestCase("testScopePrototype"));
 			retval.push(new XMLBeanFactoryTestCase("testResolvingInnerObjectsReferences"));
 			*/
+			retval.push(new XMLBeanFactoryTestCase("testConstructorWithArrayRefInnerBean"));
 			
 			
 			
