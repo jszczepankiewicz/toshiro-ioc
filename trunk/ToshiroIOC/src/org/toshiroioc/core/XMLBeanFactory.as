@@ -30,6 +30,7 @@ package org.toshiroioc.core
 {
 	import __AS3__.vec.Vector;
 	
+	import flash.errors.IllegalOperationError;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.utils.getDefinitionByName;
@@ -297,7 +298,7 @@ package org.toshiroioc.core
 			if (refProperties.length() == 0){
 				return refProperties;
 			}
-			var beanId:String = ((refProperties[0] as XML).parent() as XML).attribute("id").toXMLString();
+			//var beanId:String = ((refProperties[0] as XML).parent() as XML).attribute("id").toXMLString();
 			var optionalAttrib:String;
 			var filteredList:XMLList = new XMLList();
 			for each (var property:XML in refProperties){
@@ -328,13 +329,43 @@ package org.toshiroioc.core
 			
 		}
 		
-		private function hasDependencies(beanXML:XML):Boolean{
+		private function hasDependencies(beanXML:XML, dependencies:XMLList):Boolean{
+			var test:*;
+			var dependentS:String;
+		
+			if(dependencies.length() > 0){
+				
+				var id:String = beanXML.attribute("id");
+				//take from cache if previously created by parents ref
+				var depNode:DINode = nodes[id];
+				if(!depNode){ 
+					depNode = new DINode(beanXML);
+					nodes[id] = depNode;
+				}else{
+					// created by ref, so set xml and remove null class from map
+					depNode.updateXml(beanXML);
+					removeFromNodeNamesClassesMapById(id);
+				}
+				this.nodeNamesClassesMap.push([id, getDefinitionByName(beanXML.attribute("class"))]);
+				for each (var dependency:XML in dependencies){	
+
+					dependentS = dependency.attribute("ref");
+					depNode.addNodeDependency(getNode(dependentS));
+				}
+				return true;
+			}
+			
+			return false;
+		}
+		
+			/* private function hasDependencies(beanXML:XML):Boolean{
 			var test:*;
 			var dependentS:String;
 			//	filtering by required "ref" attribute 
-			var propertiesDependent:XMLList = beanXML.child("property").(attribute("ref").toXMLString().length > 0); 
+			var propertiesDependent:XMLList = beanXML.child("property").(attribute("ref").toXMLString().length > 0);
+			var constructorDependent:XMLList = beanXML.child("constructor-arg").(attribute("ref").toXMLString().length > 0); 
 			propertiesDependent = filterAndValidateOptionalAttribute(propertiesDependent);
-			if(propertiesDependent.length() > 0){
+			if(propertiesDependent.length() > 0 || constructorDependent.length() > 0){
 				
 				var id:String = beanXML.attribute("id");
 				//take from cache if previously created by parents ref
@@ -354,36 +385,17 @@ package org.toshiroioc.core
 					dependentS = property.attribute("ref");
 					depNode.addNodeDependency(getNode(dependentS));
 				}
-				return true;
-			}
-			
-			//	TODO: add checking for constructor dependencies
-			var constructorDependent:XMLList = beanXML.child("constructor-arg").(attribute("ref").toXMLString().length > 0);
-			
-			if(constructorDependent.length() > 0){
-				var id2:String = beanXML.attribute("id");
-				//take from cache if previously created by parents ref
-				var depNode2:DINode = nodes[id2];
-				if(!depNode2){ 
-					depNode2 = new DINode(beanXML);
-					nodes[id2] = depNode2;
-				}else{
-					// created by ref, so set xml and remove null class from map
-					depNode2.updateXml(beanXML);
-					removeFromNodeNamesClassesMapById(id2);
-				}
-				this.nodeNamesClassesMap.push([id2, getDefinitionByName(beanXML.attribute("class"))]);
-
 				for each (var constructor:XML in constructorDependent){	
 				
 					dependentS = constructor.attribute("ref");					
-					depNode2.addNodeDependency(getNode(dependentS));
+					depNode.addNodeDependency(getNode(dependentS));
 				}
 				return true;
 			}
 			
 			return false;
-		}
+		} */
+		
 		
 		private function initializeBean(beanXML:XML, proceedIfSettingDependencyFound:Boolean = false,
 			putToNodeCache:Boolean = true):Object{
@@ -490,18 +502,22 @@ package org.toshiroioc.core
 		 	return false;
 		 }
 		 
-		 private function startParseBeans(xmlSource:XML):Array{
+		 private function startParseBeans(xmlSource:XML):Object{
 			var beans:XMLList = xmlSource.child("object");
 			var beanXML:XML;
-			var arrayOfInnerObjects:Array;
 			var isRoot : Boolean = (beans.parent() as XML).localName().toString() == "objects";
 			var bean:Object;
 			
 			for each(beanXML in beans){
+				
 				var idString:String = String(beanXML.attribute("id")); 
 				var hasId:Boolean = idString && idString.length > 0;
+				
 				if (nameExists(idString)){
 					throw new ContainerError("Id: ["+idString+"] not unique",0,ContainerError.ERROR_MULTIPLE_BEANS_WITH_THE_SAME_ID);
+				}
+				if(isRoot && !hasId){
+					throw new IllegalOperationError("Top-level beans have to have id");
 				}
 				bean = null;	
 				
@@ -509,13 +525,76 @@ package org.toshiroioc.core
 				if(beanXML.attribute("lifecycle").toXMLString() == "prototype"){
 					prototypesIDList.push(idString);
 				}
+				//	filtering by required "ref" attribute 
+				//var propertiesDependent:XMLList = beanXML.child("property").(attribute("ref").toXMLString().length > 0);
+				//var constructorDependent:XMLList = beanXML.child("constructor-arg").(attribute("ref").toXMLString().length > 0);
 				
-				//	checking for beans with dependencies
-				if(hasDependencies(beanXML)){ //if already initialized, should be injected
-					//if inner object, throw error if reference found
-					if(!isRoot)
-						throw new ArgumentError("References not supported for inner objects");
-					//else do nothing
+				
+				//prepareArraysDecorators(beanXML);
+				
+				var propertiesDependent:XMLList = new XMLList();
+				
+				//var arrays:XMLList = beanXML.descendants('array');
+				//var arraysRefs:XMLList = arrays.descendants().(attribute("ref").toXMLString().length > 0);
+		/* 		var refs:XMLList = beanXML.descendants().(attribute("ref").toXMLString().length > 0);
+				var dependencyId:String;
+				var newXMLSource:XML;
+				
+				for each(var ref:XML in refs){
+					
+					dependencyId = XML(ref.parent()).attribute('id');
+					
+					if(dependencyId != idString){
+						propertiesDependent += XML('<property ref="'+dependencyId+'"/>');
+						if(!newXMLSource){
+							newXMLSource = new XML();
+							newXMLSource = XML('<newSource></newSource>');
+						}
+						newXMLSource.appendChild(ref.parent());
+					}else{
+						propertiesDependent += ref;
+					}
+				} */
+				
+				
+				var objects:XMLList = beanXML.descendants('object');
+				var dependencyId:String;
+				var newXMLSource:XML = null;
+				
+				for each(var object:XML in objects){
+					
+					dependencyId = object.attribute('id');
+					
+					//if(dependencyId != idString){
+					if(dependencyId && dependencyId.length > 0){
+						propertiesDependent += XML('<property ref="'+dependencyId+'"/>');
+						if(!newXMLSource){
+							newXMLSource = new XML();
+							newXMLSource = XML('<newSource></newSource>');
+						}
+						newXMLSource.appendChild(object);
+					//}else{
+					//	propertiesDependent += ref;
+					//}
+					}
+				}
+				
+				propertiesDependent += beanXML.child("property").(attribute("ref").toXMLString().length > 0);
+				propertiesDependent += beanXML.child("constructor-arg").(attribute("ref").toXMLString().length > 0);
+				//take care about optional attribute and remove from lists of refs
+				propertiesDependent = filterAndValidateOptionalAttribute(propertiesDependent);
+				//constructorDependent = filterAndValidateOptionalAttribute(constructorDependent);
+				
+				//	checking for beans with dependencies||hasDependencies(beanXML, constructorDependent)
+				if(hasDependencies(beanXML, propertiesDependent)){ //if already initialized, should be injected
+					if(!hasId && !isRoot){
+						throw new IllegalOperationError("Inner bean containing reference has to have id: ["+beanXML+"]");
+					}
+					//do nothing
+					//parse skipped inner beans
+					if(newXMLSource){
+						startParseBeans(newXMLSource);
+					}
 					continue;
 				}
 				
@@ -527,44 +606,34 @@ package org.toshiroioc.core
 				
 				if(hasId){
 					putObjectIntoNodeCache(bean, beanXML);
-				}
-				
-				if(bean){
-					if(hasId){
+					if(bean){
 						beansMap[idString] = bean;
 					}
-					if(!isRoot){
-						if (!arrayOfInnerObjects){
-							arrayOfInnerObjects = new Array();
-						}
-						arrayOfInnerObjects.push(bean);
-					}
-					
 				}
+				
+				
 			}			
 			if(isRoot){
 				resolveDependentBeans();
 			}
-			return arrayOfInnerObjects;
+			return bean;
 				
+		}
+		
+		private function prepareArraysDecorators(xml:XML):void{
+			var arrays:XMLList = xml.descendants('array');
+			for each(var array:XML in arrays){
+				createArrayDecorator(array);
+				var parent:XML = (array.parent() as XML);
+				trace(parent.toXMLString());
+				array = null;
+				trace(parent.toXMLString());
 				
-				//	refill nodes
-				/* if(isRoot)
-					putObjectIntoNodeCache(bean, beanXML);
-				
-				if(bean!=null && isRoot){
-						beansMap[idString] = bean;
-				}else if(bean){
-					if (!arrayOfInnerObjects){
-						arrayOfInnerObjects = new Array();
-					}
-					arrayOfInnerObjects.push(bean);
-				}
-			}			
-			if(isRoot){
-				resolveDependentBeans();
 			}
-			return arrayOfInnerObjects; */
+		}
+		
+		private function createArrayDecorator(arrayXML:XML):void{
+			
 		}
 		
 		private function manageOptionalRef(parent:String, ref:String, propertyName:String):void{
@@ -731,8 +800,39 @@ package org.toshiroioc.core
 				
 				switch(typesArray[i]){
 					case FieldDescription.FIELD_TYPE_CUSTOM_OBJECT:
-						entry = entries[i]; // pass the object to parse
-						returnArray.push(startParseBeans(entry)[0]); //and add to array
+						//entry = entries[i]; // pass the object to parse
+						bean = null;
+						var id:String = entry.child('object').attribute('id').toXMLString();
+						
+						//if has id, check if initialized
+						if(id){
+							var bean:* = getObject(id, true);	
+						}
+						//if not, try to parse
+						if(!bean){
+							bean = startParseBeans(entry);
+						}
+						
+						//if still not initialized, i.e. has dependencies
+						//has to have id
+						/*if(!bean){
+							//get owner of the array
+							var beanXML:XML = (entry.parent() as XML).parent().parent();
+							
+							 
+							//get list of dependencies for this entry
+							var propDependent:XMLList = entry.child("object")
+								.child("property").(attribute("ref").toXMLString().length > 0); 
+							
+							
+							//and set dependencies between owner and entry with dep
+							var propDependent:XMLList = new XMLList('<property ref="'+id+'"/>');
+							hasDependencies(beanXML, propDependent);
+							
+						}else{*/
+							returnArray.push(bean); //and add to array		
+						//}
+						
 						continue;
 					// WARNING: when nested, no bean id
 					case FieldDescription.FIELD_TYPE_CONST:

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<objects>
+
+	<object id="objectOne" class="org.toshiroioc.test.beans.ComplexDependencyObjectInnerParentBeans">
+		<property name="someChild" ref="objectTwo">
+				
+		</property>
+	</object>
+
+	<object id="outerBean" class="org.toshiroioc.test.beans.SimpleDependencyObject">
+		<property name="someString" value="exampleString"/>
+	</object>
+	
+	<object id="objectTwo" class="org.toshiroioc.test.beans.ParentOfSimpleDependencyObject">
+				<property name="nextChild" ref="outerBean"/>
+			</object> 
+	
+</objects>
