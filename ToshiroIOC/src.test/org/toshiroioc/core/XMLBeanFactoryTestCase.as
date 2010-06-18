@@ -17,6 +17,7 @@ package org.toshiroioc.core
 	import org.toshiroioc.test.beans.BeanWithConstructorAndMetatagsWithoutProperties;
 	import org.toshiroioc.test.beans.BeanWithDate;
 	import org.toshiroioc.test.beans.ComplexDependencyObject;
+	import org.toshiroioc.test.beans.ComplexDependencyObjectInnerParentBeans;
 	import org.toshiroioc.test.beans.ConstructorWithArrays;
 	import org.toshiroioc.test.beans.CyclicConstructor;
 	import org.toshiroioc.test.beans.CyclicConstructorAndSetter;
@@ -229,8 +230,8 @@ package org.toshiroioc.core
 		[Embed(source="assets/constructorwitharray.xml", mimeType="application/octet-stream")]
 		private var ConstructorWithArrayXMLClass:Class;
 		
-		[Embed(source="assets/constructorwitharrayrefinnerbean.xml", mimeType="application/octet-stream")]
-		private var ConstructorWithArrayRefInnerBeanXMLClass:Class;
+		[Embed(source="assets/reffromarrayinnerbean.xml", mimeType="application/octet-stream")]
+		private var RefArrayInnerBean:Class;
 		
 		[Embed(source="assets/setterwithvector.xml", mimeType="application/octet-stream")]
 		private var SetterWithVectorXMLClass:Class;
@@ -244,22 +245,60 @@ package org.toshiroioc.core
 		[Embed(source="assets/setterwithmaptoomuchargsinentry.xml", mimeType="application/octet-stream")]
 		private var SetterWithMapTooMuchArgsInEntryXMLClass:Class;
 		
+		[Embed(source="assets/reffrominnerbean.xml", mimeType="application/octet-stream")]
+		private var RefFromInnerBean:Class;
+		
 		public function XMLBeanFactoryTestCase(methodName:String){
 			super(methodName);
 		}
 		
-		public function testConstructorWithArrayRefInnerBean():void{
-			var xml:XML = constructXMLFromEmbed(ConstructorWithArrayRefInnerBeanXMLClass);
+		
+		public function testRefFromInnerBean():void{
+			var xml:XML = constructXMLFromEmbed(RefFromInnerBean);
+			var context:XMLBeanFactory = new XMLBeanFactory(xml);
+			context.initialize();
+			var parent:ComplexDependencyObjectInnerParentBeans;
+			var outerChildBean:SimpleDependencyObject;
+			var objectTwo:ParentOfSimpleDependencyObject;
+
+			//first object
+			parent= context.getObject("objectOne") as ComplexDependencyObjectInnerParentBeans;
+			outerChildBean = context.getObject("outerBean") as SimpleDependencyObject;
+			objectTwo = context.getObject("objectTwo");
+			assertNotNull(parent);
+			assertNotNull(outerChildBean);
+			assertNotNull(objectTwo);
+			assertEquals(parent.someChild.nextChild, outerChildBean);
+			assertEquals(parent.someChild, objectTwo);
+		}
+		
+		public function testRefFromArrayInnerBean():void{
+			var xml:XML = constructXMLFromEmbed(RefArrayInnerBean);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			var constructorWithArray:ConstructorWithArrays;
-			var parent:ParentOfSimpleDependencyObject;
+			var innerParentBean:ParentOfSimpleDependencyObject;
+			var innerParentBean2:ParentOfSimpleDependencyObject;
+			var outerBean:SimpleDependencyObject;
+			var outerBean2:ParentOfSimpleDependencyObject;
 			context.initialize();
+			
 			//first object
 			constructorWithArray = context.getObject("objectOne") as ConstructorWithArrays;
-			parent = context.getObject("objectTwo") as ParentOfSimpleDependencyObject;
-			assertEquals(2, constructorWithArray.simpleArrayItem.length);
-			assertTrue(context.containsObject("innerBean"));
-			assertEquals(parent.nextChild, context.getObject("innerBean"));
+			innerParentBean = context.getObject("innerParentBean") as ParentOfSimpleDependencyObject;
+			outerBean = context.getObject("outerBean") as SimpleDependencyObject;
+			innerParentBean2 = context.getObject("innerParentBean2") as ParentOfSimpleDependencyObject;
+			outerBean2 = context.getObject("outerBean2") as ParentOfSimpleDependencyObject;
+			
+			assertEquals(3, constructorWithArray.simpleArrayItem.length);
+			assertNotNull(innerParentBean);
+			assertNotNull(innerParentBean2);
+			assertNotNull(outerBean);
+			assertNotNull(outerBean2);
+			assertEquals(innerParentBean.nextChild, outerBean);
+			assertEquals(innerParentBean2.nextChild, outerBean);
+			assertEquals(outerBean, constructorWithArray.simpleArrayItem[1].nextChild);
+			assertEquals(outerBean, (constructorWithArray.simpleArrayItem[2])[0].nextChild);
+			assertEquals(outerBean, outerBean2.nextChild);
 			
 		} 
 		
@@ -422,7 +461,8 @@ package org.toshiroioc.core
 			assertTrue(error.message.indexOf("Too many arguments for a single array entry") != -1);
 		}
 		
- 		public function testSetterArrayInjection():void{
+		
+ 		 public function testSetterArrayInjection():void{
 			var xml:XML = constructXMLFromEmbed(SetterWithArrayXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			var setterWithArray:SetterWithArrays;
@@ -490,7 +530,7 @@ package org.toshiroioc.core
 			assertNotNull(setterWithArray.simpleArrayItem);
 			assertNotNull(setterWithArray.objectsArrayItem);
 			assertEquals(3, setterWithArray.simpleArrayItem[0]);
-		} 
+		}  
 		
 		
 		public function testRefOptionalWrongArgument():void{
@@ -1734,8 +1774,10 @@ package org.toshiroioc.core
 		public static function getTestsArr():Vector.<Test>{
 			var retval:Vector.<Test> = new Vector.<Test>();	
 			
-			
-			/* retval.push(new XMLBeanFactoryTestCase("testErrorsInMap"));
+			retval.push(new XMLBeanFactoryTestCase("testRefFromArrayInnerBean"));
+			retval.push(new XMLBeanFactoryTestCase("testRefFromInnerBean"));
+
+ 			retval.push(new XMLBeanFactoryTestCase("testErrorsInMap"));
 			retval.push(new XMLBeanFactoryTestCase("testMap"));
  			retval.push(new XMLBeanFactoryTestCase("testMetatagsBeforeAndAfterConstructorWithoutProperties")); 
  			
@@ -1799,7 +1841,7 @@ package org.toshiroioc.core
 			retval.push(new XMLBeanFactoryTestCase("testCyclicDependencyFromConstructorToSetterComplex"));
 			retval.push(new XMLBeanFactoryTestCase("testCyclicDependencyFromSetterToConstructorComplex"));
 			retval.push(new XMLBeanFactoryTestCase("testStaticReferenceInConstructor"));
-			retval.push(new XMLBeanFactoryTestCase("testStaticReferenceInSetter"));                               
+			retval.push(new XMLBeanFactoryTestCase("testStaticReferenceInSetter"));                                
 			  
   			
 			/*
@@ -1811,7 +1853,7 @@ package org.toshiroioc.core
 			retval.push(new XMLBeanFactoryTestCase("testScopePrototype"));
 			retval.push(new XMLBeanFactoryTestCase("testResolvingInnerObjectsReferences"));
 			*/
-			retval.push(new XMLBeanFactoryTestCase("testConstructorWithArrayRefInnerBean"));
+			
 			
 			
 			
