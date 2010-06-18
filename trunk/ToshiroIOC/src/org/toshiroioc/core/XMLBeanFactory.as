@@ -396,26 +396,34 @@ package org.toshiroioc.core
 			return false;
 		} */
 		
+		private function processReferencingBean(beanXML:XML):Object{
+			return getObject(beanXML.attribute('ref'));
+		}
 		
 		private function initializeBean(beanXML:XML, proceedIfSettingDependencyFound:Boolean = false,
 			putToNodeCache:Boolean = true):Object{
+				
+			if(beanXML.attribute('ref').length() > 0){
+				return processReferencingBean(beanXML);
+			}
 
 			var clazz:Class = getDefinitionByName(beanXML.attribute("class")) as Class;
 			
 			var retval:Object = null;
 			
 			
-				var constructorArgs:XMLList = beanXML.child("constructor-arg");
+			
+			var constructorArgs:XMLList = beanXML.child("constructor-arg");
+			
+			if(constructorArgs.length() > 0){				
 				
-				if(constructorArgs.length() > 0){				
-					
-					retval = ClassUtil.initializeClassWithNonDefConstructor(beanXML, constructorArgs, clazz, this);
-				}
-				else{
-					retval = new clazz();
-				}
-				
-				processBeanProperties(clazz, retval, beanXML.child("property"), proceedIfSettingDependencyFound);
+				retval = ClassUtil.initializeClassWithNonDefConstructor(beanXML, constructorArgs, clazz, this);
+			}
+			else{
+				retval = new clazz();
+			}
+			
+			processBeanProperties(clazz, retval, beanXML.child("property"), proceedIfSettingDependencyFound);
 
 			
 			
@@ -525,37 +533,8 @@ package org.toshiroioc.core
 				if(beanXML.attribute("lifecycle").toXMLString() == "prototype"){
 					prototypesIDList.push(idString);
 				}
-				//	filtering by required "ref" attribute 
-				//var propertiesDependent:XMLList = beanXML.child("property").(attribute("ref").toXMLString().length > 0);
-				//var constructorDependent:XMLList = beanXML.child("constructor-arg").(attribute("ref").toXMLString().length > 0);
-				
-				
-				//prepareArraysDecorators(beanXML);
-				
+
 				var propertiesDependent:XMLList = new XMLList();
-				
-				//var arrays:XMLList = beanXML.descendants('array');
-				//var arraysRefs:XMLList = arrays.descendants().(attribute("ref").toXMLString().length > 0);
-		/* 		var refs:XMLList = beanXML.descendants().(attribute("ref").toXMLString().length > 0);
-				var dependencyId:String;
-				var newXMLSource:XML;
-				
-				for each(var ref:XML in refs){
-					
-					dependencyId = XML(ref.parent()).attribute('id');
-					
-					if(dependencyId != idString){
-						propertiesDependent += XML('<property ref="'+dependencyId+'"/>');
-						if(!newXMLSource){
-							newXMLSource = new XML();
-							newXMLSource = XML('<newSource></newSource>');
-						}
-						newXMLSource.appendChild(ref.parent());
-					}else{
-						propertiesDependent += ref;
-					}
-				} */
-				
 				
 				var objects:XMLList = beanXML.descendants('object');
 				var dependencyId:String;
@@ -563,25 +542,41 @@ package org.toshiroioc.core
 				
 				for each(var object:XML in objects){
 					
-					dependencyId = object.attribute('id');
+					var id:String = object.attribute('id');
+					var beanRef:String = object.attribute('ref');
+					 
+					if(id.length > 0 && beanRef.length > 0){
+						throw new ContainerError("Only ref attribute (not id) has to be specified in bean referencing (being) other bean"
+							,0,ContainerError.ERROR_REFERENCING_BEAN_GIVEN_ID);
+					}
+					dependencyId = id + beanRef;
 					
 					//if(dependencyId != idString){
 					if(dependencyId && dependencyId.length > 0){
+						
 						propertiesDependent += XML('<property ref="'+dependencyId+'"/>');
-						if(!newXMLSource){
-							newXMLSource = new XML();
-							newXMLSource = XML('<newSource></newSource>');
+						if(!beanRef.length > 0){
+							if(!newXMLSource){
+								newXMLSource = new XML();
+								newXMLSource = XML('<newSource></newSource>');
+							}
+							newXMLSource.appendChild(object);
 						}
-						newXMLSource.appendChild(object);
 					//}else{
 					//	propertiesDependent += ref;
 					//}
 					}
 				}
+			/* 	if(beanXML.attribute("ref").toXMLString().length > 0){
+					//bean not existing, only kind of passing reference to other bean
+					continue;
+				} */
 				
+				//	filtering by required "ref" attribute
 				propertiesDependent += beanXML.child("property").(attribute("ref").toXMLString().length > 0);
 				propertiesDependent += beanXML.child("constructor-arg").(attribute("ref").toXMLString().length > 0);
-				//take care about optional attribute and remove from lists of refs
+				
+				//take care about optional attribute and remove optional refs from lists of refs
 				propertiesDependent = filterAndValidateOptionalAttribute(propertiesDependent);
 				//constructorDependent = filterAndValidateOptionalAttribute(constructorDependent);
 				
@@ -1059,6 +1054,7 @@ package org.toshiroioc.core
 					//initialize, if not prototype
 					if(!isPrototype(di.id)){
 						bean = initializeBean(di.xml, true);
+						//if in cache don't put - bean ref case
 						putObjectIntoNodeCache(bean, di.xml);						
 					}									
 				}							

@@ -248,10 +248,22 @@ package org.toshiroioc.core
 		[Embed(source="assets/reffrominnerbean.xml", mimeType="application/octet-stream")]
 		private var RefFromInnerBean:Class;
 		
+		[Embed(source="assets/refbean.xml", mimeType="application/octet-stream")]
+		private var RefBean:Class;
+		
 		public function XMLBeanFactoryTestCase(methodName:String){
 			super(methodName);
 		}
 		
+		public function testRefBean():void{
+			var xml:XML = constructXMLFromEmbed(RefBean);
+			var context:XMLBeanFactory = new XMLBeanFactory(xml);
+			context.initialize();
+			var constructorWithArray:ConstructorWithArrays = context.getObject('objectOne');
+			var outerBean:SimpleDependencyObject = context.getObject('outerBean');
+			var refBean:* = constructorWithArray.simpleArrayItem[0];
+			assertTrue(refBean == outerBean);
+		}
 		
 		public function testRefFromInnerBean():void{
 			var xml:XML = constructXMLFromEmbed(RefFromInnerBean);
@@ -1774,9 +1786,11 @@ package org.toshiroioc.core
 		public static function getTestsArr():Vector.<Test>{
 			var retval:Vector.<Test> = new Vector.<Test>();	
 			
-			retval.push(new XMLBeanFactoryTestCase("testRefFromArrayInnerBean"));
-			retval.push(new XMLBeanFactoryTestCase("testRefFromInnerBean"));
+			retval.push(new XMLBeanFactoryTestCase("testRefBean"));
+			
+			/*retval.push(new XMLBeanFactoryTestCase("testRefFromInnerBean"));
 
+			retval.push(new XMLBeanFactoryTestCase("testRefFromArrayInnerBean"));
  			retval.push(new XMLBeanFactoryTestCase("testErrorsInMap"));
 			retval.push(new XMLBeanFactoryTestCase("testMap"));
  			retval.push(new XMLBeanFactoryTestCase("testMetatagsBeforeAndAfterConstructorWithoutProperties")); 

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<objects>
+	<object id="objectOne" class="org.toshiroioc.test.beans.ConstructorWithArrays">
+		<constructor-arg>
+			<number>2</number>
+		</constructor-arg>
+		<constructor-arg>
+			<array>
+				<entry>
+					<object ref="outerBean"/>
+				</entry>
+			</array>
+		</constructor-arg>
+	</object>
+	
+	<object id="outerBean" class="org.toshiroioc.test.beans.SimpleDependencyObject">
+		<property name="someString" value="exampleString"/>
+	</object>
+	
+</objects>
