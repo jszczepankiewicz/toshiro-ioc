@@ -440,3 +440,107 @@ Toshiro-IOC already supports four tags, which can be used directly in your code 
   *`[`AfterConfigure`] - lifecycle metatag, public methods labelled with it will be called after object instantiation and configuration. The sequence of the calls is undefined.
   *`[`Required`] - if public setter labelled with it is not called by container (property is not set) a ContainerError will be thrown. 
   *`[`ToshiroIOCFactory`] - public setter with IBeanFactory as an argument labelled with it will be called with current XMLBeanFactory (injection of current context).
+
+=== Recursive processing of beans, inner beans' id support ===
+Toshiro is now enabled to process beans' definitions in a recursive way, meaning user is able to define a bean inline within an array for example, give it an id, and to reference that bean from anywhere. There is ability for beans to reference each other regardless of level they are nested.
+{{{
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<objects>
+
+	<object id="arraySetter" class="org.toshiroioc.test.beans.SetterWithArrays">
+		<property name="simpleArrayItem">
+			<array>
+				<entry>
+					<object id="objectOne" class="org.toshiroioc.test.beans.ParentOfSimpleDependencyChildrenSetter">
+						<property name="someChild" ref="objectTwo"/>
+					</object>
+				</entry>
+				<entry>
+					<object id="innerObject" class="org.toshiroioc.test.beans.SimpleDependencyObject"/>
+				</entry>
+			</array>
+		</property>
+	</object>
+
+	<object id="outerBean" class="org.toshiroioc.test.beans.SimpleDependencyObject">
+		<property name="someString" value="exampleString"/>
+	</object>
+	
+	<object id="objectTwo" class="org.toshiroioc.test.beans.ParentOfSimpleDependencyObject">
+		<property name="nextChild" ref="outerBean"/>
+	</object> 
+	
+	<object id="outerBean2" class="org.toshiroioc.test.beans.ParentOfSimpleDependencyObject">
+		<property name="nextChild" ref="innerObject"/>
+	</object>
+	
+</objects>
+}}}
+
+=== Referencing beans from array entries ===
+It's possible for developer to reference from array entry any bean with id, what results in sharing single object instance between beans.
+{{{
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<objects>
+	<object id="objectOne" class="org.toshiroioc.test.beans.ConstructorWithArrays">
+		<constructor-arg>
+			<number>2</number>
+		</constructor-arg>
+		<constructor-arg>
+			<array>
+				<entry>
+					<object ref="outerBean"/>
+				</entry>
+				<entry>
+					<object id="innerBean" class="org.toshiroioc.test.beans.SimpleDependencyObject">
+						<property name="someString" value="exampleString"/>
+					</object>
+				</entry>
+				<entry>
+					<object ref="innerBean"/>
+				</entry>
+			</array>
+		</constructor-arg>
+	</object>
+	
+	<object id="outerBean" class="org.toshiroioc.test.beans.ParentOfSimpleDependencyObject">
+		<property name="nextChild" ref="sampleId"/>
+	</object>
+	
+	<object id="innerRefObject" class="org.toshiroioc.test.beans.ConstructorWithArrays">
+		<constructor-arg>
+			<number>2</number>
+		</constructor-arg>
+		<constructor-arg>
+			<array>
+				<entry>
+					<object ref="sampleId"/>
+				</entry>
+				<entry>
+					<object id="sampleId" class="org.toshiroioc.test.beans.SimpleDependencyObject"/>
+				</entry>
+			</array>
+		</constructor-arg>
+	</object>
+	
+</objects>
+}}}
+Test for this feature:
+{{{
+	public function testRefBean():void{
+			var xml:XML = constructXMLFromEmbed(RefBean);
+			var context:XMLBeanFactory = new XMLBeanFactory(xml);
+			context.initialize();
+			var constructorWithArray:ConstructorWithArrays = context.getObject('objectOne');
+			var outerBean:ParentOfSimpleDependencyObject = context.getObject('outerBean');
+			var array:Array = constructorWithArray.simpleArrayItem;
+			var refBean:* = array[0];
+			var innerRefObject:ConstructorWithArrays = context.getObject('outerRefObject');
+			assertTrue(refBean == outerBean);
+			assertEquals(array.length, 3)
+			assertEquals(array[1], context.getObject("innerBean"))
+			var array2:Array = innerRefObject.simpleArrayItem;
+			assertTrue(array2[1] == array2[0]);
+			assertNotNull(array2[1]);
+		}
+}}}
