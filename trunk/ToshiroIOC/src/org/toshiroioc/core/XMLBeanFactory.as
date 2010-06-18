@@ -396,6 +396,7 @@ package org.toshiroioc.core
 			return false;
 		} */
 		
+		
 		private function processReferencingBean(beanXML:XML):Object{
 			return getObject(beanXML.attribute('ref'));
 		}
@@ -403,15 +404,15 @@ package org.toshiroioc.core
 		private function initializeBean(beanXML:XML, proceedIfSettingDependencyFound:Boolean = false,
 			putToNodeCache:Boolean = true):Object{
 				
+			//when processing <object ref="..."/> return target of reference	
 			if(beanXML.attribute('ref').length() > 0){
 				return processReferencingBean(beanXML);
-			}
+			} 
+
 
 			var clazz:Class = getDefinitionByName(beanXML.attribute("class")) as Class;
 			
 			var retval:Object = null;
-			
-			
 			
 			var constructorArgs:XMLList = beanXML.child("constructor-arg");
 			
@@ -516,17 +517,32 @@ package org.toshiroioc.core
 			var isRoot : Boolean = (beans.parent() as XML).localName().toString() == "objects";
 			var bean:Object;
 			
+			
 			for each(beanXML in beans){
 				
 				var idString:String = String(beanXML.attribute("id")); 
 				var hasId:Boolean = idString && idString.length > 0;
+				var isBeanRef:Boolean = (beanXML.attribute("ref").toXMLString().length > 0)
 				
 				if (nameExists(idString)){
 					throw new ContainerError("Id: ["+idString+"] not unique",0,ContainerError.ERROR_MULTIPLE_BEANS_WITH_THE_SAME_ID);
 				}
-				if(isRoot && !hasId){
-					throw new IllegalOperationError("Top-level beans have to have id");
+				
+				//if ref'ing and has id, throw error
+				if(hasId && isBeanRef){
+					throw new ContainerError("Only ref attribute (not id) has to be specified in bean referencing (being) other bean"
+						,0,ContainerError.ERROR_REFERENCING_BEAN_GIVEN_ID);
 				}
+				
+				if(isRoot){
+					if(isBeanRef){
+						throw new IllegalOperationError("Top-level beans can not be simply references to other beans: "+beanXML);
+					}
+					if(!hasId){
+						throw new IllegalOperationError("Top-level beans have to have id: "+beanXML);
+					}
+				} 
+			
 				bean = null;	
 				
 				//	checking for prototype
@@ -544,6 +560,7 @@ package org.toshiroioc.core
 					
 					var id:String = object.attribute('id');
 					var beanRef:String = object.attribute('ref');
+					//var optional:String = object.attribute('optional');
 					 
 					if(id.length > 0 && beanRef.length > 0){
 						throw new ContainerError("Only ref attribute (not id) has to be specified in bean referencing (being) other bean"
@@ -554,7 +571,12 @@ package org.toshiroioc.core
 					//if(dependencyId != idString){
 					if(dependencyId && dependencyId.length > 0){
 						
-						propertiesDependent += XML('<property ref="'+dependencyId+'"/>');
+						//if(optional.length > 0){
+						//	propertiesDependent += XML('<property ref="'+dependencyId+'" optional="'+optional+'"/>');
+						//}else{
+							propertiesDependent += XML('<property ref="'+dependencyId+'"/>');	
+						//}
+						
 						if(!beanRef.length > 0){
 							if(!newXMLSource){
 								newXMLSource = new XML();
@@ -562,30 +584,34 @@ package org.toshiroioc.core
 							}
 							newXMLSource.appendChild(object);
 						}
-					//}else{
-					//	propertiesDependent += ref;
-					//}
 					}
 				}
-			/* 	if(beanXML.attribute("ref").toXMLString().length > 0){
-					//bean not existing, only kind of passing reference to other bean
-					continue;
-				} */
-				
-				//	filtering by required "ref" attribute
-				propertiesDependent += beanXML.child("property").(attribute("ref").toXMLString().length > 0);
-				propertiesDependent += beanXML.child("constructor-arg").(attribute("ref").toXMLString().length > 0);
+				var propertiesRefs:XMLList = beanXML.child("property").(attribute("ref").toXMLString().length > 0);
+				var constructorsRefs:XMLList = beanXML.child("constructor-arg").(attribute("ref").toXMLString().length > 0);
+			 	
+			 	if(!isBeanRef){
+					
+					//if not bean simply referencing another bean 
+					//filtering by required "ref" attribute
+					propertiesDependent += propertiesRefs;
+					propertiesDependent += constructorsRefs;
+				}else{
+					if(propertiesRefs.length > 0 || constructorsRefs.length > 0){
+							throw new IllegalOperationError("Beans referencing other beans shouldn't have"+ 
+									"constructor or properties arguments, because they are not processed anyway"); 
+					}
+				}
 				
 				//take care about optional attribute and remove optional refs from lists of refs
 				propertiesDependent = filterAndValidateOptionalAttribute(propertiesDependent);
-				//constructorDependent = filterAndValidateOptionalAttribute(constructorDependent);
 				
-				//	checking for beans with dependencies||hasDependencies(beanXML, constructorDependent)
+				//	checking for beans with dependencies
+				// creating nodes
 				if(hasDependencies(beanXML, propertiesDependent)){ //if already initialized, should be injected
-					if(!hasId && !isRoot){
-						throw new IllegalOperationError("Inner bean containing reference has to have id: ["+beanXML+"]");
+					if(!hasId){
+						throw new IllegalOperationError("Bean containing reference has to have id: ["+beanXML+"]");
 					}
-					//do nothing
+
 					//parse skipped inner beans
 					if(newXMLSource){
 						startParseBeans(newXMLSource);
@@ -598,7 +624,6 @@ package org.toshiroioc.core
 					bean = initializeBean(beanXML, false);
 				}
 				
-				
 				if(hasId){
 					putObjectIntoNodeCache(bean, beanXML);
 					if(bean){
@@ -606,11 +631,11 @@ package org.toshiroioc.core
 					}
 				}
 				
-				
 			}			
 			if(isRoot){
 				resolveDependentBeans();
 			}
+			// for array parse case
 			return bean;
 				
 		}
@@ -670,7 +695,6 @@ package org.toshiroioc.core
 				if(processDependencies && refProp.length > 0){
 					var optional:String = property.attribute("optional").toXMLString();
 												
-					
 					if(!(optional == "true")){		
 						//	late initialization for ref property	
 						bean[propertyName] = getObject(refProp, true);

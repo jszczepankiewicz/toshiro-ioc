@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <objects>
 	
-	<object id="object1" class="org.toshiroioc.test.beans.ComplexDependencyObject">	
+	<object id="object1" class="org.toshiroioc.test.beans.SimpleDependencyChildrenSetter">	
 		<property name="someChild" ref="objectChild" optional=""/>
 		<property name="someChild2" ref="objectChildNotOptional" optional="false"/>
 	</object>		

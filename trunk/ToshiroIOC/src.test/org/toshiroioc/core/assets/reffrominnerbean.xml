@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <objects>
 
-	<object id="objectOne" class="org.toshiroioc.test.beans.ComplexDependencyObjectInnerParentBeans">
-		<property name="someChild" ref="objectTwo">
+	<object id="arraySetter" class="org.toshiroioc.test.beans.SetterWithArrays">
+		<property name="simpleArrayItem">
+			<array>
+				<entry>
+					<object id="objectOne" class="org.toshiroioc.test.beans.ParentOfSimpleDependencyChildrenSetter">
+						<property name="someChild" ref="objectTwo"/>
+					</object>
+				</entry>
+			</array>
+		
 				
 		</property>
 	</object>
@@ -12,7 +20,7 @@
 	</object>
 	
 	<object id="objectTwo" class="org.toshiroioc.test.beans.ParentOfSimpleDependencyObject">
-				<property name="nextChild" ref="outerBean"/>
-			</object> 
+		<property name="nextChild" ref="outerBean"/>
+	</object> 
 	
 </objects>

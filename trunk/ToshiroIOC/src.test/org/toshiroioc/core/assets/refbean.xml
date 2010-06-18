@@ -9,12 +9,36 @@
 				<entry>
 					<object ref="outerBean"/>
 				</entry>
+				<entry>
+					<object id="innerBean" class="org.toshiroioc.test.beans.SimpleDependencyObject">
+						<property name="someString" value="exampleString"/>
+					</object>
+				</entry>
+				<entry>
+					<object ref="innerBean"/>
+				</entry>
 			</array>
 		</constructor-arg>
 	</object>
 	
 	<object id="outerBean" class="org.toshiroioc.test.beans.SimpleDependencyObject">
 		<property name="someString" value="exampleString"/>
+	</object>
+	
+	<object id="innerRefObject" class="org.toshiroioc.test.beans.ConstructorWithArrays">
+		<constructor-arg>
+			<number>2</number>
+		</constructor-arg>
+		<constructor-arg>
+			<array>
+				<entry>
+					<object ref="sampleId"/>
+				</entry>
+				<entry>
+					<object id="sampleId" class="org.toshiroioc.test.beans.SimpleDependencyObject"/>
+				</entry>
+			</array>
+		</constructor-arg>
 	</object>
 	
 </objects>
