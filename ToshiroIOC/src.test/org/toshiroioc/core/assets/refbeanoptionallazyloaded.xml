@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+	
+	<object id="object1" class="org.toshiroioc.test.beans.SetterWithArrays">
+		<property name="simpleArrayItem">
+			<array>
+				<entry>
+					<object ref="objectChild" optional="true"/>
+				</entry>
+				<entry>
+					<object ref="objectChildNotOptional"/>
+				</entry>
+			</array>
+		</property>	
+	</object>
+	
+	<object id="object2" class="org.toshiroioc.test.beans.SetterWithArrays">
+		<property name="simpleArrayItem">
+			<array>
+				<entry>
+					<object ref="objectChild2" optional="true"/>
+				</entry>
+				<entry>
+					<object ref="objectChildNotOptional" optional="false"/>
+				</entry>
+			</array>
+		</property>	
+	</object>			
+	
+	<object id="objectChildNotOptional" class="org.toshiroioc.test.beans.SimpleDependencyObject">
+		<property name="someString" value="false"/>
+		<property name="someChild" ref="simpleDependency"/>	
+	</object>	
+	
+	<object id="simpleDependency" class="org.toshiroioc.test.beans.BeanWithConstructor">
+		<constructor-arg value="-99999"/>
+		<constructor-arg value="1111"/>		
+		<constructor-arg value="some123String"/>
+		<constructor-arg value="true"/>		
+		<property name="someAdditionalString" value="false"/>		
+	</object>	
+		
+</objects>

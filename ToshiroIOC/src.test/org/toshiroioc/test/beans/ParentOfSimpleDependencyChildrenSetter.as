@@ -1,6 +1,6 @@
 package org.toshiroioc.test.beans{
 	
-	public class ComplexDependencyObjectInnerParentBeans{
+	public class ParentOfSimpleDependencyChildrenSetter{
 		
 		private var childField:ParentOfSimpleDependencyObject;
 		private var childField2:ParentOfSimpleDependencyObject;

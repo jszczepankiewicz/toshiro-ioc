@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<objects>
+	<object id="objectOne" class="org.toshiroioc.test.beans.ConstructorWithArrays">
+		<constructor-arg>
+			<number>2</number>
+		</constructor-arg>
+		<constructor-arg>
+			<array>
+				<entry>
+					<object ref="objectNonExistent"/>
+				</entry>
+			</array>
+		</constructor-arg>
+	</object>
+</objects>

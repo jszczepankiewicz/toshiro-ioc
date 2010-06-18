@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<objects>
+	<object id="objectOne" class="org.toshiroioc.test.beans.ConstructorWithArrays">
+		<constructor-arg>
+			<number>2</number>
+		</constructor-arg>
+		<constructor-arg>
+			<array>
+				<entry>
+					<object ref="objectTwo"/>
+				</entry>
+				<entry>
+					<object id="sampleId" class="org.toshiroioc.test.beans.SimpleDependencyObject"/>
+				</entry>
+			</array>
+		</constructor-arg>
+	</object>
+	<object id="objectTwo" class="org.toshiroioc.test.beans.SimpleDependencyChildrenSetter">
+		<property name="someChild" ref="objectThree"/>
+		<property name="someChild2" ref="sampleId"/>
+	</object>
+	<object id="objectThree" class="org.toshiroioc.test.beans.SimpleDependencyObject"/>
+</objects>

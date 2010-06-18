@@ -24,7 +24,9 @@
 								<property name="nextChild" ref="outerBean"/>
 							</object>
 						</entry>
-						
+						<entry>
+							<object ref="outerBean2"/>
+						</entry>
 					</array>
 				</entry>
 			</array>
