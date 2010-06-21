@@ -9,9 +9,10 @@
 						<property name="someChild" ref="objectTwo"/>
 					</object>
 				</entry>
+				<entry>
+					<object id="innerObject" class="org.toshiroioc.test.beans.SimpleDependencyObject"/>
+				</entry>
 			</array>
-		
-				
 		</property>
 	</object>
 
@@ -22,5 +23,9 @@
 	<object id="objectTwo" class="org.toshiroioc.test.beans.ParentOfSimpleDependencyObject">
 		<property name="nextChild" ref="outerBean"/>
 	</object> 
+	
+	<object id="outerBean2" class="org.toshiroioc.test.beans.ParentOfSimpleDependencyObject">
+		<property name="nextChild" ref="innerObject"/>
+	</object>
 	
 </objects>

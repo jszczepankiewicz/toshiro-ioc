@@ -307,32 +307,38 @@ package org.toshiroioc.core
 		public function testRefBeanNonExistent():void{
 			var xml:XML = constructXMLFromEmbed(RefBeanNonExistent);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
+			var error:ContainerError;
 		 	try{
 				context.initialize();	
 			}catch(e:ContainerError){
-				assertNotNull(e);
-				assertEquals(e.errorCode, ContainerError.ERROR_OBJECT_NOT_FOUND);
-			} 
+				error = e;
+			}
+			assertNotNull(error);
+			assertEquals(error.errorCode, ContainerError.ERROR_OBJECT_NOT_FOUND); 
 		}
 		
 		public function testRefBeanCircular():void{
 			var xml:XML = constructXMLFromEmbed(RefBeanCircular);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
+		 	var error:ContainerError;
 		 	try{
 				context.initialize();	
 			}catch(e:ContainerError){
-				assertNotNull(e);
-				assertEquals(e.errorCode, ContainerError.ERROR_CYCLIC_DEPENDENCY);
-			} 
-			
+				error = e;
+			}
+			assertNotNull(error);
+			assertEquals(error.errorCode, ContainerError.ERROR_CYCLIC_DEPENDENCY); 
+
 			xml = constructXMLFromEmbed(RefBeanCircular2);
 			context = new XMLBeanFactory(xml);
-			try{
+
+		 	try{
 				context.initialize();	
 			}catch(e:ContainerError){
-				assertNotNull(e);
-				assertEquals(e.errorCode, ContainerError.ERROR_CYCLIC_DEPENDENCY);
-			} 
+				error = e;
+			}
+			assertNotNull(error);
+			assertEquals(error.errorCode, ContainerError.ERROR_CYCLIC_DEPENDENCY); 
 		}
 		
 		public function testRefBean():void{
@@ -340,10 +346,10 @@ package org.toshiroioc.core
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			context.initialize();
 			var constructorWithArray:ConstructorWithArrays = context.getObject('objectOne');
-			var outerBean:SimpleDependencyObject = context.getObject('outerBean');
+			var outerBean:ParentOfSimpleDependencyObject = context.getObject('outerBean');
 			var array:Array = constructorWithArray.simpleArrayItem;
 			var refBean:* = array[0];
-			var innerRefObject:ConstructorWithArrays = context.getObject('innerRefObject');
+			var innerRefObject:ConstructorWithArrays = context.getObject('outerRefObject');
 			assertTrue(refBean == outerBean);
 			assertEquals(array.length, 3)
 			assertEquals(array[1], context.getObject("innerBean"))
@@ -363,6 +369,12 @@ package org.toshiroioc.core
 			//first object
 			objectOne= context.getObject("objectOne") as ParentOfSimpleDependencyChildrenSetter;
 			outerBean = context.getObject("outerBean") as SimpleDependencyObject;
+			
+			var outerBean2:ParentOfSimpleDependencyObject = context.getObject("outerBean2") as ParentOfSimpleDependencyObject;
+			var innerObject:SimpleDependencyObject = context.getObject("innerObject") as SimpleDependencyObject;
+			assertTrue(outerBean2.nextChild == innerObject);
+			assertTrue(SetterWithArrays(context.getObject('arraySetter')).simpleArrayItem[1] == innerObject);
+			
 			objectTwo = context.getObject("objectTwo");
 			assertNotNull(objectOne);
 			assertNotNull(outerBean);
@@ -375,13 +387,14 @@ package org.toshiroioc.core
 		public function testRefArrayInnerBeanCircular():void{
 			var xml:XML = constructXMLFromEmbed(RefArrayInnerBeanCircular);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
-			try{
+			var error:ContainerError;
+		 	try{
 				context.initialize();	
 			}catch(e:ContainerError){
-				assertNotNull(e);
-				assertEquals(e.errorCode, ContainerError.ERROR_CYCLIC_DEPENDENCY);
+				error = e;
 			}
-			
+			assertNotNull(error);
+			assertEquals(error.errorCode, ContainerError.ERROR_CYCLIC_DEPENDENCY); 
 			/* var objectOne:SetterWithArrays = context.getObject('objectOne');
 			var outerBean:ParentOfSimpleDependencyObject = context.getObject('outerBean');
 			var innerBean:SimpleDependencyObject = context.getObject('innerBean');
@@ -1891,7 +1904,6 @@ package org.toshiroioc.core
 		
 		public static function getTestsArr():Vector.<Test>{
 			var retval:Vector.<Test> = new Vector.<Test>();	
-			
 			
 			
 			

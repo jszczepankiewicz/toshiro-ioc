@@ -560,7 +560,7 @@ package org.toshiroioc.core
 					
 					var id:String = object.attribute('id');
 					var beanRef:String = object.attribute('ref');
-					//var optional:String = object.attribute('optional');
+					var optional:String = object.attribute('optional');
 					 
 					if(id.length > 0 && beanRef.length > 0){
 						throw new ContainerError("Only ref attribute (not id) has to be specified in bean referencing (being) other bean"
@@ -571,11 +571,12 @@ package org.toshiroioc.core
 					//if(dependencyId != idString){
 					if(dependencyId && dependencyId.length > 0){
 						
-						//if(optional.length > 0){
-						//	propertiesDependent += XML('<property ref="'+dependencyId+'" optional="'+optional+'"/>');
-						//}else{
+						if(optional.length > 0){
+							throw new IllegalOperationError("Optional attribute for ref'ing bean not supported: ["+object+"]");
+							//propertiesDependent += XML('<property ref="'+dependencyId+'" optional="'+optional+'"/>');
+						}else{
 							propertiesDependent += XML('<property ref="'+dependencyId+'"/>');	
-						//}
+						}
 						
 						if(!beanRef.length > 0){
 							if(!newXMLSource){
