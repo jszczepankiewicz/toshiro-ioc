@@ -21,11 +21,11 @@
 		</constructor-arg>
 	</object>
 	
-	<object id="outerBean" class="org.toshiroioc.test.beans.SimpleDependencyObject">
-		<property name="someString" value="exampleString"/>
+	<object id="outerBean" class="org.toshiroioc.test.beans.ParentOfSimpleDependencyObject">
+		<property name="nextChild" ref="sampleId"/>
 	</object>
 	
-	<object id="innerRefObject" class="org.toshiroioc.test.beans.ConstructorWithArrays">
+	<object id="outerRefObject" class="org.toshiroioc.test.beans.ConstructorWithArrays">
 		<constructor-arg>
 			<number>2</number>
 		</constructor-arg>
