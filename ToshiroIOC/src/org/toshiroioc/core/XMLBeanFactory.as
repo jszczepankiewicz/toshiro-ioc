@@ -37,6 +37,7 @@ package org.toshiroioc.core
 	import flash.utils.getQualifiedClassName;
 	
 	import org.toshiroioc.ContainerError;
+	import org.toshiroioc.plugins.i18n.II18NProvider;
 	
 	/**
 	 * @author Jaroslaw Szczepankiewicz
@@ -77,8 +78,15 @@ package org.toshiroioc.core
 		
 		private var optionalRefParentsMap:Object = new Object();
 		
+		private var reservedIdsInterfacesMap:Object = new Object();
+		
 		public function XMLBeanFactory(xml:XML){			
 			xmlSource = xml;		
+			fillReservedIdsMap();
+		}
+		
+		private function fillReservedIdsMap():void{
+			reservedIdsInterfacesMap['toshiro.i18nProvider'] = II18NProvider;
 		}
 		
 		/**
@@ -511,6 +519,19 @@ package org.toshiroioc.core
 		 	return false;
 		 }
 		 
+		 //check if bean with reserved id implements interface defined in map
+		 private function isBeanIdReserved(id:String, className:String):Boolean{
+		 	if(reservedIdsInterfacesMap[id] != null){
+		 		var objClass:Class = getDefinitionByName(className) as Class;
+		 		var testObj:Object = new objClass();
+		 		var clazz:Class = reservedIdsInterfacesMap[id] as Class;
+		 		if(!(testObj is clazz)){
+		 			return true;
+		 		}
+		 	}
+		 	return false;
+		 }
+		 
 		 private function startParseBeans(xmlSource:XML):Object{
 			var beans:XMLList = xmlSource.child("object");
 			var beanXML:XML;
@@ -526,6 +547,10 @@ package org.toshiroioc.core
 				
 				if (nameExists(idString)){
 					throw new ContainerError("Id: ["+idString+"] not unique",0,ContainerError.ERROR_MULTIPLE_BEANS_WITH_THE_SAME_ID);
+				}
+				
+				if(isBeanIdReserved(idString, beanXML.attribute("class").toXMLString())){
+					throw new ContainerError("Id: ["+idString+"] reserved as special toshiro bean",0,ContainerError.ERROR_BEAN_ID_RESERVED);
 				}
 				
 				//if ref'ing and has id, throw error
@@ -670,9 +695,9 @@ package org.toshiroioc.core
 		 
 		private function processBeanProperties(clazz:Class, bean:*, properties:XMLList, processDependencies:Boolean = false):void{
 			var fieldDescriptionMap:Object = FieldDescription.getClassDescription(clazz);
-			
+			var beanId : String ;
 			if (properties.length()>0){
-				var beanId : String = ((properties[0] as XML).parent() as XML).attribute("id").toXMLString();			
+				beanId = ((properties[0] as XML).parent() as XML).attribute("id").toXMLString();			
 			}
 			
 			
@@ -693,10 +718,10 @@ package org.toshiroioc.core
 				var propertyName:String = property.attribute("name").toXMLString();
 				var constProp:String = property.attribute("const").toXMLString();
 				
-				if(processDependencies && refProp.length > 0){
+				if(refProp.length > 0){
 					var optional:String = property.attribute("optional").toXMLString();
 												
-					if(!(optional == "true")){		
+					if(!(optional == "true") && processDependencies){		
 						//	late initialization for ref property	
 						bean[propertyName] = getObject(refProp, true);
 						continue;
@@ -756,6 +781,29 @@ package org.toshiroioc.core
 			if(contextPropertyName){
 				bean[contextPropertyName] = this;
 			}
+			
+			var fieldsToTranslate:Array = FieldDescription.getPropertiesToTranslate(clazz);
+			if(fieldsToTranslate != null){
+				for each(fieldName in fieldsToTranslate){
+					bean[fieldName] = this.getTypedObject('toshiro.i18nProvider',II18NProvider).getString(bean, fieldName, beanId);
+				}
+				
+			}
+			
+			var fieldsToInjectBeanId:Array = FieldDescription.getPropertiesToInjectBeansId(clazz);
+			if(fieldsToInjectBeanId != null){
+				for each(fieldName in fieldsToInjectBeanId){
+					if(beanId.length == 0){
+						bean[fieldName] = null;
+					}else{
+						bean[fieldName] = beanId;	
+					}
+					
+				}
+				
+			}
+			
+			
 				
 			
 			for each (var arr:Array in classesWithRegisteredPostprocessors){

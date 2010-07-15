@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+
+
+	<object id="objectOne" class="org.toshiroioc.test.beans.I18NBean">
+		<property name="notTranslatedField" value="notTranslated"/>
+		<property name="simpleBean" ref="simpleBean"/>
+	</object>
+	
+	<object id="objectTwo" class="org.toshiroioc.test.beans.I18NBean">
+		<property name="notTranslatedField" value="notTranslated2"/>
+		<property name="simpleBean" ref="simpleBean"/>
+	</object>
+	
+	<object id="toshiro.i18nProvider" class="org.toshiroioc.test.beans.SimpleBean">
+		<property name="booleanItem"  value="false" />		
+		<property name="intItem" value="999"/>
+		<property name="uintItem" value="0"/>
+		<property name="numberItem" value="-123456.99987"/>		
+	</object>
+	
+</objects>

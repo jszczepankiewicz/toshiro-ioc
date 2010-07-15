@@ -5,6 +5,10 @@ package org.toshiroioc.test.beans{
 				
 		private var dependencyField:SimpleBean;
 		private var dependencyField2:SimpleBean;
+		/* [Required]
+		public var dependencyField3:SimpleBean;
+		[Required]
+		public var simpleReqProp:String; */
 		private var numberField:Number;
 		public var beforeConfigureMethodInvocation:Boolean;
 		public var afterConfigureMethodInvocation:Boolean;
@@ -34,9 +38,6 @@ package org.toshiroioc.test.beans{
 			if (numberField)
 				secondAfterMethod = secondBeforeMethod;
 		}
-		
-		
-		
 		
 		[Required]
 		public function set dependencyItem(value:SimpleBean):void{

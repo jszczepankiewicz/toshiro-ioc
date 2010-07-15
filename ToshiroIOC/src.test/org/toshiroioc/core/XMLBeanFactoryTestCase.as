@@ -45,6 +45,10 @@ package org.toshiroioc.core
 	import org.toshiroioc.test.puremvc.model.ExampleProxy;
 	import org.toshiroioc.test.puremvc.model.ExampleProxy2;
 	import org.toshiroioc.test.puremvc.view.DynamicExampleView;
+	import org.toshiroioc.test.beans.I18NBean;
+	import org.toshiroioc.test.i18n.SampleI18NProvider;
+	import mx.collections.ArrayCollection;
+	import org.toshiroioc.test.beans.BeanIdMetatag;
 
 	/*
 	 * TODO:	replace * types with direct types, test bean dependency without ref
@@ -130,6 +134,9 @@ package org.toshiroioc.core
 		
 		[Embed(source="assets/requiredmetatag.xml", mimeType="application/octet-stream")]
 		private var RequiredMetatagXMLClass:Class;
+		
+		[Embed(source="assets/requiredmetatagpublicprop.xml", mimeType="application/octet-stream")]
+		private var RequiredMetatagPublicPropXMLClass:Class;
 		
 		[Embed(source="assets/requiredmetatagsatisfied.xml", mimeType="application/octet-stream")]
 		private var RequiredMetatag2XMLClass:Class;
@@ -269,9 +276,97 @@ package org.toshiroioc.core
 		[Embed(source="assets/refbeanoptionaldynamicload.xml", mimeType="application/octet-stream")]
 		private var OptionalRefBeanDynamicLoadXMLClass:Class; 
 		
+		[Embed(source="assets/i18nsetter.xml", mimeType="application/octet-stream")]
+		private var I18NXMLClass:Class; 
+		
+		[Embed(source="assets/restrictedbeanid.xml", mimeType="application/octet-stream")]
+		private var RestrictedBeanIdXMLClass:Class; 
+		
+		[Embed(source="assets/beanidinjection.xml", mimeType="application/octet-stream")]
+		private var BeanIdInjectionXMLClass:Class; 
+		
+		[Embed(source="assets/i18nwrongtype.xml", mimeType="application/octet-stream")]
+		private var I18nWrongTypeXMLClass:Class; 
+		
 		
 		public function XMLBeanFactoryTestCase(methodName:String){
 			super(methodName);
+		}
+		
+		public function testI18NMetatagWrongSetterType():void{
+			var xml:XML = constructXMLFromEmbed(I18nWrongTypeXMLClass);
+			var context:XMLBeanFactory = new XMLBeanFactory(xml);
+			var err:ArgumentError;
+			try{
+				context.initialize();	
+			}
+			catch(e:ArgumentError){
+				err=e;
+			}
+			assertEquals('Accessor tagged with [i18n] has to be of String type', err.message);
+		}
+		
+		public function testBeanIdMetatag():void{
+			var xml:XML = constructXMLFromEmbed(BeanIdInjectionXMLClass);
+			var context:XMLBeanFactory = new XMLBeanFactory(xml);
+			context.initialize();
+			var objectOne:BeanIdMetatag = context.getObject('objectOne') as BeanIdMetatag;
+			var objectTwo:BeanIdMetatag = context.getObject('objectTwo') as BeanIdMetatag;
+			var arrayObject:SetterWithArrays = context.getObject('arrayObject') as SetterWithArrays;
+			var innerBeanWithIdMetatag:BeanIdMetatag = arrayObject.simpleArrayItem[0];
+			assertNotNull(innerBeanWithIdMetatag);
+			assertNull(innerBeanWithIdMetatag.beanIdItem);
+			assertNull(innerBeanWithIdMetatag.beanId2Item);
+			
+			assertEquals(objectOne.numberItem, 9999);
+			assertEquals(objectOne.stringItem, 'some123String');
+			assertEquals(objectOne.beanIdItem, 'objectOne');
+			assertEquals(objectOne.beanId2Item, 'objectOne');
+			
+			assertEquals(objectTwo.numberItem, -1);
+			assertEquals(objectTwo.stringItem, 'some1234String');
+			assertEquals(objectTwo.beanIdItem, 'objectTwo');
+			assertEquals(objectTwo.beanId2Item, 'objectTwo');
+		}
+		
+		public function testRestrictedBeansId():void{
+			var xml:XML = constructXMLFromEmbed(RestrictedBeanIdXMLClass);
+			var context:XMLBeanFactory = new XMLBeanFactory(xml);
+			var err:ContainerError
+			try{
+				context.initialize();	
+			}
+			catch(e:ContainerError){
+				err=e;
+			}
+			assertEquals(err.errorCode, ContainerError.ERROR_BEAN_ID_RESERVED);
+			
+		}
+		
+		public function testI18NMetatag():void{
+			var xml:XML = constructXMLFromEmbed(I18NXMLClass);
+			var context:XMLBeanFactory = new XMLBeanFactory(xml);
+			context.initialize();
+			var objectOne:I18NBean = context.getObject('objectOne') as I18NBean;
+			var objectTwo:I18NBean = context.getObject('objectTwo') as I18NBean;
+			//linkage
+			var i18nProvider:SampleI18NProvider = context.getTypedObject('toshiro.i18nProvider', SampleI18NProvider) as SampleI18NProvider;
+			var arrCol:ArrayCollection = new ArrayCollection(i18nProvider.objects);
+			assertTrue(arrCol.contains(objectOne));
+			assertTrue(arrCol.contains(objectTwo));
+			arrCol = new ArrayCollection(i18nProvider.beanIds);
+			assertTrue(arrCol.contains('objectOne'));
+			assertTrue(arrCol.contains('objectTwo'));
+			var simpleBean:SimpleBean = context.getObject('simpleBean') as SimpleBean;
+			assertEquals(objectOne.translatedField, 'translatedFieldtranslation');
+			assertEquals(objectOne.translatedField2, 'translatedField2translation');
+			assertEquals(objectOne.notTranslatedField, 'notTranslated');
+			assertEquals(objectOne.simpleBean, simpleBean);
+			
+			assertEquals(objectTwo.translatedField, 'translatedFieldtranslation');
+			assertEquals(objectTwo.translatedField2, 'translatedField2translation');
+			assertEquals(objectTwo.notTranslatedField, 'notTranslated2');
+			assertEquals(objectTwo.simpleBean, simpleBean);
 		}
 		
 		/* public function testRefBeanOptional():void{
@@ -395,11 +490,6 @@ package org.toshiroioc.core
 			}
 			assertNotNull(error);
 			assertEquals(error.errorCode, ContainerError.ERROR_CYCLIC_DEPENDENCY); 
-			/* var objectOne:SetterWithArrays = context.getObject('objectOne');
-			var outerBean:ParentOfSimpleDependencyObject = context.getObject('outerBean');
-			var innerBean:SimpleDependencyObject = context.getObject('innerBean');
-			var innerParentBean:ParentOfSimpleDependencyChildrenSetter = context.getObject('innerParentBean'); */			
-						
 		} 
 		
 		public function testRefFromArrayInnerBean():void{
@@ -1241,6 +1331,23 @@ package org.toshiroioc.core
 			
 		} 
 		
+		public function testMetatagRequiredOnPublicPropNotSatisfied():void{
+
+			var xml:XML = constructXMLFromEmbed(RequiredMetatagPublicPropXMLClass);
+			var context:XMLBeanFactory = new XMLBeanFactory(xml);
+			var error: ContainerError;
+
+			try{
+				context.initialize();
+			}
+			catch(err: ContainerError){
+				error = err
+			} 
+			assertNotNull(error);
+			assertEquals(ContainerError.ERROR_REQUIRED_METATAG_NOT_SATISFIED, error.errorCode);
+			
+		} 
+		
 		public function testMetatagRequiredSatisfied():void{
 
 			var xml:XML = constructXMLFromEmbed(RequiredMetatag2XMLClass);
@@ -1252,6 +1359,9 @@ package org.toshiroioc.core
 			assertNotNull(simpleBeanWithRequired);
 			assertNotNull(simpleBeanWithRequired.dependencyItem);
 			assertNotNull(simpleBeanWithRequired.dependencyItem2);
+			//assertNotNull(simpleBeanWithRequired.dependencyField3);
+			//assertEquals(simpleBeanWithRequired.dependencyField3, context.getObject('object4'));
+			//assertEquals(simpleBeanWithRequired.simpleReqProp, 'testSimpleReqProp');
 		} 
 		
 		public function testDependencyNotExistingSetter():void{
@@ -1906,9 +2016,13 @@ package org.toshiroioc.core
 			var retval:Vector.<Test> = new Vector.<Test>();	
 			
 			
-			
-			
-			
+			//retval.push(new XMLBeanFactoryTestCase("testMetatagRequiredOnPublicPropNotSatisfied"));
+
+
+			retval.push(new XMLBeanFactoryTestCase('testI18NMetatagWrongSetterType'));
+ 			retval.push(new XMLBeanFactoryTestCase("testBeanIdMetatag"));
+			retval.push(new XMLBeanFactoryTestCase('testRestrictedBeansId'));
+			retval.push(new XMLBeanFactoryTestCase('testI18NMetatag'));
 			retval.push(new XMLBeanFactoryTestCase("testRefBeanNonExistent"));
 			retval.push(new XMLBeanFactoryTestCase("testRefBeanCircular"));
  			retval.push(new XMLBeanFactoryTestCase("testRefBean"));
@@ -1979,7 +2093,7 @@ package org.toshiroioc.core
 			retval.push(new XMLBeanFactoryTestCase("testCyclicDependencyFromConstructorToSetterComplex"));
 			retval.push(new XMLBeanFactoryTestCase("testCyclicDependencyFromSetterToConstructorComplex"));
 			retval.push(new XMLBeanFactoryTestCase("testStaticReferenceInConstructor"));
-			retval.push(new XMLBeanFactoryTestCase("testStaticReferenceInSetter"));                                
+			retval.push(new XMLBeanFactoryTestCase("testStaticReferenceInSetter"));                                    
 			  
   			
 			/*
