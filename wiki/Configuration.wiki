@@ -437,7 +437,7 @@ Full example:
 Some beans' names are restricted and beans with these names are treated by toshiro as special. Usually they have to implement some interface provided by toshiro. These beans have to be defined at the top of root xml. Restricted names are:
   *``toshiro.i18nProvider` - has to implement `II18nProvider` in order to provide localization capabilities - injecting localized strings by toshiro into setters with `[`i18n`] tag.   
 === AS3 metatags ===
-Toshiro-IOC already supports four tags, which can be used directly in your code to provide you with special configuration options. Metatags are not extended from parent class and work only for public methods/accessors.
+Toshiro-IOC already supports following tags, which can be used directly in your code to provide you with special configuration options. Metatags are not extended from parent class and work only for public methods/accessors.
   *`[`BeforeConfigure`] - lifecycle metatag, methods labelled with it will be called after object instantiation, but before it is configured. The sequence of the calls is undefined.
   *`[`AfterConfigure`] - lifecycle metatag, methods labelled with it will be called after object instantiation and configuration. The sequence of the calls is undefined.
   *`[`Required`] - if accessor labelled with it is not called by container (property is not set) a ContainerError will be thrown. 
