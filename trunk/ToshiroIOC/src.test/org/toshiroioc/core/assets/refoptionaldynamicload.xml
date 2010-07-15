@@ -19,6 +19,11 @@
 		<property name="someAdditionalString" value="false"/>		
 	</object>	
 	
+	<object id="objectFurtherRef" class="org.toshiroioc.test.beans.SimpleDependencyObject">
+		<property name="someString" value="false"/>
+		<property name="someChild" ref="nonExistent" optional="true"/>				
+	</object>	
+	
 	
 		
 </objects>

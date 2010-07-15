@@ -53,6 +53,8 @@ package org.toshiroioc.core
 		public static const METATAG_AFTER_CONFIGURE:String	= "AfterConfigure";
 		public static const METATAG_REQUIRED:String	= "Required";
 		public static const METATAG_TOSHIRO_IOC_FACTORY:String	= "ToshiroIOCFactory";
+		public static const METATAG_I18N:String	= "i18n";
+		public static const METATAG_BEAN_ID:String	= "BeanId";
 		public static const CONSTRUCTOR_FLAG:uint = 1;
 		public static const CONSTRUCTOR_DETECTED:String = "toshiro.constructor.detected";
 		
@@ -169,6 +171,22 @@ package org.toshiroioc.core
 			return null;
 		}
 		
+		public static function getPropertiesToTranslate(clazz:Class):Array{
+			var obj:Object = classMetatagsDescriptionCache[getQualifiedClassName(clazz)];
+			if (obj){
+				return obj[METATAG_I18N];
+			}
+			return null;
+		}
+		
+		public static function getPropertiesToInjectBeansId(clazz:Class):Array{
+			var obj:Object = classMetatagsDescriptionCache[getQualifiedClassName(clazz)];
+			if (obj){
+				return obj[METATAG_BEAN_ID];
+			}
+			return null;
+		}
+		
 		
 		public static function getClassDescription(clazz:Class):Object{
 			//	check if adding cache for getQualifiedClassName speeds up
@@ -221,6 +239,8 @@ package org.toshiroioc.core
 				 }
 				
 				var reqFields:Array;
+				var translatedFields:Array;
+				var beanIdFields:Array;
 				var tagFound:Boolean;
 				
 				for each (var variable:XML in classInfo..accessor){
@@ -242,12 +262,30 @@ package org.toshiroioc.core
 								tagFound = true;
 								metatagsInfo[METATAG_TOSHIRO_IOC_FACTORY] = variable.@name.toString();
 								break;
+							case METATAG_I18N:
+								tagFound = true;
+								if(variable.@type.toString() != 'String'){
+									throw new ArgumentError('Accessor tagged with [i18n] has to be of String type');
+								}
+								if(!translatedFields){
+									translatedFields = new Array();
+									}
+								translatedFields.push(variable.@name.toString());
+								break;
+							case METATAG_BEAN_ID:
+								tagFound = true;
+								if(!beanIdFields){
+									beanIdFields = new Array();
+									}
+								beanIdFields.push(variable.@name.toString());
+								break;
 						}
 					// don't look for other tags in the accessor
 						if (tagFound){
 							break;
 						}
 					} 
+					
 					switch (variable.@type.toString()){
 						
 						case ("Number"):
@@ -296,8 +334,16 @@ package org.toshiroioc.core
 				
 				// check if array of required fields names exists and add to metatagsInfo object
 				// CHECK: why not up
-				if(reqFields)
+				if(reqFields){
 					metatagsInfo[METATAG_REQUIRED] = reqFields;
+				}
+				if(translatedFields){
+					metatagsInfo[METATAG_I18N] = translatedFields;
+				}
+				
+				if(beanIdFields){
+					metatagsInfo[METATAG_BEAN_ID] = beanIdFields;
+				}
 					
 				
 				//	saving in cache for future use

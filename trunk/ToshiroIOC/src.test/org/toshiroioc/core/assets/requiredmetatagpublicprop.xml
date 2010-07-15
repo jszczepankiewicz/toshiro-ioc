@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <objects>
-
-	<object id="objectWithRequired" class="org.toshiroioc.test.beans.SimpleBeanWithMetatags">
+	
+	<object id="objectWithoutRequired" class="org.toshiroioc.test.beans.SimpleBeanWithMetatags">
 		<property name="numberItem" value="9999.00001"/>
 		<property name="dependencyItem" ref="object5"/>
 		<property name="dependencyItem2" ref="object6"/>
-		<!-- <property name="dependencyField3" ref="object4"/>
-		<property name="simpleReqProp" value="testSimpleReqProp"/> -->
 	</object>
 	
 	<object id="object4" class="org.toshiroioc.test.beans.SimpleBean"/>	

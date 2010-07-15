@@ -40,6 +40,7 @@ package org.toshiroioc
 		//public static const ERROR_MORE_THAN_ONE_OBJECT_OF_THE_CLASS:int = 8;
 		public static const ERROR_MULTIPLE_BEANS_WITH_THE_SAME_ID:int = 9;
 		public static const ERROR_REFERENCING_BEAN_GIVEN_ID:int = 10;
+		public static const ERROR_BEAN_ID_RESERVED:int = 11;
 		
 		private var errorCodeValue:int;
 		
