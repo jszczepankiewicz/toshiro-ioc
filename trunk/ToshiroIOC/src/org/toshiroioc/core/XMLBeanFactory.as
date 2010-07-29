@@ -432,7 +432,7 @@ package org.toshiroioc.core
 				retval = new clazz();
 			}
 			
-			processBeanProperties(clazz, retval, beanXML.child("property"), proceedIfSettingDependencyFound);
+			processBeanProperties(clazz, retval, beanXML.child("property"), beanXML.attribute("id").toXMLString(), proceedIfSettingDependencyFound);
 
 			
 			
@@ -693,12 +693,8 @@ package org.toshiroioc.core
 			}
 		}
 		 
-		private function processBeanProperties(clazz:Class, bean:*, properties:XMLList, processDependencies:Boolean = false):void{
+		private function processBeanProperties(clazz:Class, bean:*, properties:XMLList, beanId : String, processDependencies:Boolean = false):void{
 			var fieldDescriptionMap:Object = FieldDescription.getClassDescription(clazz);
-			var beanId : String ;
-			if (properties.length()>0){
-				beanId = ((properties[0] as XML).parent() as XML).attribute("id").toXMLString();			
-			}
 			
 			
 			// call methods tagged [BeforeConfigure]
