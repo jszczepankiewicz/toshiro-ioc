@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<gameConfiguration>
+	<imagesPath>/pub/images</imagesPath>
+	<CollectionOfPointModel_mapPoints>
+		<PointModel>
+			<x></x>
+			<y></y>
+			<action></action>
+			<question></question>
+		</PointModel>
+	</CollectionOfPointModel_mapPoints>
+	<CollectionOfQuestionModel_questions>
+		<QuestionModel>
+			<id></id>
+			<type></type>
+			<points></points>
+			<content></content>
+			<correct></correct>
+			<CollectionOfQuestionAnswer_answers>
+				<QuestionAnswer>
+				
+				</QuestionAnswer>
+			</CollectionOfQuestionAnswer_answers>
+		</QuestionModel>
+	</CollectionOfQuestionModel_questions>
+	<CollectionOfPlayerModel_players>
+		<PlayerModel>
+			<name></name>
+			<image></image>
+		</PlayerModel>
+	</CollectionOfPlayerModel_players>
+	<CollectionOfActionModel_actions>
+		<ActionModel>
+			<id></id>
+			<type></type>
+			<description></description>
+			<result></result>
+			<resultValue></resultValue>
+		</ActionModel>
+	</CollectionOfActionModel_actions>
+</gameConfiguration>

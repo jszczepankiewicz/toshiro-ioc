@@ -1,16 +1,18 @@
 package
 {
 	
+	import org.toshiroioc.plugins.puremvc.multicore.CommandMap;
+	import org.toshiroioc.plugins.puremvc.multicore.SetterMap;
+	import org.toshiroioc.plugins.puremvc.multicore.ToshiroRegistrationAwareMediator;
+	import org.toshiroioc.test.beans.I18NBean;
+	import org.toshiroioc.test.beans.I18NBeanWrongType;
+	import org.toshiroioc.test.puremvc.command.MacroStartupCommand;
 	import org.toshiroioc.test.puremvc.command.PrepModelCommand;
 	import org.toshiroioc.test.puremvc.command.PrepViewCommand;
-	import org.toshiroioc.test.puremvc.command.MacroStartupCommand;
 	import org.toshiroioc.test.puremvc.mediator.ExampleViewMediator;
 	import org.toshiroioc.test.puremvc.mediator.ToshiroApplicationFacadeTestMediator;
 	import org.toshiroioc.test.puremvc.model.ExampleProxy;
-	import org.toshiroioc.plugins.puremvc.multicore.SetterMap;
-	import org.toshiroioc.plugins.puremvc.multicore.CommandMap;
-	import org.toshiroioc.test.beans.I18NBean;
-	import org.toshiroioc.test.beans.I18NBeanWrongType;
+
   /**
    * Author: Damir Murat
    * Version: $Revision: 436 $, $Date: 2008-03-27 13:18:27 +0100 (do, 27 mrt 2008) $, $Author: dmurat1 $
@@ -29,7 +31,8 @@ package
       prop6:ExampleProxy,
       prop7:SetterMap,
       prop8:CommandMap,
-      prop9:I18NBeanWrongType
+      prop9:I18NBeanWrongType,
+	  prop10:ToshiroRegistrationAwareMediator
     };
 
     public function LinkageEnforcer() {

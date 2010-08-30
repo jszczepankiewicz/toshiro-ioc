@@ -693,9 +693,8 @@ package org.toshiroioc.core
 			}
 		}
 		 
-		private function processBeanProperties(clazz:Class, bean:*, properties:XMLList, beanId : String, processDependencies:Boolean = false):void{
+		private function processBeanProperties(clazz:Class, bean:*, properties:XMLList, beanId:String, processDependencies:Boolean = false):void{
 			var fieldDescriptionMap:Object = FieldDescription.getClassDescription(clazz);
-			
 			
 			// call methods tagged [BeforeConfigure]
 			var beforeConfigureMethodNames:Vector.<String> = FieldDescription.getBeforeConfigureMethodsName(clazz);
@@ -755,14 +754,6 @@ package org.toshiroioc.core
 								
 				bean[propertyName] = parseProperty(fieldDescriptionMap[propertyName], property);				
 			}
-			// call method tagged [AfterConfigure]
-			var afterConfigureMethodNames:Vector.<String> = FieldDescription.getAfterConfigureMethodsName(clazz);
-			if (afterConfigureMethodNames){
-				for each(methodName in afterConfigureMethodNames){
-					bean[methodName]();
-				}
-			}
-				
 			
 			//if any required field not initialized throw an error
 			var reqFields:Array = FieldDescription.getRequiredFields(clazz);
@@ -789,18 +780,22 @@ package org.toshiroioc.core
 			var fieldsToInjectBeanId:Array = FieldDescription.getPropertiesToInjectBeansId(clazz);
 			if(fieldsToInjectBeanId != null){
 				for each(fieldName in fieldsToInjectBeanId){
-					if(beanId.length == 0){
+					if(beanId == null || beanId.length == 0){
 						bean[fieldName] = null;
 					}else{
 						bean[fieldName] = beanId;	
 					}
 					
 				}
-				
 			}
 			
-			
-				
+			// call method tagged [AfterConfigure]
+			var afterConfigureMethodNames:Vector.<String> = FieldDescription.getAfterConfigureMethodsName(clazz);
+			if (afterConfigureMethodNames){
+				for each(methodName in afterConfigureMethodNames){
+					bean[methodName]();
+				}
+			}
 			
 			for each (var arr:Array in classesWithRegisteredPostprocessors){
 				if(bean is arr[0]){
