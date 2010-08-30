@@ -206,7 +206,7 @@ package org.toshiroioc.core
 						factory.parseConstructorArgumentValue(constructorArgs[11]),
 						factory.parseConstructorArgumentValue(constructorArgs[12]),
 						factory.parseConstructorArgumentValue(constructorArgs[13])
-					);
+						);
 					break;
 				case 15:
 					retval = new clazz(
@@ -225,7 +225,7 @@ package org.toshiroioc.core
 						factory.parseConstructorArgumentValue(constructorArgs[12]),
 						factory.parseConstructorArgumentValue(constructorArgs[13]),
 						factory.parseConstructorArgumentValue(constructorArgs[14])
-					);
+						);
 					break;
 				case 16:
 					retval = new clazz(
@@ -245,7 +245,7 @@ package org.toshiroioc.core
 						factory.parseConstructorArgumentValue(constructorArgs[13]),
 						factory.parseConstructorArgumentValue(constructorArgs[14]),
 						factory.parseConstructorArgumentValue(constructorArgs[15])
-					);
+						);
 					break;
 				case 17:
 					retval = new clazz(
@@ -266,7 +266,7 @@ package org.toshiroioc.core
 						factory.parseConstructorArgumentValue(constructorArgs[14]),
 						factory.parseConstructorArgumentValue(constructorArgs[15]),
 						factory.parseConstructorArgumentValue(constructorArgs[16])
-					);
+						);
 					break;
 				case 18:
 					retval = new clazz(
@@ -288,7 +288,7 @@ package org.toshiroioc.core
 						factory.parseConstructorArgumentValue(constructorArgs[15]),
 						factory.parseConstructorArgumentValue(constructorArgs[16]),
 						factory.parseConstructorArgumentValue(constructorArgs[17])
-					);
+						);
 					break;
 				case 19:
 					retval = new clazz(
@@ -311,7 +311,7 @@ package org.toshiroioc.core
 						factory.parseConstructorArgumentValue(constructorArgs[16]),
 						factory.parseConstructorArgumentValue(constructorArgs[17]),
 						factory.parseConstructorArgumentValue(constructorArgs[18])
-					);
+						);
 					break;
 				case 20:
 					retval = new clazz(
@@ -335,7 +335,7 @@ package org.toshiroioc.core
 						factory.parseConstructorArgumentValue(constructorArgs[17]),
 						factory.parseConstructorArgumentValue(constructorArgs[18]),
 						factory.parseConstructorArgumentValue(constructorArgs[19])
-					);
+						);
 					break;
 				case 21:
 					retval = new clazz(
@@ -360,7 +360,7 @@ package org.toshiroioc.core
 						factory.parseConstructorArgumentValue(constructorArgs[18]),
 						factory.parseConstructorArgumentValue(constructorArgs[19]),
 						factory.parseConstructorArgumentValue(constructorArgs[20])
-					);
+						);
 					break;
 				case 22:
 					retval = new clazz(
@@ -386,7 +386,7 @@ package org.toshiroioc.core
 						factory.parseConstructorArgumentValue(constructorArgs[19]),
 						factory.parseConstructorArgumentValue(constructorArgs[20]),
 						factory.parseConstructorArgumentValue(constructorArgs[21])
-					);
+						);
 					break;
 				case 23:
 					retval = new clazz(
@@ -413,7 +413,7 @@ package org.toshiroioc.core
 						factory.parseConstructorArgumentValue(constructorArgs[20]),
 						factory.parseConstructorArgumentValue(constructorArgs[21]),
 						factory.parseConstructorArgumentValue(constructorArgs[22])
-					);
+						);
 					break;
 				case 24:
 					retval = new clazz(
@@ -441,7 +441,7 @@ package org.toshiroioc.core
 						factory.parseConstructorArgumentValue(constructorArgs[21]),
 						factory.parseConstructorArgumentValue(constructorArgs[22]),
 						factory.parseConstructorArgumentValue(constructorArgs[23])
-					);
+						);
 					break;
 				case 25:
 					retval = new clazz(
@@ -470,7 +470,7 @@ package org.toshiroioc.core
 						factory.parseConstructorArgumentValue(constructorArgs[22]),
 						factory.parseConstructorArgumentValue(constructorArgs[23]),
 						factory.parseConstructorArgumentValue(constructorArgs[24])
-					);
+						);
 					break;
 				case 26:
 					retval = new clazz(
@@ -500,7 +500,7 @@ package org.toshiroioc.core
 						factory.parseConstructorArgumentValue(constructorArgs[23]),
 						factory.parseConstructorArgumentValue(constructorArgs[24]),
 						factory.parseConstructorArgumentValue(constructorArgs[25])
-					);
+						);
 					break;
 				case 27:
 					retval = new clazz(
@@ -531,7 +531,7 @@ package org.toshiroioc.core
 						factory.parseConstructorArgumentValue(constructorArgs[24]),
 						factory.parseConstructorArgumentValue(constructorArgs[25]),
 						factory.parseConstructorArgumentValue(constructorArgs[26])
-					);
+						);
 					break;
 				case 28:
 					retval = new clazz(
@@ -563,7 +563,7 @@ package org.toshiroioc.core
 						factory.parseConstructorArgumentValue(constructorArgs[25]),
 						factory.parseConstructorArgumentValue(constructorArgs[26]),
 						factory.parseConstructorArgumentValue(constructorArgs[27])
-					);
+						);
 					break;
 				case 29:
 					retval = new clazz(
@@ -596,7 +596,7 @@ package org.toshiroioc.core
 						factory.parseConstructorArgumentValue(constructorArgs[26]),
 						factory.parseConstructorArgumentValue(constructorArgs[27]),
 						factory.parseConstructorArgumentValue(constructorArgs[28])
-					);
+						);
 					break;
 				case 30:
 					retval = new clazz(
@@ -630,10 +630,10 @@ package org.toshiroioc.core
 						factory.parseConstructorArgumentValue(constructorArgs[27]),
 						factory.parseConstructorArgumentValue(constructorArgs[28]),
 						factory.parseConstructorArgumentValue(constructorArgs[29])
-					);
+						);
 					break;
 				default:
-					throw new ContainerError("to many constructor arguments (" + args + "), please extend this class...");
+					throw new ContainerError("to many constructor arguments, please extend this class...");
 			}
 				
 			return retval;

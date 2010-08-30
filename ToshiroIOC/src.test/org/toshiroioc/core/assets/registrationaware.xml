@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+	<object id="mediator1" class='org.puremvc.as3.multicore.patterns.mediator.Mediator'>
+		<constructor-arg value='mediator1' />
+	</object>
+	<object id="mediator2" class='org.toshiroioc.plugins.puremvc.multicore.ToshiroRegistrationAwareMediator'>
+		<constructor-arg value='mediator2' />
+	</object>
+	<object id="mediator3" class='org.toshiroioc.plugins.puremvc.multicore.ToshiroRegistrationAwareMediator'>
+		<constructor-arg value='mediator3' />
+		<property name='register' value='false' />
+	</object>
+	<object id="mediator4" class='org.toshiroioc.plugins.puremvc.multicore.ToshiroRegistrationAwareMediator'>
+		<constructor-arg value='mediator4' />
+		<property name='register' value='true' />
+	</object>
+</objects>
