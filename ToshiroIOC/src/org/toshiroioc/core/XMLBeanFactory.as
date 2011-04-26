@@ -80,6 +80,8 @@ package org.toshiroioc.core
 		
 		private var reservedIdsInterfacesMap:Object = new Object();
 		
+		private var additConfigLoader:AdditionalConfigLoader;
+		
 		public function XMLBeanFactory(xml:XML){			
 			xmlSource = xml;		
 			fillReservedIdsMap();
@@ -99,9 +101,41 @@ package org.toshiroioc.core
 			//	registering built in property editors			
 			registerPropertyEditor(new CorePropertyEditors());
 			startParseBeans(xmlSource);
-			//	dispatch complete event to inform that container is ready
+			
+			
+			if(additConfigLoader != null){
+				for each(var xml:XML in additConfigLoader.configs){
+					loadDynamicConfig(xml, false);
+				}
+			}
 			runPostprocessorsOnContextLoaded();
+			//	dispatch complete event to inform that container is ready
 			dispatchEvent(new Event(Event.COMPLETE));
+		}
+		
+		public function addConfigsToDynamicLoadAtStartup(arr:Array):void{
+			additConfigLoader = new AdditionalConfigLoader(arr);
+		}
+		
+		public function concatConfigsWithMainXML(arr:Array):void{
+			var configLoader:AdditionalConfigLoader = new AdditionalConfigLoader(arr);
+			var xmlSourceString:String = xmlSource.toXMLString();
+			xmlSourceString = removeTag('</objects>', xmlSourceString);
+			for each(var xml:XML in configLoader.configs){
+				var xmlString:String = xml.toXMLString();
+				xmlString = removeTag('<objects>',xmlString);
+				xmlString = removeTag('</objects>',xmlString);
+				xmlSourceString = xmlSourceString.concat(xmlString);
+			}			
+			xmlSourceString = xmlSourceString.concat('</objects>');
+			xmlSource = new XML(xmlSourceString);
+		}
+				
+		private function removeTag(tag:String, string:String):String{
+			
+			var regExp:RegExp = new RegExp(tag);
+			trace(string.match(regExp));
+			return string.replace(regExp,'');
 		}
 		
 		private function injectOptionalRefs(oldBeansCount:Number):void{
@@ -126,7 +160,7 @@ package org.toshiroioc.core
 		}
 	
 		//TODO: Unregister commands when failed
-		public function loadDynamicConfig(xml:XML):void{
+		public function loadDynamicConfig(xml:XML, dispatchCompleteEvent:Boolean=true):void{
 			var oldNodeNamesClassesMap:Vector.<Array> = nodeNamesClassesMap.concat();
 			try{
 				startParseBeans(xml);
