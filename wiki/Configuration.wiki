@@ -353,7 +353,7 @@ Example constructor injection:
 
 === Dynamic context load ===
 Toshiro-IOC provides you with a possibility to load configuration xml files at a runtime.
-After context has been initialized, just call `loadDynamicConfig(xml:XML):void` method with configuration xml as an argument, whenever you wish to add beans' definitions to the context. Example:
+After context has been initialized, just call `loadDynamicConfig(xml:XML):void` method with configuration xml as an argument, whenever you wish to add beans' definitions to the context. They can reference beans loaded in previous configs as normal. Example:
 {{{
 var xml:XML = constructXMLFromEmbed(SimpleDynamicConfigXMLClass1);
 var context:XMLBeanFactory = new XMLBeanFactory(xml);
@@ -362,6 +362,22 @@ xml = constructXMLFromEmbed(SimpleDynamicConfigXMLClass2);
 context.loadDynamicConfig(xml);
 }}} 
 After successful load of dynamic config, an `Event.COMPLETE` is being dispatched, otherwise an Error, which was the reason of unsuccessful load is being thrown and context is being restored to previous state, without beans from unsuccessfully loaded configuration file.
+You can use the feature to load multiple configs at startup, just pass array of xml strings to context and then call initialize(): 
+{{{
+var context:XMLBeanFactory = new XMLBeanFactory(xml);
+var configs:Array = [constructXMLFromEmbed(RefToBeanFrom1stConfigXMLClass).toXMLString(), constructXMLFromEmbed(SimpleDynamicConfigXMLClass2).toXMLString()];
+			context.addConfigsToDynamicLoadAtStartup(configs);
+			context.initialize();
+}}}
+
+=== Multiple config files ===
+Besides the feature described above, there exist one other way to split bean definitions into multiple config files. That feature is meant to be used to separate beans' definitions into logical parts to facilitate navigation between them. It's easier to find what you are looking for in smaller files than in one huge file with definitions of beans. XML strings with beans are passed to context, before initializing, they are concatenated and then parsed, so the normal rules of references between beans apply (in contrast to dynamic configs, where it is possible to reference beans loaded before, but not the other way). Example:
+{{{
+var context:XMLBeanFactory = new XMLBeanFactory(xml);
+			var configs:Array = [constructXMLFromEmbed(RefToBeanFrom1stConfigXMLClass).toXMLString(), constructXMLFromEmbed(SimpleDynamicConfigXMLClass2).toXMLString()];
+			context.concatConfigsWithMainXML(configs);
+			context.initialize();
+}}}
 
 === Optional bean reference ===
 It is possible to configure beans in a way, that reference to a bean is being satisfied after dynamic context load. If you wish Toshiro-IOC to inject a bean to a property, when it becomes available in a context, after dynamically loaded configuration file, you have to mark parent's property with defined reference with `optional` attribute set to true.
