@@ -291,7 +291,10 @@ package org.toshiroioc.core
 		private var I18nWrongTypeXMLClass:Class;
 		
 		[Embed(source="assets/registrationaware.xml", mimeType="application/octet-stream")]
-		private var RegistrationAwareXMLClass:Class; 
+		private var RegistrationAwareXMLClass:Class;
+		
+		[Embed(source="assets/dynamicconfig/multipleconfigs.xml", mimeType="application/octet-stream")]
+		private var MultipleConfigsXMLClass:Class;
 		
 		
 		public function XMLBeanFactoryTestCase(methodName:String){
@@ -892,8 +895,37 @@ package org.toshiroioc.core
 			assertFalse(context.containsObject("objectTwo"));
 			assertFalse(context.containsObject("objectWithRefToFirstConfig"));
 		}
-	
 		
+		
+		public function testMultipleConfigs():void{
+			var xml:XML = constructXMLFromEmbed(MultipleConfigsXMLClass);
+			var context:XMLBeanFactory = new XMLBeanFactory(xml);
+			var configs:Array = [constructXMLFromEmbed(RefToBeanFrom1stConfigXMLClass).toXMLString(), constructXMLFromEmbed(SimpleDynamicConfigXMLClass2).toXMLString()];
+			context.addConfigsToDynamicLoadAtStartup(configs);
+			context.initialize();
+			//xml = constructXMLFromEmbed(RefToBeanFrom1stConfigXMLClass);
+			var objWithRefTo1stConfig:SimpleDependencyObject = context.getObject("objectWithRefToFirstConfig") as SimpleDependencyObject; 
+			assertNotNull(objWithRefTo1stConfig);
+			assertNotNull(objWithRefTo1stConfig.someChild)
+			assertTrue(objWithRefTo1stConfig.someChild is BeanWithConstructor);
+			assertNotNull(context.getObject("objectThree"));
+			assertNotNull(context.getObject("objectFour"));
+		}
+	
+		public function testConcatConfigs():void{
+			var xml:XML = constructXMLFromEmbed(MultipleConfigsXMLClass);
+			var context:XMLBeanFactory = new XMLBeanFactory(xml);
+			var configs:Array = [constructXMLFromEmbed(RefToBeanFrom1stConfigXMLClass).toXMLString(), constructXMLFromEmbed(SimpleDynamicConfigXMLClass2).toXMLString()];
+			context.concatConfigsWithMainXML(configs);
+			context.initialize();
+			//xml = constructXMLFromEmbed(RefToBeanFrom1stConfigXMLClass);
+			var objWithRefTo1stConfig:SimpleDependencyObject = context.getObject("objectWithRefToFirstConfig") as SimpleDependencyObject; 
+			assertNotNull(objWithRefTo1stConfig);
+			assertNotNull(objWithRefTo1stConfig.someChild)
+			assertTrue(objWithRefTo1stConfig.someChild is BeanWithConstructor);
+			assertNotNull(context.getObject("objectThree"));
+			assertNotNull(context.getObject("objectFour"));
+		}
 		
 		public function testClassPostprocessor():void{
 			var xml:XML = constructXMLFromEmbed(BeanWithPostprocessorXMLClass);
@@ -2036,9 +2068,10 @@ package org.toshiroioc.core
 			var retval:Vector.<Test> = new Vector.<Test>();	
 			
 			
-			//retval.push(new XMLBeanFactoryTestCase("testMetatagRequiredOnPublicPropNotSatisfied"));
+			retval.push(new XMLBeanFactoryTestCase("testConcatConfigs"));
 
 			
+			retval.push(new XMLBeanFactoryTestCase("testMultipleConfigs"));
 			retval.push(new XMLBeanFactoryTestCase('testPureMVCRegistrationAwareMediator'));
 			retval.push(new XMLBeanFactoryTestCase('testI18NMetatagWrongSetterType'));
  			retval.push(new XMLBeanFactoryTestCase("testBeanIdMetatag"));
@@ -2062,7 +2095,7 @@ package org.toshiroioc.core
 	 	 	retval.push(new XMLBeanFactoryTestCase("testRefOptionalWrongArgument"));
 			retval.push(new XMLBeanFactoryTestCase("testMetatagContextInjection"));
  			retval.push(new XMLBeanFactoryTestCase("testIDNotUnique"));
-			retval.push(new XMLBeanFactoryTestCase("testPureMVCMacroCommandStartup"));
+			//retval.push(new XMLBeanFactoryTestCase("testPureMVCMacroCommandStartup"));
 			retval.push(new XMLBeanFactoryTestCase("testPureMVCSimpleCommandStartup"));
 			retval.push(new XMLBeanFactoryTestCase("testDynamicContextLoadFailed"));
  			retval.push(new XMLBeanFactoryTestCase("testDynamicContextSimpleLoad"));

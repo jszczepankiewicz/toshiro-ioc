@@ -44,8 +44,12 @@
 			
 			private function startupApp(ev:Event):void {
         		facade.removeEventListener(Event.COMPLETE, startupApp);
-        		exampleView = facade.getContext().getObject("exampleView") as ExampleView;
-        		addChild(exampleView);
+				try{
+        			exampleView = facade.getContext().getObject("exampleView") as ExampleView;
+        			addChild(exampleView);
+				}catch(e:Error){
+					
+				}
    			}
       		
       		

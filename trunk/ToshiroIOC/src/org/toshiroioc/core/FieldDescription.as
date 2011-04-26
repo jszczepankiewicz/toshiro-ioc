@@ -90,7 +90,7 @@ package org.toshiroioc.core
 			//	result not found in cache, should search in registry
 			for each (var fullname:String in registryKeys){
 				
-				var pos:int = fullname.toLowerCase().indexOf(shortName.toLowerCase());
+				var pos:int = fullname.toLowerCase().lastIndexOf(shortName.toLowerCase());
 				
 				if((pos> -1) && ((pos + shortName.length) == fullname.length)){
 					
