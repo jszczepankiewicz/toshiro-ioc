@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <objects>
+	<object id="pureMVCStartupCommand" class="org.toshiroioc.test.puremvc.command.SimpleStartupCommand" lifecycle="prototype"/>
 	<object id="mediator1" class='org.puremvc.as3.multicore.patterns.mediator.Mediator'>
 		<constructor-arg value='mediator1' />
 	</object>

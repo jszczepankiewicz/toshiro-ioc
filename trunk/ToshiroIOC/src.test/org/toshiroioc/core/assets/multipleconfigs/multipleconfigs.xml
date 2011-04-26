@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<objects>
+
+<object id="toshiro.configs" class="org.toshiroioc.core.AdditionalConfigLoader">
+	<constructor-arg>
+		<array>
+			<entry><string>org.toshiroioc.core.assets.multipleconfigs.additconfig1.xml</string></entry>
+			<entry><string>org.toshiroioc.core.assets.multipleconfigs.additconfig2.xml</string></entry>
+		</array>
+	</constructor-arg>
+</object>
+
+	<object id="objectOne" class="org.toshiroioc.test.beans.SimpleBean">	
+		<property name="stringItem" value="test1"/>		
+	</object>
+	
+</objects>
