@@ -9,7 +9,11 @@ package org.toshiroioc.plugins.puremvc.multicore
 	import org.puremvc.as3.multicore.patterns.observer.Notifier;
 	import org.toshiroioc.core.XMLBeanFactory;
 	
-
+	/**
+	 * PureMVC MacroCommand toshiro compatible. 
+	 * @author M.Strecker
+	 * 
+	 */
 	public class ToshiroIocMacroCommand extends Notifier implements ICommand, INotifier
 	{
 		

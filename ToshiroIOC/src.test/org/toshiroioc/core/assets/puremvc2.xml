@@ -3,21 +3,21 @@
 
 	
 	<!-- Commands	-->
-	<object id="pureMVCStartupCommand" class="org.toshiroioc.test.puremvc.command.SimpleStartupCommand" lifecycle="prototype"/>
+	<object id="pureMVCStartupCommand" class="org.toshiroioc.test.puremvc.command.SimpleStartupCommand" lifecycle="prototype" creationPolicy="immediate"/>
 						
-	<object id="prepModelCommand" class="org.toshiroioc.test.puremvc.command.PrepModelCommand" lifecycle="prototype">
+	<object id="prepModelCommand" class="org.toshiroioc.test.puremvc.command.PrepModelCommand" lifecycle="prototype" creationPolicy="immediate">
 	</object>
 	
-	<object id="testCommand" class="org.toshiroioc.test.puremvc.command.TestCommand" />
+	<object id="testCommand" class="org.toshiroioc.test.puremvc.command.TestCommand" creationPolicy="immediate"/>
 	
 	
-	<object id="exampleProxy" class="org.toshiroioc.test.puremvc.model.ExampleProxy"/>
-	<object id="exampleProxy2" class="org.toshiroioc.test.puremvc.model.ExampleProxy2"/>
+	<object id="exampleProxy" class="org.toshiroioc.test.puremvc.model.ExampleProxy" creationPolicy="immediate"/>
+	<object id="exampleProxy2" class="org.toshiroioc.test.puremvc.model.ExampleProxy2" creationPolicy="immediate"/>
 	
-	<object id="prepViewCommand" class="org.toshiroioc.test.puremvc.command.PrepViewCommand" lifecycle="prototype">
+	<object id="prepViewCommand" class="org.toshiroioc.test.puremvc.command.PrepViewCommand" lifecycle="prototype" creationPolicy="immediate">
 	</object>
 	
-	<object id="beanWithSetterMap" class="org.toshiroioc.plugins.puremvc.multicore.SetterMap">
+	<object id="beanWithSetterMap" class="org.toshiroioc.plugins.puremvc.multicore.SetterMap" creationPolicy="immediate">
 		<property name="mappings">
 			<array>
 				<entry>
@@ -72,9 +72,9 @@
 	
 	<!-- Mediators-->
 	
-	<object id="toshiroApplicationFacadeTestMediator" class="org.toshiroioc.test.puremvc.mediator.ToshiroApplicationFacadeTestMediator"/>
+	<object id="toshiroApplicationFacadeTestMediator" class="org.toshiroioc.test.puremvc.mediator.ToshiroApplicationFacadeTestMediator" creationPolicy="immediate"/>
 
-	<object id="exampleViewMediator" class="org.toshiroioc.test.puremvc.mediator.ExampleViewMediator">
+	<object id="exampleViewMediator" class="org.toshiroioc.test.puremvc.mediator.ExampleViewMediator" creationPolicy="immediate">
 		<constructor-arg ref="exampleView"/>
 	</object>
 

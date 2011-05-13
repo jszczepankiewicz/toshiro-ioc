@@ -7,10 +7,14 @@ package org.toshiroioc.plugins.puremvc.multicore
 	import org.puremvc.as3.multicore.interfaces.IController;
 	
 	/**
+	 **
 	 * The interface definition for a PureMVC Command.
-	 *
+	 * 
 	 * @see org.puremvc.as3.multicore.interfaces INotification
-	 */
+	 * 
+	 * @author M.Strecker
+	 * 
+	 */	
 	public interface IToshiroIocController extends IController
 	{
 		/**

@@ -41,14 +41,14 @@ package org.toshiroioc.core
 	 * graph dependencies.
 	 */
 	public class DINode{
-		private var dependencies:Array = new Array();
+		//private var dependencies:Array = new Array();
 		private var dependentNode:Array = new Array();
 		
 		private var xmlContent:XML;
 		private var initializedObject:*;
 		private var objectID:String;
 		
-		
+		private var _isDependency:Boolean;
 		
 		public function get id():String{
 			return objectID;
@@ -96,13 +96,13 @@ package org.toshiroioc.core
 			dependentNode.push(node);
 		}
 		
-		public function addDependency(objectID:String):void{
+		/*public function addDependency(objectID:String):void{
 			dependencies.push(objectID);
-		}
+		}*/
 		
-		public function getDependencies():Array{
+		/*public function getDependencies():Array{
 			return dependencies;
-		}	
+		}*/	
 		
 		/**
 		 * TODO: refactor to speed up (maybe using only strings instead of objects)
@@ -152,5 +152,16 @@ package org.toshiroioc.core
 			removeFromArray(unresolved, this);
 			
 		}	
+
+		public function get isDependency():Boolean
+		{
+			return _isDependency;
+		}
+
+		public function set isDependency(value:Boolean):void
+		{
+			_isDependency = value;
+		}
+
 	}
 }

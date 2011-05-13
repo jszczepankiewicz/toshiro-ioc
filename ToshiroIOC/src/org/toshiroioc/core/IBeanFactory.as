@@ -42,7 +42,7 @@ package org.toshiroioc.core
 		 * @param id name of the object (taken from id xml) to be retrieved
 		 * @return true if container contains initialized bean specified by id, false otherwise
 		 */
-		function containsObject(id:String):Boolean;
+		function containsBean(id:String):Boolean;
 		
 		/**
 		 * Returns object identified by id. This method does not check 

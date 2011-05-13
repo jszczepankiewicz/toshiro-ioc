@@ -1,12 +1,15 @@
 package org.toshiroioc.plugins.puremvc.multicore
 {
-	import __AS3__.vec.Vector;
-	
-	import org.puremvc.as3.multicore.interfaces.ICommand;
 	import org.puremvc.as3.multicore.interfaces.IMediator;
 	import org.puremvc.as3.multicore.interfaces.IProxy;
 	import org.toshiroioc.core.IClassPostprocessor;
-
+	
+	/**
+	 * PureMVC commands, mediators and proxies registration postprocessor.
+	 *  
+	 * @author M.Strecker
+	 * 
+	 */	
 	public class PureMVCClassPostprocessor implements IClassPostprocessor
 	{
 		private var classVector : Vector.<Class>;
@@ -14,20 +17,20 @@ package org.toshiroioc.plugins.puremvc.multicore
 		private var mediators : Vector.<IMediator> = new Vector.<IMediator>();
 		private var proxies : Vector.<IProxy> = new Vector.<IProxy>();
 		private var mappings : Array = new Array();
-
+		
 		public function PureMVCClassPostprocessor(facade : ToshiroApplicationFacade) : void
 		{
 			classVector = new Vector.<Class>();
 			classVector.push(SetterMap, IProxy, IMediator);
 			this.facade = facade;
 		}
-
+		
 		public function listClassInterests() : Vector.<Class>
 		{
 			return classVector;
-
+		
 		}
-
+		
 		public function postprocessObject(object : *) : *
 		{
 			/* if(object is SetterMap){
@@ -36,7 +39,7 @@ package org.toshiroioc.plugins.puremvc.multicore
 			   facade.registerCommand(commandMap.notification, commandMap.command)
 			   }
 			 } */
-
+			
 			//take copy of SetterMap mappings to register commands and clear it, 
 			//	to not duplicate registration in case of dynamic load another SetterMap,
 			//	and to not clear SetterMap mappings used in ToshiroIocController
@@ -56,28 +59,28 @@ package org.toshiroioc.plugins.puremvc.multicore
 				}
 			}
 		}
-
+		
 		public function onContextLoaded() : void
 		{
-
+			
 			var commandMap : CommandMap;
 			while(commandMap = mappings.shift())
 			{
 				facade.registerCommand(commandMap.notification, commandMap.command);
 			}
-
+			
 			var proxy : IProxy;
 			while(proxy = proxies.shift())
 			{
 				facade.registerProxy(proxy);
 			}
-
+			
 			var mediator : IMediator;
 			while(mediator = mediators.shift())
 			{
 				facade.registerMediator(mediator);
 			}
 		}
-
+	
 	}
 }
