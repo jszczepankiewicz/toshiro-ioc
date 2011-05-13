@@ -41,6 +41,7 @@ package org.toshiroioc.core
 	
 	/**
 	 * @author Jaroslaw Szczepankiewicz
+	 * @author Michal Strecker
 	 * @since 2010-01-15
 	 * 
 	 * Dependency Injection container driven by XML.
@@ -81,6 +82,8 @@ package org.toshiroioc.core
 		private var reservedIdsInterfacesMap:Object = new Object();
 		
 		private var additConfigLoader:AdditionalConfigLoader;
+		
+		private static var CREATION_POLICY_IMMEDIATE:String = 'immediate';
 		
 		public function XMLBeanFactory(xml:XML){			
 			xmlSource = xml;		
@@ -392,7 +395,9 @@ package org.toshiroioc.core
 				for each (var dependency:XML in dependencies){	
 
 					dependentS = dependency.attribute("ref");
-					depNode.addNodeDependency(getNode(dependentS));
+					var dependentNode:DINode = getNode(dependentS)
+					depNode.addNodeDependency(dependentNode);
+					dependentNode.isDependency = true;
 				}
 				return true;
 			}
@@ -480,6 +485,15 @@ package org.toshiroioc.core
 			
 			var id:String = beanXML.attribute("id")
 			
+			//if bean without name but with ref, treat ref as id
+			if(id == null || id.length == 0){
+				id = beanXML.attribute("ref");
+			}
+			if(id == null || id.length == 0){
+				throw new ContainerError("Object without id or ref can not be put into node cache: ["+beanXML.toXMLString()+"]");
+			}
+			
+			
 			var node:DINode = nodes[id];
 			
 			if(node == null){
@@ -500,20 +514,24 @@ package org.toshiroioc.core
 				node.updateXml(beanXML);
 				//	updating the objects
 				if(!isPrototype(id))
-					beansMap[id] = object;
+					putObjectIntoBeansMap(id, object);
 					
-				var clazz:Class = getDefinitionByName(beanXML.attribute("class")) as Class;
+				//var clazz:Class = getDefinitionByName(beanXML.attribute("class")) as Class;
 				
-				try{
+				/*try{
 					getObjectsByClass(clazz);
 				}
 				catch(err:ContainerError){
 					removeFromNodeNamesClassesMapById(id);
 					nodeNamesClassesMap.push([id, clazz]);	
-				}	
+				}	*/
 					
 				
 			}			
+		}
+		
+		private function putObjectIntoBeansMap(id:String, object:*):void{
+			beansMap[id] = object;
 		}
 		
 		/* private function startContainerParseBeans():void{
@@ -566,18 +584,24 @@ package org.toshiroioc.core
 		 	return false;
 		 }
 		 
-		 private function startParseBeans(xmlSource:XML):Object{
+		 private function startParseBeans(xmlSource:XML, initBeans:Boolean=false):Object{
 			var beans:XMLList = xmlSource.child("object");
 			var beanXML:XML;
 			var isRoot : Boolean = (beans.parent() as XML).localName().toString() == "objects";
 			var bean:Object;
 			
 			
-			for each(beanXML in beans){
+			//for each(beanXML in beans){
+			for (var i:int=0; i<beans.length(); i++){
+				
+				beanXML = beans[i];
 				
 				var idString:String = String(beanXML.attribute("id")); 
 				var hasId:Boolean = idString && idString.length > 0;
-				var isBeanRef:Boolean = (beanXML.attribute("ref").toXMLString().length > 0)
+				var isBeanRef:Boolean = (beanXML.attribute("ref").toXMLString().length > 0);
+				var creationPolicy:String = (beanXML.attribute("creationPolicy").toXMLString());
+				
+				
 				
 				if (nameExists(idString)){
 					throw new ContainerError("Id: ["+idString+"] not unique",0,ContainerError.ERROR_MULTIPLE_BEANS_WITH_THE_SAME_ID);
@@ -591,6 +615,12 @@ package org.toshiroioc.core
 				if(hasId && isBeanRef){
 					throw new ContainerError("Only ref attribute (not id) has to be specified in bean referencing (being) other bean"
 						,0,ContainerError.ERROR_REFERENCING_BEAN_GIVEN_ID);
+				}else{
+					//treat ref as id
+					if(isBeanRef){
+						hasId = true;
+						idString = beanXML.attribute("ref").toXMLString();
+					}
 				}
 				
 				if(isRoot){
@@ -674,20 +704,37 @@ package org.toshiroioc.core
 
 					//parse skipped inner beans
 					if(newXMLSource){
-						startParseBeans(newXMLSource);
+						startParseBeans(newXMLSource, initBeans);
+						
+						// remove beans to parse from beans XMLList that was parsed already (passed in newXMLSource or before that point in the loop) 
+						var newBeansString:String = '';
+						var newBeans:XMLList = new XMLList;
+						var newXMLSourceObjects:XMLList = newXMLSource.child('object');
+						
+						for (var j:int=i+1; j<beans.length(); j++){
+							var nextBean:XML = beans[j];
+							if(!newXMLSourceObjects.contains(nextBean)){
+								newBeansString = newBeansString.concat(nextBean.toXMLString());
+							}
+						}
+						
+						i=-1;
+						beans = new XMLList(newBeansString);
+						trace(beans.length());
 					}
+					
 					continue;
 				}
 				
 				//if prototype don't initialize
-				if (!isPrototype(idString)){
+				if (!isPrototype(idString) && (initBeans || creationPolicy == CREATION_POLICY_IMMEDIATE)){
 					bean = initializeBean(beanXML, false);
 				}
 				
 				if(hasId){
 					putObjectIntoNodeCache(bean, beanXML);
 					if(bean){
-						beansMap[idString] = bean;
+						putObjectIntoBeansMap(idString, bean);
 					}
 				}
 				
@@ -896,14 +943,19 @@ package org.toshiroioc.core
 						//entry = entries[i]; // pass the object to parse
 						bean = null;
 						var id:String = entry.child('object').attribute('id').toXMLString();
+						var ref:String = entry.child('object').attribute('ref').toXMLString();
 						
 						//if has id, check if initialized
-						if(id){
-							var bean:* = getObject(id, true);	
+						if(id || ref){
+							if(id != null && id.length>0){
+								var bean:* = getObject(id, true);
+							}else{
+								bean = getObject(ref, true);
+							}
 						}
 						//if not, try to parse
 						if(!bean){
-							bean = startParseBeans(entry);
+							bean = startParseBeans(entry, true);
 						}
 						
 						//if still not initialized, i.e. has dependencies
@@ -1032,10 +1084,18 @@ package org.toshiroioc.core
 			var retval:* = beansMap[id];		
 			
 			if(retval == null){
-				if(ignoreBeanNotFound){
-					return null;
+				node = nodes[id];
+				if(node){
+					var bean:* = initializeBean(node.xml, true);
+					putObjectIntoBeansMap(id, bean);
+					return bean;	
+				}else{
+					if(ignoreBeanNotFound){
+						return null;
+					}
+					throw new ContainerError("Bean with id: [" + id + "] not found, make sure there is one in the XML");
 				}
-				throw new ContainerError("Bean with id: [" + id + "] not found, make sure there is one in the XML");
+
 			}
 			return retval;
 		}
@@ -1118,12 +1178,34 @@ package org.toshiroioc.core
 				propertyEditorsMap[propertyKind] = editor;
 			}
 		}
-		
-		public function containsObject(id:String):Boolean{
-			var retval:* = beansMap[id];
+		/**
+		 * Checks, if context contains xml definition of a bean
+		 * @param id Bean id to check, if exists
+		 * @return true, if xml definition of specified bean id exists, false otherwise
+		 * 
+		 */		
+		public function containsBean(id:String):Boolean{
+			var retval:* = nodes[id];
 			
 			return (retval!=null);
 		}		
+		
+		/**
+		 * Checks, if context is able to initialize bean
+		 * @param id Bean id to try to initialize
+		 * @return true, if bean was successfully initialized, false otherwise
+		 * 
+		 */		
+		public function ableToInitBean(id:String):Boolean{
+			var retval:*; 
+			try{
+				retval = getObject(id);
+			}catch (e:Error){
+				
+			}
+			
+			return (retval!=null);
+		}
 		
 		private function resolveDependentBeans():void{
 			
@@ -1150,7 +1232,8 @@ package org.toshiroioc.core
 					if (!di.xml)
 						throw new ContainerError("Bean ["+di.id+"] not found", 0, ContainerError.ERROR_OBJECT_NOT_FOUND);
 					//initialize, if not prototype
-					if(!isPrototype(di.id)){
+					var creationPolicy:String = (di.xml.attribute("creationPolicy").toXMLString());
+					if(!isPrototype(di.id) && (di.isDependency || creationPolicy == CREATION_POLICY_IMMEDIATE)){
 						bean = initializeBean(di.xml, true);
 						//if in cache don't put - bean ref case
 						putObjectIntoNodeCache(bean, di.xml);						

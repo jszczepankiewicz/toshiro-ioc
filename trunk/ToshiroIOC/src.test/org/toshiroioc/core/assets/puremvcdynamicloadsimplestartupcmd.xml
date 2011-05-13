@@ -4,19 +4,19 @@
 	
 	<!-- Commands	-->
 						
-	<object id="dynamicSimpleStartupCommand" class="org.toshiroioc.test.puremvc.command.DynamicSimpleStartupCommand" lifecycle="prototype"/>
-	<object id="dynamicPrepModelCommand" class="org.toshiroioc.test.puremvc.command.DynamicPrepModelCommand" lifecycle="prototype"/>
+	<object id="dynamicSimpleStartupCommand" class="org.toshiroioc.test.puremvc.command.DynamicSimpleStartupCommand" lifecycle="prototype" creationPolicy="immediate"/>
+	<object id="dynamicPrepModelCommand" class="org.toshiroioc.test.puremvc.command.DynamicPrepModelCommand" lifecycle="prototype" creationPolicy="immediate"/>
 	
-	<object id="dynamicTestCommand" class="org.toshiroioc.test.puremvc.command.DynamicTestCommand" />
+	<object id="dynamicTestCommand" class="org.toshiroioc.test.puremvc.command.DynamicTestCommand" creationPolicy="immediate"/>
 	
 	
-	<object id="dynamicExampleProxy" class="org.toshiroioc.test.puremvc.model.DynamicExampleProxy"/>
-	<object id="dynamicExampleProxy2" class="org.toshiroioc.test.puremvc.model.DynamicExampleProxy2"/>
+	<object id="dynamicExampleProxy" class="org.toshiroioc.test.puremvc.model.DynamicExampleProxy" creationPolicy="immediate"/>
+	<object id="dynamicExampleProxy2" class="org.toshiroioc.test.puremvc.model.DynamicExampleProxy2" creationPolicy="immediate"/>
 	
-	<object id="dynamicPrepViewCommand" class="org.toshiroioc.test.puremvc.command.DynamicPrepViewCommand" lifecycle="prototype">
+	<object id="dynamicPrepViewCommand" class="org.toshiroioc.test.puremvc.command.DynamicPrepViewCommand" lifecycle="prototype" creationPolicy="immediate">
 	</object>
 	
-	<object id="dynamicBeanWithSetterMap" class="org.toshiroioc.plugins.puremvc.multicore.SetterMap">
+	<object id="dynamicBeanWithSetterMap" class="org.toshiroioc.plugins.puremvc.multicore.SetterMap" creationPolicy="immediate">
 		<property name="mappings">
 			<array>
 				<entry>
@@ -110,7 +110,7 @@
 	
 	<!-- Mediators-->
 	
-	<object id="dynamicExampleViewMediator" class="org.toshiroioc.test.puremvc.mediator.DynamicExampleViewMediator">
+	<object id="dynamicExampleViewMediator" class="org.toshiroioc.test.puremvc.mediator.DynamicExampleViewMediator" creationPolicy="immediate">
 		<constructor-arg ref="dynamicExampleView"/>
 	</object>
 

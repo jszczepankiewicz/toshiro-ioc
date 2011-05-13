@@ -31,6 +31,11 @@ package org.toshiroioc.core
 	import flash.utils.describeType;
 	import flash.utils.getQualifiedClassName;
 	
+	/**
+	 * @author Jaroslaw Szczepankiewicz
+	 * @author Michal Strecker
+	 * 
+	 */	
 	public class FieldDescription{
 		
 		private static var registryKeys:Vector.<String> = new Vector.<String>();

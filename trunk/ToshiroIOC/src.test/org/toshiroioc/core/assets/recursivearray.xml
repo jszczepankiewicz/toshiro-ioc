@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+	<object id="objectOne" class="org.toshiroioc.test.beans.ConstructorWithArrays" creationPolicy="immediate">
+		<constructor-arg value="-99999" />
+		<constructor-arg>
+			<array>
+				<entry>
+					<object id="innerObject" class="org.toshiroioc.test.beans.ConstructorWithArrays">
+						<constructor-arg value="5" />
+						<constructor-arg>
+							<array>
+								<entry>
+									<object id='uniqueId' class="org.toshiroioc.test.beans.SimpleBean">
+										<property name="numberItem" value="2" />
+									</object>
+								</entry>
+								<entry>
+									<object id='uniqueId2' class="org.toshiroioc.test.beans.SimpleBean">
+										<property name="numberItem" value="3" />
+									</object>
+								</entry>
+								<entry>
+									<object id="innerInnerObject" class="org.toshiroioc.test.beans.ConstructorWithArrays">
+										<constructor-arg value="-9" />
+										<constructor-arg>
+											<array>
+												<entry>
+													<object id='uniqueId5' class="org.toshiroioc.test.beans.SimpleBean">
+														<property name="numberItem" value="6" />
+													</object>
+												</entry>
+												<entry>
+													<object id='uniqueId6' class="org.toshiroioc.test.beans.SimpleBean">
+														<property name="numberItem" value="7" />
+													</object>
+												</entry>
+											</array>
+										</constructor-arg>
+										<constructor-arg>
+											<array>
+												<entry>
+													<string>test</string>
+												</entry>
+											</array>
+										</constructor-arg>
+									</object>
+								</entry>
+<!--								<entry>-->
+<!--									<object id='next' class="org.toshiroioc.test.beans.SimpleBean">-->
+<!--						<property name="numberItem" value="9" />-->
+<!--					</object>-->
+<!--								</entry>-->
+							</array>
+						</constructor-arg>
+						<constructor-arg><null/></constructor-arg>
+						<property name="someAdditionalString" value="innerObject" />
+					</object>
+				</entry>
+				<entry>
+					<object id="innerObject2" class="org.toshiroioc.test.beans.ConstructorWithArrays">
+						<constructor-arg value="6" />
+						<constructor-arg>
+							<array>
+								<entry>
+									<object id='uniqueId3' class="org.toshiroioc.test.beans.SimpleBean">
+										<property name="numberItem" value="4" />
+									</object>
+								</entry>
+								<entry>
+									<object id='uniqueId5' class="org.toshiroioc.test.beans.SimpleBean">
+										<property name="numberItem" value="5" />
+									</object>
+								</entry>
+							</array>
+						</constructor-arg>
+						<constructor-arg><null/></constructor-arg>
+						<property name="someAdditionalString" value="innerObject2" />
+					</object>
+				</entry>
+			</array>
+		</constructor-arg>
+		<constructor-arg>
+			<null />
+		</constructor-arg>
+		<property name="someAdditionalString" value="objectsOne" />
+	</object>
+	
+	
+	<object id="objectTwo" class="org.toshiroioc.test.beans.SetterWithArrays" creationPolicy="immediate">
+		<property name="simpleArrayItem">
+			<array>
+				<entry>
+					<object id="innerSetterArrayObject" class="org.toshiroioc.test.beans.SetterWithArrays">
+						<property name="simpleArrayItem">
+							<array>
+								<entry>
+									<object id='uniqueId8' class="org.toshiroioc.test.beans.SimpleBean">
+										<property name="numberItem" value="9" />
+									</object>
+								</entry>
+								<entry>
+									<object id="innerInnerConstructorArrayObject" class="org.toshiroioc.test.beans.ConstructorWithArrays">
+										<constructor-arg value="-9" />
+										<constructor-arg><null/></constructor-arg>
+										<constructor-arg><null/></constructor-arg>
+									</object>
+								</entry>
+							</array>
+						</property>
+					</object> 
+				</entry>
+				<entry>
+					<object id='next' class="org.toshiroioc.test.beans.SimpleBean">
+						<property name="numberItem" value="9" />
+					</object>
+				</entry>
+			</array>
+		</property>
+		<property name="booleanItem" value="true"/>
+	</object>
+
+</objects>
