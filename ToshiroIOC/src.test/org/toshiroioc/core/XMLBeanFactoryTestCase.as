@@ -34,6 +34,7 @@ package org.toshiroioc.core
 	import org.toshiroioc.test.beans.SimpleBeanWithContextInjection;
 	import org.toshiroioc.test.beans.SimpleBeanWithMetatags;
 	import org.toshiroioc.test.beans.SimpleBeanWithMetatagsExtended;
+	import org.toshiroioc.test.beans.SimpleBeanWithObjectField;
 	import org.toshiroioc.test.beans.SimpleBeanWithPostprocessor;
 	import org.toshiroioc.test.beans.SimpleBeanWithoutMetatags;
 	import org.toshiroioc.test.beans.SimpleDependencyChildrenSetter;
@@ -299,9 +300,37 @@ package org.toshiroioc.core
 		[Embed(source="assets/recursivearray.xml", mimeType="application/octet-stream")]
 		private var RecursiveArrayXMLClass:Class;
 		
+		[Embed(source="assets/simplebeanwithobjectsetter.xml", mimeType="application/octet-stream")]
+		private var SimpleBeanWithObjectSetterClass:Class;
+		
+		[Embed(source="assets/simplebeanwithobjectsetter2.xml", mimeType="application/octet-stream")]
+		private var SimpleBeanWithObjectSetterClass2:Class;
+		
 		
 		public function XMLBeanFactoryTestCase(methodName:String){
 			super(methodName);
+		}
+		
+		
+		public function testDynamicObjectSetter():void{
+			var xml:XML = constructXMLFromEmbed(SimpleBeanWithObjectSetterClass2);
+			var context:XMLBeanFactory = new XMLBeanFactory(xml);
+			context.initialize();
+			var objOne:SimpleBeanWithObjectField = context.getObject('objectOne') as SimpleBeanWithObjectField;
+			assertEquals(objOne.objectField.intItem, 999);
+			assertEquals(objOne.objectField.stringItem, "999");
+		}
+		
+		public function testObjectSetter():void{
+			var xml:XML = constructXMLFromEmbed(SimpleBeanWithObjectSetterClass);
+			var context:XMLBeanFactory = new XMLBeanFactory(xml);
+			context.initialize();
+			var objectOne:SimpleBeanWithObjectField = context.getObject('objectOne') as SimpleBeanWithObjectField;
+			assertTrue(objectOne.simpleBean is SimpleBean);
+			assertTrue(objectOne.objectField is SimpleBean);
+			assertEquals(objectOne.simpleBean.intItem, 1000);
+			assertEquals(objectOne.objectField.intItem, 999);
+			
 		}
 		
 		public function testRecursiveArrays():void{
@@ -2110,7 +2139,9 @@ package org.toshiroioc.core
 		public static function getTestsArr():Vector.<Test>{
 			var retval:Vector.<Test> = new Vector.<Test>();
 			
+			//retval.push(new XMLBeanFactoryTestCase("testDynamicObjectSetter"));
 			
+			retval.push(new XMLBeanFactoryTestCase("testObjectSetter"));     
 			retval.push(new XMLBeanFactoryTestCase("testRecursiveArrays"));
 			retval.push(new XMLBeanFactoryTestCase("testConcatConfigs"));
 			retval.push(new XMLBeanFactoryTestCase("testMultipleConfigs"));
