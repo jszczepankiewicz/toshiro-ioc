@@ -826,7 +826,12 @@ package org.toshiroioc.core
 				 if (property.child("map").length()!=0){
 					bean[propertyName] = parseMap(property.child("map").child("entry") as XMLList);
 					continue;
-				} 
+				}
+				 
+				if (property.child("object").length()!=0){
+					 bean[propertyName] = parseObject(property);
+					 continue;
+				 }
 				
 /* 				if (property.child("vector").length()!=0){
 					bean[propertyName] = parseVector(property.child("vector").child("entry") as XMLList);
@@ -929,6 +934,26 @@ package org.toshiroioc.core
 			return object;
 		}
 		
+		private function parseObject(objectXML:XML):*{
+			var bean:* 
+			var id:String = objectXML.child('object').attribute('id').toXMLString();
+			var ref:String = objectXML.child('object').attribute('ref').toXMLString();
+			
+			//if has id, check if initialized
+			if(id || ref){
+				if(id != null && id.length>0){
+					bean= getObject(id, true);
+				}else{
+					bean = getObject(ref, true);
+				}
+			}
+			//if not, try to parse
+			if(!bean){
+				bean = startParseBeans(objectXML, true);
+			}
+			return bean;
+		}
+		
 		private function parseArray(entries:XMLList):Array{
 			var typesArray : Array = FieldDescription.getArrayEntriesDescription(entries);
 			var returnArray : Array = new Array();
@@ -941,7 +966,7 @@ package org.toshiroioc.core
 				switch(typesArray[i]){
 					case FieldDescription.FIELD_TYPE_CUSTOM_OBJECT:
 						//entry = entries[i]; // pass the object to parse
-						bean = null;
+						/*bean = null;
 						var id:String = entry.child('object').attribute('id').toXMLString();
 						var ref:String = entry.child('object').attribute('ref').toXMLString();
 						
@@ -957,27 +982,8 @@ package org.toshiroioc.core
 						if(!bean){
 							bean = startParseBeans(entry, true);
 						}
-						
-						//if still not initialized, i.e. has dependencies
-						//has to have id
-						/*if(!bean){
-							//get owner of the array
-							var beanXML:XML = (entry.parent() as XML).parent().parent();
-							
-							 
-							//get list of dependencies for this entry
-							var propDependent:XMLList = entry.child("object")
-								.child("property").(attribute("ref").toXMLString().length > 0); 
-							
-							
-							//and set dependencies between owner and entry with dep
-							var propDependent:XMLList = new XMLList('<property ref="'+id+'"/>');
-							hasDependencies(beanXML, propDependent);
-							
-						}else{*/
-							returnArray.push(bean); //and add to array		
-						//}
-						
+						*/
+							returnArray.push(parseObject(entry)); //and add to array		
 						continue;
 					// WARNING: when nested, no bean id
 					case FieldDescription.FIELD_TYPE_CONST:

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+	<object id="objectOne" class="org.toshiroioc.test.beans.SimpleBeanWithObjectField">
+<!--		<property name="simpleBean">-->
+<!--			<object class="org.toshiroioc.test.beans.SimpleBean">-->
+<!--				<property name="intItem" value="1000"/>-->
+<!--			</object>-->
+<!--		</property>-->
+		<property name="objectField">
+			<object class="Object">
+				<property name="intItem">
+					<number>999</number>
+				</property>
+				<property name="stringItem">
+					<string>999</string>
+				</property>
+			</object>
+		</property>
+	</object>
+	
+</objects>

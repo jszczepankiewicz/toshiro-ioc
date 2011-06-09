@@ -290,7 +290,7 @@ package org.toshiroioc.core
 							break;
 						}
 					} 
-					
+					trace(variable.@type.toString())
 					switch (variable.@type.toString()){
 						
 						case ("Number"):
@@ -322,7 +322,6 @@ package org.toshiroioc.core
 						case ("Array"):
 							fieldsInfo[variable.@name] = FIELD_TYPE_ARRAY;
 							break; 
-											
 						default:
 							if(variable.@name.toString() == "prototype"){
 								//	ommiting standard prototype field
@@ -330,8 +329,10 @@ package org.toshiroioc.core
 							}
 							//	we have custom class, instead of registering some constant
 							//	we put here class name
-							//trace("classRegistry, putting class: " + variable.@type.toString() + ", into: " + variable.@name); 
-							fieldsInfo[variable.@name] = variable.@type.toString();
+							//trace("classRegistry, putting class: " + variable.@type.toString() + ", into: " + variable.@name);
+							
+							//fieldsInfo[variable.@name] = variable.@type.toString();
+							fieldsInfo[variable.@name] = FIELD_TYPE_CUSTOM_OBJECT;
 							break;
 					}
 					//trace("description of field: " + variable.@type.toString() +", type: " + fieldsInfo[variable.@name] );
@@ -360,6 +361,35 @@ package org.toshiroioc.core
 			return fieldsInfo;
 		}
 		
+		public static function getTypeForObject(obj:String):uint{
+			switch(obj){
+				case ("number"):
+					return FIELD_TYPE_NUMBER;
+				case ("int"):						
+					return FIELD_TYPE_INT;
+				case ("uint"):						
+					return FIELD_TYPE_UINT;
+				case ("string"):
+					return FIELD_TYPE_STRING
+				case ("boolean"):
+					return FIELD_TYPE_BOOLEAN;
+				case ("date"):
+					return FIELD_TYPE_DATE;
+				case ("class"):
+					return FIELD_TYPE_CLASS;
+				case ("array"):
+					return FIELD_TYPE_ARRAY;
+				case ("object"):
+					return FIELD_TYPE_CUSTOM_OBJECT;
+				case ("const"):
+					return FIELD_TYPE_CONST;
+				case ("map"):
+					return FIELD_TYPE_MAP;
+				default:
+					throw new ArgumentError("Not supported array item type:["+obj+"]");
+			}
+		}
+		
 		public static function getArrayEntriesDescription(entries:XMLList):Array{
 			var typesArray:Array = new Array();
 			var objectType:String;
@@ -375,43 +405,7 @@ package org.toshiroioc.core
 						throw new ArgumentError("Too many arguments for a single array entry, allowed one. ["+entry+"]");					
 				}
 
-				switch(objectType){
-					case ("number"):
-							typesArray.push(FIELD_TYPE_NUMBER);
-							break;
-					case ("int"):						
-							typesArray.push(FIELD_TYPE_INT);
-							break;
-					case ("uint"):						
-							typesArray.push(FIELD_TYPE_UINT);
-							break;
-					case ("string"):
-							typesArray.push(FIELD_TYPE_STRING)
-							break;
-					case ("boolean"):
-							typesArray.push(FIELD_TYPE_BOOLEAN);
-							break;
-					case ("date"):
-							typesArray.push(FIELD_TYPE_DATE);
-							break;
-					case ("class"):
-							typesArray.push(FIELD_TYPE_CLASS);
-							break;
-					case ("array"):
-							typesArray.push(FIELD_TYPE_ARRAY);
-							break; 
-					case ("object"):
-							typesArray.push(FIELD_TYPE_CUSTOM_OBJECT);
-							break; 
-					case ("const"):
-						typesArray.push(FIELD_TYPE_CONST);
-						break;
-					case ("map"):
-						typesArray.push(FIELD_TYPE_MAP);
-						break;
-					default:
-						throw new ArgumentError("Not supported array item type:["+objectType+"]");
-				}
+				typesArray.push(getTypeForObject(objectType));
 			}
 			return typesArray;	
 		}
