@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objects>
+
+	<object id="objectOne" class="org.toshiroioc.test.beans.SimpleBean">
+		<property name="booleanItem" value="true"/>
+		<property name="stringItem" value="some123String"/>
+		<property name="intItem" value="-99999"/>
+		<property name="uintItem" value="1111"/>
+		<property name="numberItem" value="9999.00001"/>
+	</object>
+
+	<object id="object4"
+			class="org.toshiroioc.test.beans.ObjectWithConstructorDependency">
+		<constructo-arg ref="object5" />
+	</object>
+
+	<object id="objectWithoutTags" class="org.toshiroioc.test.beans.SimpleBeanWithoutMetatags">
+		<property name="numberItem" value="9999.00001"/>
+		<property name="dependencyItem" ref="object5"/> 
+		<propery name="blabla" value="bla"/>
+	</object>
+
+	<object id="object5" class="org.toshiroioc.test.beans.SimpleBean"/>
+	<object id="object6" class="org.toshiroioc.test.beans.SimpleBean"/>			
+
+</objects>
