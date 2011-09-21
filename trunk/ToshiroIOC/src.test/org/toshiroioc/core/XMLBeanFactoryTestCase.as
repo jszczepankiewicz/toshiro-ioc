@@ -52,267 +52,332 @@ package org.toshiroioc.core
 	import org.toshiroioc.test.puremvc.model.ExampleProxy;
 	import org.toshiroioc.test.puremvc.model.ExampleProxy2;
 	import org.toshiroioc.test.puremvc.view.DynamicExampleView;
-
+	
 	/*
 	 * TODO:	replace * types with direct types, test bean dependency without ref
 	 */
-	public class XMLBeanFactoryTestCase extends BaseTestCase{
+	public class XMLBeanFactoryTestCase extends BaseTestCase
+	{
 		
 		private var testLinkageEnforcer:TestLinkageEnforcer;
 		
-		[Embed(source="assets/simpleobjectsetter.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/simpleobjectsetter.xml", mimeType = "application/octet-stream")]
 		private var SimpleObjectSetterClass:Class;
 		
-		[Embed(source="assets/setterwithnull.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/setterwithnull.xml", mimeType = "application/octet-stream")]
 		private var SetterWithNullXMLClass:Class;
 		
-		[Embed(source="assets/setterclass.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/setterclass.xml", mimeType = "application/octet-stream")]
 		private var SetterWithClassXMLClass:Class;
 		
-		[Embed(source="assets/constructorsimpletype.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/constructorsimpletype.xml", mimeType = "application/octet-stream")]
 		private var ConstructorSimpleTypeXMLClass:Class;
 		
-		[Embed(source="assets/setterdate.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/setterdate.xml", mimeType = "application/octet-stream")]
 		private var SetterDateTypeXMLClass:Class;
 		
-		[Embed(source="assets/constructordate.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/constructordate.xml", mimeType = "application/octet-stream")]
 		private var ConstructorDateXMLClass:Class;
 		
-		[Embed(source="assets/dependencysimplesetter.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/dependencysimplesetter.xml", mimeType = "application/octet-stream")]
 		private var DependencySimpleSetterXMLClass:Class;
 		
-		[Embed(source="assets/dependencysimpleconstructor.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/dependencysimpleconstructor.xml", mimeType = "application/octet-stream")]
 		private var DependencySimpleConstructorXMLClass:Class;
 		
-		[Embed(source="assets/cyclicdepeendencyfromsetters.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/cyclicdepeendencyfromsetters.xml", mimeType = "application/octet-stream")]
 		private var CyclicDependencyFromSettersXMLClass:Class;
 		
-		[Embed(source="assets/cyclicdepeendencyfromconstructors.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/cyclicdepeendencyfromconstructors.xml", mimeType = "application/octet-stream")]
 		private var CyclicDependencyFromConstructorsXMLClass:Class;
 		
-		[Embed(source="assets/cyclicdepeendencyfromconstructortosetter.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/cyclicdepeendencyfromconstructortosetter.xml", mimeType = "application/octet-stream")]
 		private var CyclicDependencyFromConstructorToSetterXMLClass:Class;
 		
-		[Embed(source="assets/cyclicdepeendencyfromsettertoconstructor.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/cyclicdepeendencyfromsettertoconstructor.xml", mimeType = "application/octet-stream")]
 		private var CyclicDependencyFromSetterToConstructorXMLClass:Class;
 		
-		[Embed(source="assets/cyclicdepeendencyfromsetterscomplex.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/cyclicdepeendencyfromsetterscomplex.xml", mimeType = "application/octet-stream")]
 		private var CyclicDependencyFromSettersComplexXMLClass:Class;
 		
-		[Embed(source="assets/cyclicdepeendencyfromconstructorscomplex.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/cyclicdepeendencyfromconstructorscomplex.xml", mimeType = "application/octet-stream")]
 		private var CyclicDependencyFromConstructorsComplexXMLClass:Class;
 		
-		[Embed(source="assets/cyclicdepeendencyfromconstructortosettercomplex.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/cyclicdepeendencyfromconstructortosettercomplex.xml", mimeType = "application/octet-stream")]
 		private var CyclicDependencyFromConstructorToSetterComplexXMLClass:Class;
 		
-		[Embed(source="assets/cyclicdepeendencyfromsettertoconstructorcomplex.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/cyclicdepeendencyfromsettertoconstructorcomplex.xml", mimeType = "application/octet-stream")]
 		private var CyclicDependencyFromSetterToConstructorComplexXMLClass:Class;
 		
-		[Embed(source="assets/lifecycle.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/lifecycle.xml", mimeType = "application/octet-stream")]
 		private var LifecycleXMLClass:Class;
 		
-		[Embed(source="assets/issingleton.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/issingleton.xml", mimeType = "application/octet-stream")]
 		private var IsSingletonXMLClass:Class;
 		
-		[Embed(source="assets/constructorwithstaticref.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/constructorwithstaticref.xml", mimeType = "application/octet-stream")]
 		private var ConstructorWithStaticReferenceXMLClass:Class;
 		
-		[Embed(source="assets/setterclasswithstaticref.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/setterclasswithstaticref.xml", mimeType = "application/octet-stream")]
 		private var SetterWithStaticReferenceXMLClass:Class;
 		
-		[Embed(source="assets/simplesettermetatags.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/simplesettermetatags.xml", mimeType = "application/octet-stream")]
 		private var MetatagsSetterXMLClass:Class;
 		
-		[Embed(source="assets/constructorwithmetatagswithoutproperties.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/constructorwithmetatagswithoutproperties.xml", mimeType = "application/octet-stream")]
 		private var MetatagsConstructorWithoutPropertiesXMLClass:Class;
 		
-		[Embed(source="assets/constructorwithmetatags.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/constructorwithmetatags.xml", mimeType = "application/octet-stream")]
 		private var MetatagsConstructorXMLClass:Class;
 		
-		[Embed(source="assets/dependencynotexistingsimplesetter.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/dependencynotexistingsimplesetter.xml", mimeType = "application/octet-stream")]
 		private var SetterWithoutDependencyXMLClass:Class;
 		
-		[Embed(source="assets/dependencynotexistingconstructor.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/dependencynotexistingconstructor.xml", mimeType = "application/octet-stream")]
 		private var ConstructorWithoutDependencyXMLClass:Class;
 		
-		[Embed(source="assets/requiredmetatag.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/requiredmetatag.xml", mimeType = "application/octet-stream")]
 		private var RequiredMetatagXMLClass:Class;
 		
-		[Embed(source="assets/requiredmetatagpublicprop.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/requiredmetatagpublicprop.xml", mimeType = "application/octet-stream")]
 		private var RequiredMetatagPublicPropXMLClass:Class;
 		
-		[Embed(source="assets/requiredmetatagsatisfied.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/requiredmetatagsatisfied.xml", mimeType = "application/octet-stream")]
 		private var RequiredMetatag2XMLClass:Class;
 		
-		[Embed(source="assets/extendedmetatags.xml", mimeType="application/octet-stream")]
-		private var ExtendingMetatagsXMLClass:Class; 
+		[Embed(source = "assets/extendedmetatags.xml", mimeType = "application/octet-stream")]
+		private var ExtendingMetatagsXMLClass:Class;
 		
-		[Embed(source="assets/maps.xml", mimeType="application/octet-stream")]
-		private var MapsXMLClass:Class; 
+		[Embed(source = "assets/maps.xml", mimeType = "application/octet-stream")]
+		private var MapsXMLClass:Class;
 		
-		[Embed(source="assets/setterandconstructorbeanwithpostprocessor.xml", mimeType="application/octet-stream")]
-		private var BeanWithPostprocessorXMLClass:Class; 
+		[Embed(source = "assets/setterandconstructorbeanwithpostprocessor.xml", mimeType = "application/octet-stream")]
+		private var BeanWithPostprocessorXMLClass:Class;
 		
-		[Embed(source="assets/getbyclass.xml", mimeType="application/octet-stream")]
-		private var GetByClassXMLClass:Class; 
+		[Embed(source = "assets/getbyclass.xml", mimeType = "application/octet-stream")]
+		private var GetByClassXMLClass:Class;
 		
-		[Embed(source="assets/puremvc1.xml", mimeType="application/octet-stream")]
-		private var PureMVCXMLClass1:Class; 
+		[Embed(source = "assets/puremvc1.xml", mimeType = "application/octet-stream")]
+		private var PureMVCXMLClass1:Class;
 		
-		[Embed(source="assets/puremvc2.xml", mimeType="application/octet-stream")]
-		private var PureMVCXMLClass2:Class; 
+		[Embed(source = "assets/puremvc2.xml", mimeType = "application/octet-stream")]
+		private var PureMVCXMLClass2:Class;
 		
-		[Embed(source="assets/puremvcdynamicload.xml", mimeType="application/octet-stream")]
-		private var PureMVCDynamicLoadXMLClass:Class; 
+		[Embed(source = "assets/puremvcdynamicload.xml", mimeType = "application/octet-stream")]
+		private var PureMVCDynamicLoadXMLClass:Class;
 		
-		[Embed(source="assets/puremvcdynamicloadsimplestartupcmd.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/puremvcdynamicloadsimplestartupcmd.xml", mimeType = "application/octet-stream")]
 		private var PureMVCDynamicSimpleStartupXMLClass:Class;
 		
-		[Embed(source="assets/simpledependencyxmlmissing.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/simpledependencyxmlmissing.xml", mimeType = "application/octet-stream")]
 		private var XMLMissingXMLClass:Class;
 		
-		[Embed(source="assets/notinstantiateprototype/notinstantiateprototype1.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/notinstantiateprototype/notinstantiateprototype1.xml", mimeType = "application/octet-stream")]
 		private var NotInstantiatePrototype1:Class;
 		
-		[Embed(source="assets/notinstantiateprototype/notinstantiateprototype2.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/notinstantiateprototype/notinstantiateprototype2.xml", mimeType = "application/octet-stream")]
 		private var NotInstantiatePrototype2:Class;
 		
-		[Embed(source="assets/notinstantiateprototype/notinstantiateprototype3.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/notinstantiateprototype/notinstantiateprototype3.xml", mimeType = "application/octet-stream")]
 		private var NotInstantiatePrototype3:Class;
 		
-		[Embed(source="assets/notinstantiateprototype/notinstantiateprototype4.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/notinstantiateprototype/notinstantiateprototype4.xml", mimeType = "application/octet-stream")]
 		private var NotInstantiatePrototype4:Class;
 		
-		[Embed(source="assets/notinstantiateprototype/notinstantiateprototype5.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/notinstantiateprototype/notinstantiateprototype5.xml", mimeType = "application/octet-stream")]
 		private var NotInstantiatePrototype5:Class;
 		
-		[Embed(source="assets/notinstantiateprototype/notinstantiateprototype6.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/notinstantiateprototype/notinstantiateprototype6.xml", mimeType = "application/octet-stream")]
 		private var NotInstantiatePrototype6:Class;
 		
-		[Embed(source="assets/notinstantiateprototype/notinstantiateprototype7.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/notinstantiateprototype/notinstantiateprototype7.xml", mimeType = "application/octet-stream")]
 		private var NotInstantiatePrototype7:Class;
 		
-		[Embed(source="assets/notinstantiateprototype/notinstantiateprototype8.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/notinstantiateprototype/notinstantiateprototype8.xml", mimeType = "application/octet-stream")]
 		private var NotInstantiatePrototype8:Class;
 		
-		[Embed(source="assets/dynamicconfig/simpledynamicconfig1.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/dynamicconfig/simpledynamicconfig1.xml", mimeType = "application/octet-stream")]
 		private var SimpleDynamicConfigXMLClass1:Class;
 		
-		[Embed(source="assets/dynamicconfig/simpledynamicconfig2.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/dynamicconfig/simpledynamicconfig2.xml", mimeType = "application/octet-stream")]
 		private var SimpleDynamicConfigXMLClass2:Class;
 		
-		[Embed(source="assets/dynamicconfig/reftobeanfrom2ndconfig.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/dynamicconfig/reftobeanfrom2ndconfig.xml", mimeType = "application/octet-stream")]
 		private var RefToBeanFrom2ndConfigXMLClass:Class;
 		
-		[Embed(source="assets/dynamicconfig/reftobeanfrom1stconfig.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/dynamicconfig/reftobeanfrom1stconfig.xml", mimeType = "application/octet-stream")]
 		private var RefToBeanFrom1stConfigXMLClass:Class;
 		
-		[Embed(source="assets/dynamicconfig/config.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/dynamicconfig/config.xml", mimeType = "application/octet-stream")]
 		private var DynamicConfigXMLClass:Class;
 		
-		[Embed(source="assets/dynamicconfig/wrongreftobeanfrom1stconfig.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/dynamicconfig/wrongreftobeanfrom1stconfig.xml", mimeType = "application/octet-stream")]
 		private var WrongRefToBeanFrom1stConfigXMLClass:Class;
 		
-		[Embed(source="assets/sameid.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/sameid.xml", mimeType = "application/octet-stream")]
 		private var SameIDXMLClass:Class;
 		
-		[Embed(source="assets/contextinjection.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/contextinjection.xml", mimeType = "application/octet-stream")]
 		private var ContextInjectionXMLClass:Class;
 		
- 		[Embed(source="assets/refoptionallazyloaded.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/refoptionallazyloaded.xml", mimeType = "application/octet-stream")]
 		private var OptionalRefLazyLoadedXMLClass:Class;
 		
-		[Embed(source="assets/refoptionaldynamicload.xml", mimeType="application/octet-stream")]
-		private var OptionalRefDynamicLoadXMLClass:Class; 
+		[Embed(source = "assets/refoptionaldynamicload.xml", mimeType = "application/octet-stream")]
+		private var OptionalRefDynamicLoadXMLClass:Class;
 		
-		[Embed(source="assets/refoptionalwrongargument.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/refoptionalwrongargument.xml", mimeType = "application/octet-stream")]
 		private var OptionalRefWrongArgumentXMLClass:Class;
 		
-		[Embed(source="assets/setterwitharray.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/setterwitharray.xml", mimeType = "application/octet-stream")]
 		private var SetterWithArrayXMLClass:Class;
 		
-		[Embed(source="assets/setterwitharrayemptyentry.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/setterwitharrayemptyentry.xml", mimeType = "application/octet-stream")]
 		private var SetterWithArrayEmptyEntryXMLClass:Class;
 		
-		[Embed(source="assets/setterwitharraytoomuchargsinentry.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/setterwitharraytoomuchargsinentry.xml", mimeType = "application/octet-stream")]
 		private var SetterWithArrayTooMuchArgsInEntryXMLClass:Class;
 		
-		[Embed(source="assets/constructorwitharray.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/constructorwitharray.xml", mimeType = "application/octet-stream")]
 		private var ConstructorWithArrayXMLClass:Class;
 		
-		[Embed(source="assets/reffromarrayinnerbean.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/reffromarrayinnerbean.xml", mimeType = "application/octet-stream")]
 		private var RefArrayInnerBean:Class;
 		
-		[Embed(source="assets/reffromarrayinnerbeancircular.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/reffromarrayinnerbeancircular.xml", mimeType = "application/octet-stream")]
 		private var RefArrayInnerBeanCircular:Class;
 		
-		[Embed(source="assets/setterwithvector.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/setterwithvector.xml", mimeType = "application/octet-stream")]
 		private var SetterWithVectorXMLClass:Class;
 		
-		[Embed(source="assets/map.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/map.xml", mimeType = "application/octet-stream")]
 		private var MapXMLClass:Class;
 		
-		[Embed(source="assets/setterwithmapemptyentry.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/setterwithmapemptyentry.xml", mimeType = "application/octet-stream")]
 		private var SetterWithMapEmptyEntryXMLClass:Class;
 		
-		[Embed(source="assets/setterwithmaptoomuchargsinentry.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/setterwithmaptoomuchargsinentry.xml", mimeType = "application/octet-stream")]
 		private var SetterWithMapTooMuchArgsInEntryXMLClass:Class;
 		
-		[Embed(source="assets/reffrominnerbean.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/reffrominnerbean.xml", mimeType = "application/octet-stream")]
 		private var RefFromInnerBean:Class;
 		
-		[Embed(source="assets/refbean.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/refbean.xml", mimeType = "application/octet-stream")]
 		private var RefBean:Class;
 		
-		[Embed(source="assets/refbeancircular.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/refbeancircular.xml", mimeType = "application/octet-stream")]
 		private var RefBeanCircular:Class;
 		
-		[Embed(source="assets/refbeancircular2.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/refbeancircular2.xml", mimeType = "application/octet-stream")]
 		private var RefBeanCircular2:Class
 		
-		[Embed(source="assets/refbeannonexistent.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/refbeannonexistent.xml", mimeType = "application/octet-stream")]
 		private var RefBeanNonExistent:Class
 		
-		 [Embed(source="assets/refbeanoptionallazyloaded.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/refbeanoptionallazyloaded.xml", mimeType = "application/octet-stream")]
 		private var OptionalRefBeanLazyLoadedXMLClass:Class;
 		
-		[Embed(source="assets/refbeanoptionaldynamicload.xml", mimeType="application/octet-stream")]
-		private var OptionalRefBeanDynamicLoadXMLClass:Class; 
+		[Embed(source = "assets/refbeanoptionaldynamicload.xml", mimeType = "application/octet-stream")]
+		private var OptionalRefBeanDynamicLoadXMLClass:Class;
 		
-		[Embed(source="assets/i18nsetter.xml", mimeType="application/octet-stream")]
-		private var I18NXMLClass:Class; 
+		[Embed(source = "assets/i18nsetter.xml", mimeType = "application/octet-stream")]
+		private var I18NXMLClass:Class;
 		
-		[Embed(source="assets/restrictedbeanid.xml", mimeType="application/octet-stream")]
-		private var RestrictedBeanIdXMLClass:Class; 
+		[Embed(source = "assets/restrictedbeanid.xml", mimeType = "application/octet-stream")]
+		private var RestrictedBeanIdXMLClass:Class;
 		
-		[Embed(source="assets/beanidinjection.xml", mimeType="application/octet-stream")]
-		private var BeanIdInjectionXMLClass:Class; 
+		[Embed(source = "assets/beanidinjection.xml", mimeType = "application/octet-stream")]
+		private var BeanIdInjectionXMLClass:Class;
 		
-		[Embed(source="assets/i18nwrongtype.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/i18nwrongtype.xml", mimeType = "application/octet-stream")]
 		private var I18nWrongTypeXMLClass:Class;
 		
-		[Embed(source="assets/registrationaware.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/registrationaware.xml", mimeType = "application/octet-stream")]
 		private var RegistrationAwareXMLClass:Class;
 		
-		[Embed(source="assets/dynamicconfig/multipleconfigs.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/dynamicconfig/multipleconfigs.xml", mimeType = "application/octet-stream")]
 		private var MultipleConfigsXMLClass:Class;
 		
-		[Embed(source="assets/recursivearray.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/recursivearray.xml", mimeType = "application/octet-stream")]
 		private var RecursiveArrayXMLClass:Class;
 		
-		[Embed(source="assets/simplebeanwithobjectsetter.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/simplebeanwithobjectsetter.xml", mimeType = "application/octet-stream")]
 		private var SimpleBeanWithObjectSetterClass:Class;
 		
-		[Embed(source="assets/simplebeanwithobjectsetter2.xml", mimeType="application/octet-stream")]
+		[Embed(source = "assets/simplebeanwithobjectsetter2.xml", mimeType = "application/octet-stream")]
 		private var SimpleBeanWithObjectSetterClass2:Class;
 		
+		[Embed(source = "assets/wrongproperties.xml", mimeType = "application/octet-stream")]
+		private var WrongPropertiesClass:Class;
 		
-		public function XMLBeanFactoryTestCase(methodName:String){
+		[Embed(source = "assets/wrongattributenames.xml", mimeType = "application/octet-stream")]
+		private var WrongAttributeNamesClass:Class;
+		
+		public function XMLBeanFactoryTestCase(methodName:String)
+		{
 			super(methodName);
+		
 		}
 		
+		public function testWrongAttributeNames():void
+		{
+			var xml:XML = constructXMLFromEmbed(WrongAttributeNamesClass);
+			var context:XMLBeanFactory = new XMLBeanFactory(xml);
+			var err:ContainerError;
+			context.initialize();
+			try
+			{
+				context.getObject('objectOne');
+			}
+			catch(e:ContainerError)
+			{
+				err = e;
+			}
+			
+			assertEquals(ContainerError.ERROR_KEYWORD_NOT_RECOGNIZED, err.errorCode);
+			assertTrue((err.message as String).indexOf('lifecycek,names,values,sth') > -1);
+			try
+			{
+				context.getObject('objectWithoutTags');
+			}
+			catch(e:ContainerError)
+			{
+				err = e;
+			}
+			assertEquals(ContainerError.ERROR_KEYWORD_NOT_RECOGNIZED, err.errorCode);
+			assertTrue((err.message as String).indexOf('refek') > -1);
+		}
 		
-		public function testDynamicObjectSetter():void{
+		public function testWrongProperties():void
+		{
+			var xml:XML = constructXMLFromEmbed(WrongPropertiesClass);
+			var context:XMLBeanFactory = new XMLBeanFactory(xml);
+			var err:ContainerError;
+			context.initialize();
+			try
+			{
+				context.getObject('objectWithoutTags');
+			}
+			catch(e:ContainerError)
+			{
+				err = e;
+			}
+			assertEquals(ContainerError.ERROR_KEYWORD_NOT_RECOGNIZED, err.errorCode);
+			
+			try
+			{
+				context.getObject('object4');
+			}
+			catch(e:ContainerError)
+			{
+				err = e;
+			}
+			assertEquals(ContainerError.ERROR_KEYWORD_NOT_RECOGNIZED, err.errorCode);
+		
+		}
+		
+		public function testDynamicObjectSetter():void
+		{
 			var xml:XML = constructXMLFromEmbed(SimpleBeanWithObjectSetterClass2);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			context.initialize();
@@ -321,7 +386,8 @@ package org.toshiroioc.core
 			assertEquals(objOne.objectField.stringItem, "999");
 		}
 		
-		public function testObjectSetter():void{
+		public function testObjectSetter():void
+		{
 			var xml:XML = constructXMLFromEmbed(SimpleBeanWithObjectSetterClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			context.initialize();
@@ -330,10 +396,11 @@ package org.toshiroioc.core
 			assertTrue(objectOne.objectField is SimpleBean);
 			assertEquals(objectOne.simpleBean.intItem, 1000);
 			assertEquals(objectOne.objectField.intItem, 999);
-			
+		
 		}
 		
-		public function testRecursiveArrays():void{
+		public function testRecursiveArrays():void
+		{
 			var xml:XML = constructXMLFromEmbed(RecursiveArrayXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			context.initialize();
@@ -355,8 +422,9 @@ package org.toshiroioc.core
 			assertEquals(objTwo.simpleArrayItem[1], context.getObject('next'));
 		}
 		
-		public function testPureMVCRegistrationAwareMediator():void{
-
+		public function testPureMVCRegistrationAwareMediator():void
+		{
+			
 			var mainApp:ToshiroApplicationFacadeTest = new ToshiroApplicationFacadeTest();
 			var xml:XML;
 			xml = constructXMLFromEmbed(RegistrationAwareXMLClass);
@@ -366,24 +434,28 @@ package org.toshiroioc.core
 			assertFalse(mainApp.facade.hasMediator('mediator2'));
 			assertFalse(mainApp.facade.hasMediator('mediator3'));
 			assertTrue(mainApp.facade.hasMediator('mediator4'));
-			
+		
 		}
 		
-		public function testI18NMetatagWrongSetterType():void{
+		public function testI18NMetatagWrongSetterType():void
+		{
 			var xml:XML = constructXMLFromEmbed(I18nWrongTypeXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			var err:ArgumentError;
-			context.initialize();	
-			try{
+			context.initialize();
+			try
+			{
 				context.getObject('objectOne');
 			}
-			catch(e:ArgumentError){
-				err=e;
+			catch(e:ArgumentError)
+			{
+				err = e;
 			}
 			assertEquals('Accessor tagged with [i18n] has to be of String type', err.message);
 		}
 		
-		public function testBeanIdMetatag():void{
+		public function testBeanIdMetatag():void
+		{
 			var xml:XML = constructXMLFromEmbed(BeanIdInjectionXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			context.initialize();
@@ -406,21 +478,25 @@ package org.toshiroioc.core
 			assertEquals(objectTwo.beanId2Item, 'objectTwo');
 		}
 		
-		public function testRestrictedBeansId():void{
+		public function testRestrictedBeansId():void
+		{
 			var xml:XML = constructXMLFromEmbed(RestrictedBeanIdXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			var err:ContainerError
-			try{
-				context.initialize();	
+			try
+			{
+				context.initialize();
 			}
-			catch(e:ContainerError){
-				err=e;
+			catch(e:ContainerError)
+			{
+				err = e;
 			}
 			assertEquals(err.errorCode, ContainerError.ERROR_BEAN_ID_RESERVED);
-			
+		
 		}
 		
-		public function testI18NMetatag():void{
+		public function testI18NMetatag():void
+		{
 			var xml:XML = constructXMLFromEmbed(I18NXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			context.initialize();
@@ -454,7 +530,7 @@ package org.toshiroioc.core
 			var object2:SetterWithArrays = context.getObject("object2") as SetterWithArrays;
 			var obj1arr:Array = object1.simpleArrayItem;
 			var obj2arr:Array = object2.simpleArrayItem;
-			
+		
 			assertNotNull(object1);
 			assertNull(obj1arr[0]);
 			assertNotNull(obj1arr[1]);
@@ -464,56 +540,67 @@ package org.toshiroioc.core
 			assertNotNull(obj2arr[1]);
 			assertNotNull(obj2arr[1].someChild);
 			assertFalse(context.containsObject("objectChild"));
-			
+		
 			xml = constructXMLFromEmbed(OptionalRefBeanDynamicLoadXMLClass);
 			context.loadDynamicConfig(xml);
-			
+		
 			assertNotNull(obj1arr[0]);
 			assertNotNull(obj1arr[1]);
 			assertNotNull(obj2arr[0]);
 			assertNotNull(obj2arr[1]);
 			assertTrue(context.containsObject("objectChild"));
 		} */
-	
 		
-		public function testRefBeanNonExistent():void{
+		public function testRefBeanNonExistent():void
+		{
 			var xml:XML = constructXMLFromEmbed(RefBeanNonExistent);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			var error:ContainerError;
-		 	try{
-				context.initialize();	
-			}catch(e:ContainerError){
+			try
+			{
+				context.initialize();
+			}
+			catch(e:ContainerError)
+			{
 				error = e;
 			}
 			assertNotNull(error);
-			assertEquals(error.errorCode, ContainerError.ERROR_OBJECT_NOT_FOUND); 
+			assertEquals(error.errorCode, ContainerError.ERROR_OBJECT_NOT_FOUND);
 		}
 		
-		public function testRefBeanCircular():void{
+		public function testRefBeanCircular():void
+		{
 			var xml:XML = constructXMLFromEmbed(RefBeanCircular);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
-		 	var error:ContainerError;
-		 	try{
-				context.initialize();	
-			}catch(e:ContainerError){
+			var error:ContainerError;
+			try
+			{
+				context.initialize();
+			}
+			catch(e:ContainerError)
+			{
 				error = e;
 			}
 			assertNotNull(error);
-			assertEquals(error.errorCode, ContainerError.ERROR_CYCLIC_DEPENDENCY); 
-
+			assertEquals(error.errorCode, ContainerError.ERROR_CYCLIC_DEPENDENCY);
+			
 			xml = constructXMLFromEmbed(RefBeanCircular2);
 			context = new XMLBeanFactory(xml);
-
-		 	try{
-				context.initialize();	
-			}catch(e:ContainerError){
+			
+			try
+			{
+				context.initialize();
+			}
+			catch(e:ContainerError)
+			{
 				error = e;
 			}
 			assertNotNull(error);
-			assertEquals(error.errorCode, ContainerError.ERROR_CYCLIC_DEPENDENCY); 
+			assertEquals(error.errorCode, ContainerError.ERROR_CYCLIC_DEPENDENCY);
 		}
 		
-		public function testRefBean():void{
+		public function testRefBean():void
+		{
 			var xml:XML = constructXMLFromEmbed(RefBean);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			context.initialize();
@@ -530,16 +617,17 @@ package org.toshiroioc.core
 			assertNotNull(array2[1]);
 		}
 		
-		public function testRefFromInnerBean():void{
+		public function testRefFromInnerBean():void
+		{
 			var xml:XML = constructXMLFromEmbed(RefFromInnerBean);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			context.initialize();
 			var objectOne:ParentOfSimpleDependencyChildrenSetter;
 			var outerBean:SimpleDependencyObject;
 			var objectTwo:ParentOfSimpleDependencyObject;
-
+			
 			//first object
-			objectOne= context.getObject("objectOne") as ParentOfSimpleDependencyChildrenSetter;
+			objectOne = context.getObject("objectOne") as ParentOfSimpleDependencyChildrenSetter;
 			outerBean = context.getObject("outerBean") as SimpleDependencyObject;
 			
 			var outerBean2:ParentOfSimpleDependencyObject = context.getObject("outerBean2") as ParentOfSimpleDependencyObject;
@@ -556,20 +644,25 @@ package org.toshiroioc.core
 			assertTrue(SetterWithArrays(context.getObject('arraySetter')).simpleArrayItem[0] == objectOne);
 		}
 		
-		public function testRefArrayInnerBeanCircular():void{
+		public function testRefArrayInnerBeanCircular():void
+		{
 			var xml:XML = constructXMLFromEmbed(RefArrayInnerBeanCircular);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			var error:ContainerError;
-		 	try{
-				context.initialize();	
-			}catch(e:ContainerError){
+			try
+			{
+				context.initialize();
+			}
+			catch(e:ContainerError)
+			{
 				error = e;
 			}
 			assertNotNull(error);
-			assertEquals(error.errorCode, ContainerError.ERROR_CYCLIC_DEPENDENCY); 
-		} 
+			assertEquals(error.errorCode, ContainerError.ERROR_CYCLIC_DEPENDENCY);
+		}
 		
-		public function testRefFromArrayInnerBean():void{
+		public function testRefFromArrayInnerBean():void
+		{
 			var xml:XML = constructXMLFromEmbed(RefArrayInnerBean);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			var constructorWithArray:ConstructorWithArrays;
@@ -598,17 +691,20 @@ package org.toshiroioc.core
 			assertEquals(outerBean, (constructorWithArray.simpleArrayItem[2])[0].nextChild);
 			assertEquals(outerBean, outerBean2.nextChild);
 			assertTrue(innerArray[1] == outerBean2);
-		} 
+		}
 		
-		public function testErrorsInMap():void{
+		public function testErrorsInMap():void
+		{
 			var xml:XML = constructXMLFromEmbed(SetterWithMapEmptyEntryXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			var error:ArgumentError;
 			context.initialize();
-			try{
+			try
+			{
 				context.getObject('setterWithArray');
 			}
-			catch(err:ArgumentError){
+			catch(err:ArgumentError)
+			{
 				error = err;
 			}
 			assertNotNull(error);
@@ -618,17 +714,20 @@ package org.toshiroioc.core
 			context = new XMLBeanFactory(xml);
 			error = null;
 			context.initialize();
-			try{
+			try
+			{
 				context.getObject('setterWithArray');
 			}
-			catch(err:ArgumentError){
+			catch(err:ArgumentError)
+			{
 				error = err;
 			}
 			assertNotNull(error);
 			assertTrue(error.message.indexOf("Too many arguments for a single map entry") != -1);
 		}
 		
-		public function testMap():void{
+		public function testMap():void
+		{
 			var xml:XML = constructXMLFromEmbed(MapXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			var setterWithArray:SetterWithArrays;
@@ -643,11 +742,14 @@ package org.toshiroioc.core
 			assertEquals("first", (setterWithArray.simpleArrayItem[0] as Array)[0]);
 			map = (setterWithArray.simpleArrayItem[0] as Array)[1];
 			assertTrue(map["someSimpleBean"] as Class == getDefinitionByName("org.toshiroioc.test.beans.SimpleBean") as Class);
-			assertTrue(map["someSetterWithArrays"] as Class == getDefinitionByName("org.toshiroioc.test.beans.SetterWithArrays") as Class);
+			assertTrue(map["someSetterWithArrays"] as Class == getDefinitionByName("org.toshiroioc.test.beans.SetterWithArrays") as
+				Class);
 			assertEquals("second", (setterWithArray.objectsArrayItem[0] as Array)[0]);
 			map = (setterWithArray.objectsArrayItem[0] as Array)[1];
-			assertTrue(map["someSimpleBean2"] as Class == getDefinitionByName("org.toshiroioc.test.beans.SimpleBean") as Class);
-			assertTrue(map["someSetterWithArrays2"] as Class == getDefinitionByName("org.toshiroioc.test.beans.SetterWithArrays") as Class);
+			assertTrue(map["someSimpleBean2"] as Class == getDefinitionByName("org.toshiroioc.test.beans.SimpleBean") as
+				Class);
+			assertTrue(map["someSetterWithArrays2"] as Class == getDefinitionByName("org.toshiroioc.test.beans.SetterWithArrays") as
+				Class);
 			
 			assertTrue(setterWithArray2.booleanItem);
 			assertEquals(1, setterWithArray2.simpleArrayItem.length);
@@ -655,14 +757,15 @@ package org.toshiroioc.core
 			assertEquals("third", (setterWithArray2.simpleArrayItem[0] as Array)[0]);
 			map = (setterWithArray2.simpleArrayItem[0] as Array)[1];
 			assertTrue(map["someSimpleBean"] as Class == getDefinitionByName("org.toshiroioc.test.beans.SimpleBean") as Class);
-			assertTrue(map["someSetterWithArrays"] as Class == getDefinitionByName("org.toshiroioc.test.beans.SetterWithArrays") as Class);
+			assertTrue(map["someSetterWithArrays"] as Class == getDefinitionByName("org.toshiroioc.test.beans.SetterWithArrays") as
+				Class);
 			
 			assertNotNull(setterWithArray2.objectsArrayItem[0]);
-			
+		
 		}
 		
-		
-		public function testConstructorArrayInjection():void{
+		public function testConstructorArrayInjection():void
+		{
 			var xml:XML = constructXMLFromEmbed(ConstructorWithArrayXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			var constructorWithArray:ConstructorWithArrays;
@@ -726,24 +829,26 @@ package org.toshiroioc.core
 			assertEquals(1, (array[0] as SimpleBean).numberItem);
 			assertEquals(2, array[1]);
 			assertEquals(3, (array[2] as SimpleBean).numberItem);
-						//third object with empty arrays
+			//third object with empty arrays
 			constructorWithArray = context.getObject("objectWithEmptyArray") as ConstructorWithArrays;
 			assertNotNull(constructorWithArray.simpleArrayItem);
 			assertNotNull(constructorWithArray.objectsArrayItem);
 			assertEquals(2, constructorWithArray.simpleArrayItem[1]);
-			
-		} 
 		
+		}
 		
-		public function testErrorsInArray():void{
+		public function testErrorsInArray():void
+		{
 			var xml:XML = constructXMLFromEmbed(SetterWithArrayEmptyEntryXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			var error:ArgumentError;
 			context.initialize();
-			try{
+			try
+			{
 				context.getObject('setterWithArray');
 			}
-			catch(err:ArgumentError){
+			catch(err:ArgumentError)
+			{
 				error = err;
 			}
 			assertNotNull(error);
@@ -753,18 +858,20 @@ package org.toshiroioc.core
 			context = new XMLBeanFactory(xml);
 			error = null;
 			context.initialize();
-			try{
+			try
+			{
 				context.getObject('setterWithArray');
 			}
-			catch(err:ArgumentError){
+			catch(err:ArgumentError)
+			{
 				error = err;
 			}
 			assertNotNull(error);
 			assertTrue(error.message.indexOf("Too many arguments for a single array entry") != -1);
 		}
 		
-		
- 		 public function testSetterArrayInjection():void{
+		public function testSetterArrayInjection():void
+		{
 			var xml:XML = constructXMLFromEmbed(SetterWithArrayXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			var setterWithArray:SetterWithArrays;
@@ -832,23 +939,27 @@ package org.toshiroioc.core
 			assertNotNull(setterWithArray.simpleArrayItem);
 			assertNotNull(setterWithArray.objectsArrayItem);
 			assertEquals(3, setterWithArray.simpleArrayItem[0]);
-		}  
+		}
 		
-		
-		public function testRefOptionalWrongArgument():void{
+		public function testRefOptionalWrongArgument():void
+		{
 			var xml:XML = constructXMLFromEmbed(OptionalRefWrongArgumentXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
-			var error: ArgumentError;
-			try{
-				context.initialize();	
-			}catch(err:ArgumentError){
+			var error:ArgumentError;
+			try
+			{
+				context.initialize();
+			}
+			catch(err:ArgumentError)
+			{
 				error = err;
 			}
 			assertNotNull(error);
 			assertTrue(error.message.indexOf("Wrong [optional] attribute") != -1);
 		}
 		
-		public function testRefOptional():void{
+		public function testRefOptional():void
+		{
 			var xml:XML = constructXMLFromEmbed(OptionalRefLazyLoadedXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			context.initialize();
@@ -874,26 +985,28 @@ package org.toshiroioc.core
 			assertNotNull(object2.someChild2.someChild);
 			assertTrue(context.containsBean("objectChild"));
 		}
-	
 		
-		
-		public function testIDNotUnique():void{
+		public function testIDNotUnique():void
+		{
 			var xml:XML = constructXMLFromEmbed(SameIDXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
-			var error : ContainerError;
-			try{
-				context.initialize();	
+			var error:ContainerError;
+			try
+			{
+				context.initialize();
 			}
-			catch(err:ContainerError){
+			catch(err:ContainerError)
+			{
 				error = err;
 			}
 			assertNotNull(error);
 			assertEquals(ContainerError.ERROR_MULTIPLE_BEANS_WITH_THE_SAME_ID, error.errorCode);
-			
+		
 		}
 		
 		//simple context addition
-		public function testDynamicContextSimpleLoad():void{
+		public function testDynamicContextSimpleLoad():void
+		{
 			var xml:XML = constructXMLFromEmbed(SimpleDynamicConfigXMLClass1);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			context.initialize();
@@ -907,42 +1020,49 @@ package org.toshiroioc.core
 		}
 		
 		//ref to bean from second config		
-		public function testDynamicContextRefToBeanFrom2ndConfig():void{
+		public function testDynamicContextRefToBeanFrom2ndConfig():void
+		{
 			var xml:XML = constructXMLFromEmbed(RefToBeanFrom2ndConfigXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			var error:ContainerError;
-			try{
+			try
+			{
 				context.initialize();
 			}
-			catch(err:ContainerError){
+			catch(err:ContainerError)
+			{
 				error = err;
 			}
 			assertNotNull(error);
 			assertEquals(ContainerError.ERROR_OBJECT_NOT_FOUND, error.errorCode);
 		}
 		
-		public function testDynamicContextRefToBeanFrom1stConfig():void{
+		public function testDynamicContextRefToBeanFrom1stConfig():void
+		{
 			var xml:XML = constructXMLFromEmbed(DynamicConfigXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			context.initialize();
 			xml = constructXMLFromEmbed(RefToBeanFrom1stConfigXMLClass);
 			context.loadDynamicConfig(xml);
-			var objWithRefTo1stConfig:SimpleDependencyObject = context.getObject("objectWithRefToFirstConfig") as SimpleDependencyObject; 
+			var objWithRefTo1stConfig:SimpleDependencyObject = context.getObject("objectWithRefToFirstConfig") as SimpleDependencyObject;
 			assertNotNull(objWithRefTo1stConfig);
 			assertNotNull(objWithRefTo1stConfig.someChild)
 			assertTrue(objWithRefTo1stConfig.someChild is BeanWithConstructor);
 		}
 		
-		public function testDynamicContextLoadFailed():void{
+		public function testDynamicContextLoadFailed():void
+		{
 			var xml:XML = constructXMLFromEmbed(DynamicConfigXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			var error:ContainerError;
 			context.initialize();
 			xml = constructXMLFromEmbed(WrongRefToBeanFrom1stConfigXMLClass);
-			try{
+			try
+			{
 				context.loadDynamicConfig(xml);
 			}
-			catch(err:ContainerError){
+			catch(err:ContainerError)
+			{
 				error = err;
 			}
 			assertNotNull(error);
@@ -956,30 +1076,16 @@ package org.toshiroioc.core
 			assertFalse(context.containsBean("objectWithRefToFirstConfig"));
 		}
 		
-		
-		public function testMultipleConfigs():void{
+		public function testMultipleConfigs():void
+		{
 			var xml:XML = constructXMLFromEmbed(MultipleConfigsXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
-			var configs:Array = [constructXMLFromEmbed(RefToBeanFrom1stConfigXMLClass).toXMLString(), constructXMLFromEmbed(SimpleDynamicConfigXMLClass2).toXMLString()];
+			var configs:Array = [constructXMLFromEmbed(RefToBeanFrom1stConfigXMLClass).toXMLString(), constructXMLFromEmbed(SimpleDynamicConfigXMLClass2).
+				toXMLString()];
 			context.addConfigsToDynamicLoadAtStartup(configs);
 			context.initialize();
 			//xml = constructXMLFromEmbed(RefToBeanFrom1stConfigXMLClass);
-			var objWithRefTo1stConfig:SimpleDependencyObject = context.getObject("objectWithRefToFirstConfig") as SimpleDependencyObject; 
-			assertNotNull(objWithRefTo1stConfig);
-			assertNotNull(objWithRefTo1stConfig.someChild)
-			assertTrue(objWithRefTo1stConfig.someChild is BeanWithConstructor);
-			assertNotNull(context.getObject("objectThree"));
-			assertNotNull(context.getObject("objectFour"));
-		}
-	
-		public function testConcatConfigs():void{
-			var xml:XML = constructXMLFromEmbed(MultipleConfigsXMLClass);
-			var context:XMLBeanFactory = new XMLBeanFactory(xml);
-			var configs:Array = [constructXMLFromEmbed(RefToBeanFrom1stConfigXMLClass).toXMLString(), constructXMLFromEmbed(SimpleDynamicConfigXMLClass2).toXMLString()];
-			context.concatConfigsWithMainXML(configs);
-			context.initialize();
-			//xml = constructXMLFromEmbed(RefToBeanFrom1stConfigXMLClass);
-			var objWithRefTo1stConfig:SimpleDependencyObject = context.getObject("objectWithRefToFirstConfig") as SimpleDependencyObject; 
+			var objWithRefTo1stConfig:SimpleDependencyObject = context.getObject("objectWithRefToFirstConfig") as SimpleDependencyObject;
 			assertNotNull(objWithRefTo1stConfig);
 			assertNotNull(objWithRefTo1stConfig.someChild)
 			assertTrue(objWithRefTo1stConfig.someChild is BeanWithConstructor);
@@ -987,7 +1093,25 @@ package org.toshiroioc.core
 			assertNotNull(context.getObject("objectFour"));
 		}
 		
-		public function testClassPostprocessor():void{
+		public function testConcatConfigs():void
+		{
+			var xml:XML = constructXMLFromEmbed(MultipleConfigsXMLClass);
+			var context:XMLBeanFactory = new XMLBeanFactory(xml);
+			var configs:Array = [constructXMLFromEmbed(RefToBeanFrom1stConfigXMLClass).toXMLString(), constructXMLFromEmbed(SimpleDynamicConfigXMLClass2).
+				toXMLString()];
+			context.concatConfigsWithMainXML(configs);
+			context.initialize();
+			//xml = constructXMLFromEmbed(RefToBeanFrom1stConfigXMLClass);
+			var objWithRefTo1stConfig:SimpleDependencyObject = context.getObject("objectWithRefToFirstConfig") as SimpleDependencyObject;
+			assertNotNull(objWithRefTo1stConfig);
+			assertNotNull(objWithRefTo1stConfig.someChild)
+			assertTrue(objWithRefTo1stConfig.someChild is BeanWithConstructor);
+			assertNotNull(context.getObject("objectThree"));
+			assertNotNull(context.getObject("objectFour"));
+		}
+		
+		public function testClassPostprocessor():void
+		{
 			var xml:XML = constructXMLFromEmbed(BeanWithPostprocessorXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			var beanWithPostprocessor:SimpleBeanWithPostprocessor;
@@ -1010,10 +1134,11 @@ package org.toshiroioc.core
 			assertTrue(beanConstructorWithPostprocessor.testField);
 			assertTrue(beanConstructorWithPostprocessor.testField2);
 			assertTrue(2, beanConstructorWithPostprocessor.commonField);
-		} 
+		}
 		
 		//TODO: check malformed xml and throw errors
-		public function testSetterInjectionOfArray():void{
+		public function testSetterInjectionOfArray():void
+		{
 			var xml:XML = constructXMLFromEmbed(MapsXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			var setterMap:SetterMap;
@@ -1021,14 +1146,14 @@ package org.toshiroioc.core
 			//var constructorMap:ConstructorMap;
 			//var testDependencyObject:TESTDependencyObject;
 			context.initialize();
-
+			
 			setterMap = context.getObject("beanWithSetterMap") as SetterMap;
 			//constructorMap = context.getObject("beanWithConstructorMap") as ConstructorMap;
-
+			
 			var mappings:Array = setterMap.mappings;
-
- 			assertEquals(2, mappings.length);
-
+			
+			assertEquals(2, mappings.length);
+			
 			var mapping1:CommandMap = mappings[0] as CommandMap;
 			var mapping2:CommandMap = mappings[1] as CommandMap;
 			//var mapping3:Array = map[2]; 
@@ -1039,43 +1164,49 @@ package org.toshiroioc.core
 			
 			//test const and value class
 			assertEquals(FieldDescription.METATAG_REQUIRED, mapping1.notification);
-			assertEquals(getDefinitionByName("org.toshiroioc.test.puremvc.command.TestCommand"), 
-				mapping1.command);
+			assertEquals(getDefinitionByName("org.toshiroioc.test.puremvc.command.TestCommand"), mapping1.command);
 			//test key and value class
 			assertEquals("model", mapping2.notification);
-			assertEquals(getDefinitionByName("org.toshiroioc.test.puremvc.command.TestCommand"), 
-				mapping2.command);
+			assertEquals(getDefinitionByName("org.toshiroioc.test.puremvc.command.TestCommand"), mapping2.command);
 			//assertEquals(getDefinitionByName(context.getObject("testCommand")), mapping2.command);
-			 
+		
 		}
+		
 		//such context couldn't initialize
-		public function testXMLMissing():void{
+		public function testXMLMissing():void
+		{
 			var xml:XML = constructXMLFromEmbed(XMLMissingXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			context.initialize();
 		}
 		
-		 public function testGetObjectsByClass():void{
+		public function testGetObjectsByClass():void
+		{
 			var xml:XML = constructXMLFromEmbed(GetByClassXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			var error:ContainerError;
 			context.initialize();
 			//test existing bean of a class
 			var setterMap:SetterMap;
-			var objectVector:Vector.<Object> = context.getObjectsByClass(getDefinitionByName("org.toshiroioc.plugins.puremvc.multicore.SetterMap")as Class);
+			var objectVector:Vector.<Object> = context.getObjectsByClass(getDefinitionByName("org.toshiroioc.plugins.puremvc.multicore.SetterMap") as
+				Class);
 			assertNotNull(objectVector);
 			assertTrue(objectVector.length > 0);
 			//test not existing bean of a class
-			try{
-				context.getObjectsByClass(getDefinitionByName("org.toshiroioc.test.beans.SimpleBean")as Class);
-			}catch(err:ContainerError){
+			try
+			{
+				context.getObjectsByClass(getDefinitionByName("org.toshiroioc.test.beans.SimpleBean") as Class);
+			}
+			catch(err:ContainerError)
+			{
 				error = err;
 			}
 			assertNotNull(error);
 			assertEquals(ContainerError.ERROR_OBJECT_OF_THE_CLASS_NOT_FOUND, error.errorCode);
-		} 
+		}
 		
-		public function testNotInitializePrototypeBeans():void{
+		public function testNotInitializePrototypeBeans():void
+		{
 			
 			var xml:XML = constructXMLFromEmbed(NotInstantiatePrototype1);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
@@ -1131,23 +1262,24 @@ package org.toshiroioc.core
 			context.initialize();
 			
 			assertNotNull(context.getObject("objectChild"));
-			assertNotNull(context.getObject("object2")); 
+			assertNotNull(context.getObject("object2"));
 		}
 		
- 		public function testPureMVCMacroCommandStartup():void{
- 			var mainApp:ToshiroApplicationFacadeTest = new ToshiroApplicationFacadeTest();
+		public function testPureMVCMacroCommandStartup():void
+		{
+			var mainApp:ToshiroApplicationFacadeTest = new ToshiroApplicationFacadeTest();
 			var xml:XML;
 			xml = constructXMLFromEmbed(PureMVCXMLClass1);
 			mainApp.onCreationComplete("macroCommand", xml)
 			
-			var testCommand: TestCommand = mainApp.facade.getContext().getObject("testCommand") as TestCommand;
+			var testCommand:TestCommand = mainApp.facade.getContext().getObject("testCommand") as TestCommand;
 			
-			var toshiroApplicationFacadeTestMediator: ToshiroApplicationFacadeTestMediator = mainApp.facade.getContext()
-				.getObject("toshiroApplicationFacadeTestMediator") as ToshiroApplicationFacadeTestMediator;
-			var exampleViewMediator : ExampleViewMediator =  mainApp.facade.getContext()
-				.getObject("exampleViewMediator") as ExampleViewMediator;
- 			//test macro startup command
-
+			var toshiroApplicationFacadeTestMediator:ToshiroApplicationFacadeTestMediator = mainApp.facade.getContext().
+				getObject("toshiroApplicationFacadeTestMediator") as ToshiroApplicationFacadeTestMediator;
+			var exampleViewMediator:ExampleViewMediator = mainApp.facade.getContext().getObject("exampleViewMediator") as
+				ExampleViewMediator;
+			//test macro startup command
+			
 			//test if postprocessor registers commands
 			assertTrue(mainApp.facade.hasCommand("model"));
 			assertTrue(mainApp.facade.hasCommand("view"));
@@ -1181,15 +1313,15 @@ package org.toshiroioc.core
 			xml = constructXMLFromEmbed(PureMVCDynamicLoadXMLClass);
 			mainApp.facade.getContext().loadDynamicConfig(xml);
 			
-			var dynamicTestCommand: DynamicTestCommand = mainApp.facade.getContext().getObject("dynamicTestCommand") as DynamicTestCommand;
-			var dynamicExampleViewMediator:DynamicExampleViewMediator = mainApp.facade.getContext()
-				.getObject("dynamicExampleViewMediator") as DynamicExampleViewMediator;
-
+			var dynamicTestCommand:DynamicTestCommand = mainApp.facade.getContext().getObject("dynamicTestCommand") as DynamicTestCommand;
+			var dynamicExampleViewMediator:DynamicExampleViewMediator = mainApp.facade.getContext().getObject("dynamicExampleViewMediator") as
+				DynamicExampleViewMediator;
+			
 			mainApp.dynamicModule = mainApp.facade.getContext().getObject("dynamicModule") as DynamicModule;
 			assertNotNull(mainApp.dynamicModule); //todo optional and lazy injection
 			mainApp.facade.sendNotification("custom_startup");
 			//tests notes from command to new and old commands
-			assertEquals(2, dynamicTestCommand.noteFromCmd); 
+			assertEquals(2, dynamicTestCommand.noteFromCmd);
 			assertEquals(2, testCommand.testNoteFromCommand);
 			//tests note new cmd -> old cmd prototype -> new mediator
 			assertEquals(1, dynamicExampleViewMediator.runsCount);
@@ -1225,22 +1357,23 @@ package org.toshiroioc.core
 			assertTrue(mainApp.facade.hasMediator(DynamicExampleViewMediator.NAME));
 			//test injection ref to main config
 			assertNotNull((mainApp.facade.getContext().getObject("dynamicExampleView") as DynamicExampleView).exampleView);
-			}
+		}
+		
+		public function testPureMVCSimpleCommandStartup():void
+		{
 			
-		public function testPureMVCSimpleCommandStartup():void{
-			 
 			//test simple startup command
 			var mainApp:ToshiroApplicationFacadeTest = new ToshiroApplicationFacadeTest();
 			var xml:XML;
 			xml = constructXMLFromEmbed(PureMVCXMLClass2);
 			mainApp.onCreationComplete("simpleCommand", xml)
-			var testCommand: TestCommand = mainApp.facade.getContext().getObject("testCommand") as TestCommand;
-			var toshiroApplicationFacadeTestMediator: ToshiroApplicationFacadeTestMediator = mainApp.facade.getContext()
-				.getObject("toshiroApplicationFacadeTestMediator") as ToshiroApplicationFacadeTestMediator;
-			var exampleViewMediator : ExampleViewMediator =  mainApp.facade.getContext()
-				.getObject("exampleViewMediator") as ExampleViewMediator;
- 			//test macro startup command
-
+			var testCommand:TestCommand = mainApp.facade.getContext().getObject("testCommand") as TestCommand;
+			var toshiroApplicationFacadeTestMediator:ToshiroApplicationFacadeTestMediator = mainApp.facade.getContext().
+				getObject("toshiroApplicationFacadeTestMediator") as ToshiroApplicationFacadeTestMediator;
+			var exampleViewMediator:ExampleViewMediator = mainApp.facade.getContext().getObject("exampleViewMediator") as
+				ExampleViewMediator;
+			//test macro startup command
+			
 			//test if postprocessor registers commands
 			assertTrue(mainApp.facade.hasCommand("model"));
 			assertTrue(mainApp.facade.hasCommand("view"));
@@ -1257,15 +1390,15 @@ package org.toshiroioc.core
 			//tests if commands from startup macro command has been executed
 			assertEquals(1, testCommand.testNoteFromCommand);
 			// tests onRegister on proxy1 and note proxy --> mediator
-//			assertNotNull(mainApp.exampleView.view_grid.dataProvider);
+			//			assertNotNull(mainApp.exampleView.view_grid.dataProvider);
 			//tests if note has been sent between mediators
 			assertEquals(mainApp.exampleView.view_lbl.text, "YOU CLICKED THE BUTTON");
 			// tests onRegister on proxy2 and note proxy --> mediator
-//			assertEquals(mainApp.exampleView.view_lbl2.text, "5");
+			//			assertEquals(mainApp.exampleView.view_lbl2.text, "5");
 			//test if main app has been set by notification from PrepViewCommand
 			assertNotNull(toshiroApplicationFacadeTestMediator.app);
 			//test if notification from proxy has been sent
-//			assertTrue(toshiroApplicationFacadeTestMediator.exProxyOnRegister);
+			//			assertTrue(toshiroApplicationFacadeTestMediator.exProxyOnRegister);
 			// receive note from mediator on register
 			assertEquals(0, testCommand.notRegisteredNoteCounter);
 			assertEquals(1, testCommand.noteFromMediator);
@@ -1274,15 +1407,15 @@ package org.toshiroioc.core
 			xml = constructXMLFromEmbed(PureMVCDynamicSimpleStartupXMLClass);
 			mainApp.facade.getContext().loadDynamicConfig(xml);
 			
-			var dynamicTestCommand: DynamicTestCommand = mainApp.facade.getContext().getObject("dynamicTestCommand") as DynamicTestCommand;
-			var dynamicExampleViewMediator:DynamicExampleViewMediator = mainApp.facade.getContext()
-				.getObject("dynamicExampleViewMediator") as DynamicExampleViewMediator;
+			var dynamicTestCommand:DynamicTestCommand = mainApp.facade.getContext().getObject("dynamicTestCommand") as DynamicTestCommand;
+			var dynamicExampleViewMediator:DynamicExampleViewMediator = mainApp.facade.getContext().getObject("dynamicExampleViewMediator") as
+				DynamicExampleViewMediator;
 			
 			mainApp.dynamicModule = mainApp.facade.getContext().getObject("dynamicModule") as DynamicModule;
 			assertNotNull(mainApp.dynamicModule); //todo optional and lazy injection
 			mainApp.facade.sendNotification("custom_startup");
 			//tests notes from command to new and old commands
-			assertEquals(2, dynamicTestCommand.noteFromCmd); 
+			assertEquals(2, dynamicTestCommand.noteFromCmd);
 			assertEquals(2, testCommand.testNoteFromCommand);
 			//tests note new cmd -> old cmd prototype -> new mediator
 			assertEquals(1, dynamicExampleViewMediator.runsCount);
@@ -1295,8 +1428,8 @@ package org.toshiroioc.core
 			assertEquals(2, testCommand.noteFromMediator);
 			assertEquals(1, dynamicTestCommand.noteFromMediator);
 			// notes proxies -> mediators
-//			assertEquals(3, exampleViewMediator.notesFromProxies);
-//			assertEquals(1, dynamicExampleViewMediator.notesFromProxies);
+			//			assertEquals(3, exampleViewMediator.notesFromProxies);
+			//			assertEquals(1, dynamicExampleViewMediator.notesFromProxies);
 			//notes proxies -> commands
 			assertEquals(0, testCommand.notRegisteredNoteCounter);
 			assertEquals(1, testCommand.noteFromProxies);
@@ -1319,9 +1452,10 @@ package org.toshiroioc.core
 			assertTrue(mainApp.facade.hasMediator(DynamicExampleViewMediator.NAME));
 			//test injection ref to main config
 			assertNotNull((mainApp.facade.getContext().getObject("dynamicExampleView") as DynamicExampleView).exampleView);
-			}
+		}
 		
-		public function testMetatagContextInjection():void{
+		public function testMetatagContextInjection():void
+		{
 			var xml:XML = constructXMLFromEmbed(ContextInjectionXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			
@@ -1335,18 +1469,17 @@ package org.toshiroioc.core
 			assertNotNull(simpleBeanWithMetatags.dependencyItem2);
 			assertEquals(context, simpleBeanWithMetatags.context);
 			
-			
 			var simpleBeanWithMetatags2:SimpleBeanWithContextInjection = context.getObject("objectTwo") as SimpleBeanWithContextInjection;
 			assertNotNull(simpleBeanWithMetatags2);
 			assertEquals(simpleBeanWithMetatags2.beforeConfigureMethodInvocation, true);
 			assertEquals(simpleBeanWithMetatags2.afterConfigureMethodInvocation, true);
 			assertNotNull(simpleBeanWithMetatags2.dependencyItem);
-			assertNotNull(simpleBeanWithMetatags2.dependencyItem2); 
+			assertNotNull(simpleBeanWithMetatags2.dependencyItem2);
 			assertEquals(context, simpleBeanWithMetatags2.context);
 		}
 		
-		
-		public function testMetatagsBeforeAndAfterSetter():void{
+		public function testMetatagsBeforeAndAfterSetter():void
+		{
 			var xml:XML = constructXMLFromEmbed(MetatagsSetterXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			
@@ -1362,11 +1495,12 @@ package org.toshiroioc.core
 			var simpleBeanWithoutMetatags:SimpleBeanWithoutMetatags = context.getObject("objectWithoutTags") as SimpleBeanWithoutMetatags;
 			assertNotNull(simpleBeanWithoutMetatags);
 			assertFalse(simpleBeanWithoutMetatags.beforeConfigureMethodInvocation);
-			assertFalse(simpleBeanWithoutMetatags.afterConfigureMethodInvocation);  
-			 
+			assertFalse(simpleBeanWithoutMetatags.afterConfigureMethodInvocation);
+		
 		}
 		
-		public function testMetatagsBeforeAndAfterConstructor():void{
+		public function testMetatagsBeforeAndAfterConstructor():void
+		{
 			var xml:XML = constructXMLFromEmbed(MetatagsConstructorXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			
@@ -1385,16 +1519,18 @@ package org.toshiroioc.core
 			assertTrue(constructorWithMetatags.afterConfigureMethodInvocation);
 			assertTrue(constructorWithMetatags.secondAfterMethod);
 			assertTrue(constructorWithMetatags.secondBeforeMethod);
-			
+		
 		}
 		
-		public function testMetatagsBeforeAndAfterConstructorWithoutProperties():void{
+		public function testMetatagsBeforeAndAfterConstructorWithoutProperties():void
+		{
 			var xml:XML = constructXMLFromEmbed(MetatagsConstructorWithoutPropertiesXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			
 			context.initialize();
 			
-			var constructorWithMetatags:BeanWithConstructorAndMetatagsWithoutProperties = context.getObject("objectOne") as BeanWithConstructorAndMetatagsWithoutProperties;
+			var constructorWithMetatags:BeanWithConstructorAndMetatagsWithoutProperties = context.getObject("objectOne") as
+				BeanWithConstructorAndMetatagsWithoutProperties;
 			assertNotNull(constructorWithMetatags);
 			assertTrue(constructorWithMetatags.beforeConfigureMethodInvocation);
 			assertTrue(constructorWithMetatags.afterConfigureMethodInvocation);
@@ -1407,11 +1543,12 @@ package org.toshiroioc.core
 			assertTrue(constructorWithMetatags.afterConfigureMethodInvocation);
 			assertTrue(constructorWithMetatags.secondAfterMethod);
 			assertTrue(constructorWithMetatags.secondBeforeMethod);
-			
+		
 		}
 		
-	 	// checks if tags are extendable
-	 	public function testBeforeAndAfterMetatagsExtended():void{
+		// checks if tags are extendable
+		public function testBeforeAndAfterMetatagsExtended():void
+		{
 			var xml:XML = constructXMLFromEmbed(ExtendingMetatagsXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			
@@ -1423,45 +1560,52 @@ package org.toshiroioc.core
 			assertEquals(simpleBeanWithMetatags.afterConfigureMethodInvocation, true);
 			assertEquals(simpleBeanWithMetatags.secondBeforeMethod, true);
 			assertEquals(simpleBeanWithMetatags.secondAfterMethod, true);
-			
+		
 		}
-	 	
-		public function testMetatagRequiredNotSatisfied():void{
-
+		
+		public function testMetatagRequiredNotSatisfied():void
+		{
+			
 			var xml:XML = constructXMLFromEmbed(RequiredMetatagXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
-			var error: ContainerError;
+			var error:ContainerError;
 			context.initialize();
-			try{
+			try
+			{
 				context.getObject('objectWithoutRequired');
 			}
-			catch(err: ContainerError){
-				error = err; 
-			} 
+			catch(err:ContainerError)
+			{
+				error = err;
+			}
 			assertNotNull(error);
 			assertEquals(ContainerError.ERROR_REQUIRED_METATAG_NOT_SATISFIED, error.errorCode);
-			
-		} 
 		
-		public function testMetatagRequiredOnPublicPropNotSatisfied():void{
-
+		}
+		
+		public function testMetatagRequiredOnPublicPropNotSatisfied():void
+		{
+			
 			var xml:XML = constructXMLFromEmbed(RequiredMetatagPublicPropXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
-			var error: ContainerError;
-
-			try{
+			var error:ContainerError;
+			
+			try
+			{
 				context.initialize();
 			}
-			catch(err: ContainerError){
+			catch(err:ContainerError)
+			{
 				error = err
-			} 
+			}
 			assertNotNull(error);
 			assertEquals(ContainerError.ERROR_REQUIRED_METATAG_NOT_SATISFIED, error.errorCode);
-			
-		} 
 		
-		public function testMetatagRequiredSatisfied():void{
-
+		}
+		
+		public function testMetatagRequiredSatisfied():void
+		{
+			
 			var xml:XML = constructXMLFromEmbed(RequiredMetatag2XMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			
@@ -1474,39 +1618,46 @@ package org.toshiroioc.core
 			//assertNotNull(simpleBeanWithRequired.dependencyField3);
 			//assertEquals(simpleBeanWithRequired.dependencyField3, context.getObject('object4'));
 			//assertEquals(simpleBeanWithRequired.simpleReqProp, 'testSimpleReqProp');
-		} 
+		}
 		
-		public function testDependencyNotExistingSetter():void{
+		public function testDependencyNotExistingSetter():void
+		{
 			var xml:XML = constructXMLFromEmbed(SetterWithoutDependencyXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
-			var error: ContainerError;
+			var error:ContainerError;
 			
-			try{
+			try
+			{
 				context.initialize();
 			}
-			catch(err: ContainerError){
-				error = err; 
-			} 
+			catch(err:ContainerError)
+			{
+				error = err;
+			}
 			assertNotNull(error);
 			assertEquals(ContainerError.ERROR_OBJECT_NOT_FOUND, error.errorCode);
 		}
 		
-		public function testDependencyNotExistingContructor():void{
+		public function testDependencyNotExistingContructor():void
+		{
 			var xml:XML = constructXMLFromEmbed(ConstructorWithoutDependencyXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
-			var error: ContainerError;
+			var error:ContainerError;
 			
-			try{
+			try
+			{
 				context.initialize();
 			}
-			catch(err: ContainerError){
-				error = err; 
-			} 
+			catch(err:ContainerError)
+			{
+				error = err;
+			}
 			assertNotNull(error);
 			assertEquals(ContainerError.ERROR_OBJECT_NOT_FOUND, error.errorCode);
 		}
 		
-		public function testLifecycle():void{ 
+		public function testLifecycle():void
+		{
 			var xml:XML = constructXMLFromEmbed(LifecycleXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			context.initialize();
@@ -1515,107 +1666,114 @@ package org.toshiroioc.core
 			
 			var object2:SimpleDependencyObject = context.getTypedObject("object2", clazz);
 			assertNotNull(object2);
-			assertTrue(object2 is SimpleDependencyObject);	
+			assertTrue(object2 is SimpleDependencyObject);
 			assertNotNull(object2.someChild);
 			assertTrue(object2.someChild is BeanWithConstructor);
 			assertEquals("some123$#", object2.someString);
 			
 			var object3:SimpleDependencyObject = context.getTypedObject("object3", clazz);
-			assertNotNull(object3);			
+			assertNotNull(object3);
 			assertNotNull(object3.someChild);
 			assertTrue(object3.someChild is BeanWithConstructor);
-						
-			assertEquals (-99999, object3.someChild.someNumber);
-			assertEquals (1111, object3.someChild.someInt);
-			assertEquals ("some123String", object3.someChild.someString);
-			assertEquals (true, object3.someChild.someBoolean);
 			
-			assertEquals (-99999, object2.someChild.someNumber);
-			assertEquals (1111, object2.someChild.someInt);
-			assertEquals ("some123String", object2.someChild.someString);
-			assertEquals (true, object2.someChild.someBoolean);
+			assertEquals(-99999, object3.someChild.someNumber);
+			assertEquals(1111, object3.someChild.someInt);
+			assertEquals("some123String", object3.someChild.someString);
+			assertEquals(true, object3.someChild.someBoolean);
+			
+			assertEquals(-99999, object2.someChild.someNumber);
+			assertEquals(1111, object2.someChild.someInt);
+			assertEquals("some123String", object2.someChild.someString);
+			assertEquals(true, object2.someChild.someBoolean);
 			
 			var clazz4:Class = Class(getDefinitionByName("org.toshiroioc.test.beans.ParentOfSimpleDependencyObject"));
-			var object4:ParentOfSimpleDependencyObject = context.getTypedObject("object4", clazz4);			
+			var object4:ParentOfSimpleDependencyObject = context.getTypedObject("object4", clazz4);
 			assertNotNull(object4);
 			
-			var object5:ParentOfSimpleDependencyObject = context.getTypedObject("object5", clazz4);			
+			var object5:ParentOfSimpleDependencyObject = context.getTypedObject("object5", clazz4);
 			assertNotNull(object5);
 			
 			//	both child classes should be equals (singletons)
 			assertEquals(object4.nextChild, object5.nextChild);
 			
 			//	both child classes should be not equals (prototypes)
-			if(object2.someChild == object3.someChild){
+			if(object2.someChild == object3.someChild)
+			{
 				fail("prototype objects should be different but are the same");
 			}
 			//assertNotEquals(object2.someChild, object3.someChild);
 		}
 		
-		public function testInstantiateBeanByID():void{
+		public function testInstantiateBeanByID():void
+		{
 			var xml:XML = constructXMLFromEmbed(SimpleObjectSetterClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			
 			context.initialize();
 			
 			var beanOne:* = context.getObject("objectOne");
-			assertNotNull(beanOne);		
+			assertNotNull(beanOne);
 			assertTrue(beanOne is SimpleBean);
 			
 			var beanTwo:* = context.getObject("objectTwo");
 			assertNotNull(beanTwo);
 			assertTrue(beanTwo is SimpleBean);
 		}
-				
-		public function testBeanNotFound():void{
+		
+		public function testBeanNotFound():void
+		{
 			var xml:XML = constructXMLFromEmbed(SimpleObjectSetterClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			
 			context.initialize();
 			
 			var exceptionThrown:Boolean = false;
-			try{
+			try
+			{
 				var bean:* = context.getObject("nonExistentObject");
 			}
-			catch(err:ContainerError){
+			catch(err:ContainerError)
+			{
 				exceptionThrown = true;
 			}
 			assertNull(bean);
 			assertTrue(exceptionThrown);
 		}
 		
-		public function testSetterNumber():void{
+		public function testSetterNumber():void
+		{
 			var xml:XML = constructXMLFromEmbed(SimpleObjectSetterClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			
 			context.initialize();
 			
 			var beanOne:SimpleBean = context.getObject("objectOne");
-			assertNotNull(beanOne);		
+			assertNotNull(beanOne);
 			assertTrue(beanOne is SimpleBean);
 			
 			var beanTwo:SimpleBean = context.getObject("objectTwo");
 			assertNotNull(beanTwo);
 			assertTrue(beanTwo is SimpleBean);
 			
-			assertEquals(1111,beanOne.uintItem);
-			assertEquals(-99999,beanOne.intItem);
-			assertEquals(9999.00001,beanOne.numberItem);
+			assertEquals(1111, beanOne.uintItem);
+			assertEquals(-99999, beanOne.intItem);
+			assertEquals(9999.00001, beanOne.numberItem);
 			
-			assertEquals(0,beanTwo.uintItem);
-			assertEquals(999,beanTwo.intItem);
-			assertEquals(-123456.99987,beanTwo.numberItem);
-			
+			assertEquals(0, beanTwo.uintItem);
+			assertEquals(999, beanTwo.intItem);
+			assertEquals(-123456.99987, beanTwo.numberItem);
+		
 		}
 		
-		public function testConstructorDate():void{
+		public function testConstructorDate():void
+		{
 			var xml:XML = constructXMLFromEmbed(ConstructorDateXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			
 			context.initialize();
 			
 			var beanOne:* = context.getObject("objectOne");
-			assertNotNull(beanOne);		
+			assertNotNull(beanOne);
 			assertTrue(beanOne is ObjectConstructorDate);
 			
 			var dateConverted:Date = beanOne.date;
@@ -1628,18 +1786,18 @@ package org.toshiroioc.core
 			assertEquals(45, dateConverted.minutes);
 			assertEquals(49, dateConverted.seconds);
 			assertEquals(296, dateConverted.milliseconds);
-			
-			
+		
 		}
 		
-		public function testSetterDate():void{
+		public function testSetterDate():void
+		{
 			var xml:XML = constructXMLFromEmbed(SetterDateTypeXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			
 			context.initialize();
 			
 			var beanOne:* = context.getObject("objectOne");
-			assertNotNull(beanOne);		
+			assertNotNull(beanOne);
 			assertTrue(beanOne is BeanWithDate);
 			
 			var dateConverted:Date = beanOne.date;
@@ -1652,10 +1810,11 @@ package org.toshiroioc.core
 			assertEquals(45, dateConverted.minutes);
 			assertEquals(49, dateConverted.seconds);
 			assertEquals(296, dateConverted.milliseconds);
-
+		
 		}
 		
-		public function testSetterString():void{
+		public function testSetterString():void
+		{
 			var xml:XML = constructXMLFromEmbed(SimpleObjectSetterClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			
@@ -1664,12 +1823,12 @@ package org.toshiroioc.core
 			var beanOne:* = context.getObject("objectOne");
 			
 			assertNotNull(beanOne);
-			assertTrue(beanOne is SimpleBean);	
+			assertTrue(beanOne is SimpleBean);
 			assertEquals("some123String", beanOne.stringItem);
 		}
 		
-		
-		public function testSetterWithClass():void{
+		public function testSetterWithClass():void
+		{
 			var xml:XML = constructXMLFromEmbed(SetterWithClassXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			
@@ -1679,14 +1838,13 @@ package org.toshiroioc.core
 			
 			assertNotNull(beanOne);
 			assertTrue(beanOne is SimpleBean);
-			assertNotNull(beanOne.clazzItem);	
-			assertEquals(beanOne.clazzItem,Class(getDefinitionByName("flash.display.Sprite")));
-			
+			assertNotNull(beanOne.clazzItem);
+			assertEquals(beanOne.clazzItem, Class(getDefinitionByName("flash.display.Sprite")));
+		
 		}
 		
-		
-		
-		public function testSetterWithBoolean():void{
+		public function testSetterWithBoolean():void
+		{
 			
 			var xml:XML = constructXMLFromEmbed(SimpleObjectSetterClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
@@ -1695,7 +1853,7 @@ package org.toshiroioc.core
 			
 			var beanOne:* = context.getObject("objectOne");
 			assertNotNull(beanOne);
-			assertTrue(beanOne is SimpleBean);	
+			assertTrue(beanOne is SimpleBean);
 			assertTrue(beanOne.booleanItem);
 			
 			var beanTwo:* = context.getObject("objectTwo");
@@ -1704,7 +1862,8 @@ package org.toshiroioc.core
 			assertFalse(beanTwo.booleanItem);
 		}
 		
-		public function testSetterWithImplicitNull():void{
+		public function testSetterWithImplicitNull():void
+		{
 			var xml:XML = constructXMLFromEmbed(SetterWithNullXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			
@@ -1712,7 +1871,7 @@ package org.toshiroioc.core
 			
 			var beanOne:* = context.getObject("objectOne");
 			assertNotNull(beanOne);
-			assertTrue(beanOne is SimpleBean);	
+			assertTrue(beanOne is SimpleBean);
 			assertNull(beanOne.stringItem);
 			
 			var beanTwo:* = context.getObject("objectTwo");
@@ -1724,10 +1883,11 @@ package org.toshiroioc.core
 			assertNotNull(beanThree);
 			assertTrue(beanThree is SimpleBean);
 			assertEquals("", beanThree.stringItem);
-			
+		
 		}
 		
-		public function testInstantiateByConstructorSimpleType():void{
+		public function testInstantiateByConstructorSimpleType():void
+		{
 			
 			var xml:XML = constructXMLFromEmbed(ConstructorSimpleTypeXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
@@ -1737,36 +1897,36 @@ package org.toshiroioc.core
 			var beanOne:* = context.getObject("objectOne");
 			
 			assertNotNull(beanOne);
-			assertTrue(beanOne is BeanWithConstructor);		
+			assertTrue(beanOne is BeanWithConstructor);
 			
 			//	checking values set by setters
-			assertEquals ("false", beanOne.someAdditionalString);
+			assertEquals("false", beanOne.someAdditionalString);
 			
 			//	checking values set by constructor
-			assertEquals (-99999, beanOne.someNumber);
-			assertEquals (getDefinitionByName("org.toshiroioc.test.beans.SimpleBean"), beanOne.someClass);
-			assertEquals (1111, beanOne.someInt);
-			assertEquals ("some123String", beanOne.someString);
-			assertEquals (true, beanOne.someBoolean);
+			assertEquals(-99999, beanOne.someNumber);
+			assertEquals(getDefinitionByName("org.toshiroioc.test.beans.SimpleBean"), beanOne.someClass);
+			assertEquals(1111, beanOne.someInt);
+			assertEquals("some123String", beanOne.someString);
+			assertEquals(true, beanOne.someBoolean);
 			assertEquals(7, beanOne.someStatic);
 			
 			//	checking for nulled argument
 			var beanTwo:* = context.getObject("objectTwo");
 			
 			assertNotNull(beanTwo);
-			assertTrue(beanTwo is BeanWithConstructor);		
+			assertTrue(beanTwo is BeanWithConstructor);
 			
 			//	checking values set by setters
-			assertEquals ("enedueRikeFake", beanTwo.someAdditionalString);
+			assertEquals("enedueRikeFake", beanTwo.someAdditionalString);
 			
 			//	checking values set by constructor
-			assertEquals (-99999.6, beanTwo.someNumber);
-			assertEquals (getDefinitionByName("org.toshiroioc.test.beans.SimpleBean"), beanTwo.someClass);
-			assertEquals (1111, beanTwo.someInt);
-			assertEquals (null, beanTwo.someString);			
-			assertEquals (false, beanTwo.someBoolean);
+			assertEquals(-99999.6, beanTwo.someNumber);
+			assertEquals(getDefinitionByName("org.toshiroioc.test.beans.SimpleBean"), beanTwo.someClass);
+			assertEquals(1111, beanTwo.someInt);
+			assertEquals(null, beanTwo.someString);
+			assertEquals(false, beanTwo.someBoolean);
 			assertEquals(7, beanTwo.someStatic);
-			
+		
 		}
 		
 		/*
@@ -1782,11 +1942,11 @@ package org.toshiroioc.core
 		
 		public function testConstructorWithMap():void{
 			fail("unimplemented");
-		}	
-
+		}
+		
 		public function testSetterWithMap():void{
 			fail("unimplemented");
-		}			
+		}
 		
 		public function testMultipartXml():void{
 			fail("unimplemented");
@@ -1796,7 +1956,8 @@ package org.toshiroioc.core
 			fail("unimplemented");
 		}
 		*/
-		public function testContainsBean():void{
+		public function testContainsBean():void
+		{
 			var xml:XML = constructXMLFromEmbed(SetterWithNullXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			
@@ -1804,10 +1965,11 @@ package org.toshiroioc.core
 			
 			assertTrue(context.containsBean("objectOne"));
 			assertFalse(context.containsBean("notExistingBeanName"));
-			
+		
 		}
 		
-		public function testContainsInitializedBean():void{
+		public function testContainsInitializedBean():void
+		{
 			var xml:XML = constructXMLFromEmbed(SetterWithNullXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			
@@ -1815,10 +1977,11 @@ package org.toshiroioc.core
 			
 			assertTrue(context.ableToInitBean("objectOne"));
 			assertFalse(context.ableToInitBean("notExistingBeanName"));
-			
+		
 		}
 		
-		public function testGetTypedBean():void{
+		public function testGetTypedBean():void
+		{
 			var xml:XML = constructXMLFromEmbed(SetterWithNullXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			
@@ -1828,26 +1991,29 @@ package org.toshiroioc.core
 			
 			var beanOne:* = context.getTypedObject("objectOne", clazz);
 			assertNotNull(beanOne);
-			assertTrue(beanOne is SimpleBean);	
+			assertTrue(beanOne is SimpleBean);
 			
 			//	testing the exception throwing if not expected type
 			
 			var error:ContainerError = null;
 			var invalidClazz:Class = Class(getDefinitionByName("flash.display.Sprite"));
 			
-			try{
+			try
+			{
 				var bean:* = context.getTypedObject("objectOne", invalidClazz);
 			}
-			catch(err:ContainerError){
+			catch(err:ContainerError)
+			{
 				error = err;
 			}
 			assertNull(bean);
 			assertNotNull(error);
 			assertEquals(ContainerError.ERROR_INVALID_OBJECT_TYPE, error.errorCode);
-			
+		
 		}
 		
-		public function testGetType():void{
+		public function testGetType():void
+		{
 			var xml:XML = constructXMLFromEmbed(SetterWithNullXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			
@@ -1857,32 +2023,36 @@ package org.toshiroioc.core
 			assertEquals(clazz, context.getType("objectOne"));
 		}
 		
-		public function testIsSingleton():void{
+		public function testIsSingleton():void
+		{
 			var xml:XML = constructXMLFromEmbed(IsSingletonXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			context.initialize();
 			
-			assertTrue	(context.isSingleton("object2"));			
-			assertTrue	(context.isSingleton("object3"));
-			assertTrue	(context.isSingleton("object4"));
-			assertTrue	(context.isSingleton("object5"));
-			assertFalse	(context.isSingleton("objectChild"));
-			
+			assertTrue(context.isSingleton("object2"));
+			assertTrue(context.isSingleton("object3"));
+			assertTrue(context.isSingleton("object4"));
+			assertTrue(context.isSingleton("object5"));
+			assertFalse(context.isSingleton("objectChild"));
+		
 			//	todo: throw exception if bean not found
 		}
 		
-		public function testCyclicDependencyFromConstructorToSetter():void{
+		public function testCyclicDependencyFromConstructorToSetter():void
+		{
 			var xml:XML = constructXMLFromEmbed(CyclicDependencyFromConstructorToSetterXMLClass);
 			
 			var error:ContainerError = null;
 			var typeToBeLinkedByFlash:CyclicConstructorAndSetter;
-								
-			try{
+			
+			try
+			{
 				var context:XMLBeanFactory = new XMLBeanFactory(xml);
 				
 				context.initialize();
 			}
-			catch(err:ContainerError){
+			catch(err:ContainerError)
+			{
 				error = err;
 			}
 			
@@ -1890,16 +2060,19 @@ package org.toshiroioc.core
 			assertEquals(ContainerError.ERROR_CYCLIC_DEPENDENCY, error.errorCode);
 		}
 		
-		public function testCyclicDependencyFromConstructorToSetterComplex():void{
+		public function testCyclicDependencyFromConstructorToSetterComplex():void
+		{
 			var xml:XML = constructXMLFromEmbed(CyclicDependencyFromConstructorToSetterComplexXMLClass);
 			
 			var error:ContainerError = null;
-						
-			try{
+			
+			try
+			{
 				var context:XMLBeanFactory = new XMLBeanFactory(xml);
 				context.initialize();
 			}
-			catch(err:ContainerError){
+			catch(err:ContainerError)
+			{
 				error = err;
 			}
 			
@@ -1907,16 +2080,19 @@ package org.toshiroioc.core
 			assertEquals(ContainerError.ERROR_CYCLIC_DEPENDENCY, error.errorCode);
 		}
 		
-		public function testCyclicDependencyFromSetterToConstructor():void{
+		public function testCyclicDependencyFromSetterToConstructor():void
+		{
 			var xml:XML = constructXMLFromEmbed(CyclicDependencyFromSetterToConstructorXMLClass);
 			
 			var error:ContainerError = null;
-						
-			try{
+			
+			try
+			{
 				var context:XMLBeanFactory = new XMLBeanFactory(xml);
 				context.initialize();
 			}
-			catch(err:ContainerError){
+			catch(err:ContainerError)
+			{
 				error = err;
 			}
 			
@@ -1924,16 +2100,19 @@ package org.toshiroioc.core
 			assertEquals(ContainerError.ERROR_CYCLIC_DEPENDENCY, error.errorCode);
 		}
 		
-		public function testCyclicDependencyFromSetterToConstructorComplex():void{
+		public function testCyclicDependencyFromSetterToConstructorComplex():void
+		{
 			var xml:XML = constructXMLFromEmbed(CyclicDependencyFromSetterToConstructorComplexXMLClass);
 			
 			var error:ContainerError = null;
-						
-			try{
+			
+			try
+			{
 				var context:XMLBeanFactory = new XMLBeanFactory(xml);
 				context.initialize();
 			}
-			catch(err:ContainerError){
+			catch(err:ContainerError)
+			{
 				error = err;
 			}
 			
@@ -1941,18 +2120,21 @@ package org.toshiroioc.core
 			assertEquals(ContainerError.ERROR_CYCLIC_DEPENDENCY, error.errorCode);
 		}
 		
-		public function testCyclicDependencyFromSetters():void{
+		public function testCyclicDependencyFromSetters():void
+		{
 			var xml:XML = constructXMLFromEmbed(CyclicDependencyFromSettersXMLClass);
 			
 			var typeToBeLinkedByFlashCompiler:CyclicSetter;
 			
 			var error:ContainerError = null;
-						
-			try{
+			
+			try
+			{
 				var context:XMLBeanFactory = new XMLBeanFactory(xml);
 				context.initialize();
 			}
-			catch(err:ContainerError){
+			catch(err:ContainerError)
+			{
 				error = err;
 			}
 			
@@ -1960,16 +2142,19 @@ package org.toshiroioc.core
 			assertEquals(ContainerError.ERROR_CYCLIC_DEPENDENCY, error.errorCode);
 		}
 		
-		public function testCyclicDependencyFromSettersComplex():void{
+		public function testCyclicDependencyFromSettersComplex():void
+		{
 			var xml:XML = constructXMLFromEmbed(CyclicDependencyFromSettersComplexXMLClass);
 			
 			var error:ContainerError = null;
-						
-			try{
+			
+			try
+			{
 				var context:XMLBeanFactory = new XMLBeanFactory(xml);
 				context.initialize();
 			}
-			catch(err:ContainerError){
+			catch(err:ContainerError)
+			{
 				error = err;
 			}
 			
@@ -1977,18 +2162,21 @@ package org.toshiroioc.core
 			assertEquals(ContainerError.ERROR_CYCLIC_DEPENDENCY, error.errorCode);
 		}
 		
-		public function testCyclicDependencyFromConstructors():void{
+		public function testCyclicDependencyFromConstructors():void
+		{
 			var xml:XML = constructXMLFromEmbed(CyclicDependencyFromConstructorsXMLClass);
 			
 			var error:ContainerError = null;
 			
 			var typeToBeLinkedByFlashCompiler:CyclicConstructor;
-						
-			try{
+			
+			try
+			{
 				var context:XMLBeanFactory = new XMLBeanFactory(xml);
 				context.initialize();
 			}
-			catch(err:ContainerError){
+			catch(err:ContainerError)
+			{
 				error = err;
 			}
 			
@@ -1996,16 +2184,19 @@ package org.toshiroioc.core
 			assertEquals(ContainerError.ERROR_CYCLIC_DEPENDENCY, error.errorCode);
 		}
 		
-		public function testCyclicDependencyFromConstructorsComplex():void{
+		public function testCyclicDependencyFromConstructorsComplex():void
+		{
 			var xml:XML = constructXMLFromEmbed(CyclicDependencyFromConstructorsComplexXMLClass);
 			
 			var error:ContainerError = null;
-						
-			try{
+			
+			try
+			{
 				var context:XMLBeanFactory = new XMLBeanFactory(xml);
 				context.initialize();
 			}
-			catch(err:ContainerError){
+			catch(err:ContainerError)
+			{
 				error = err;
 			}
 			
@@ -2013,7 +2204,8 @@ package org.toshiroioc.core
 			assertEquals(ContainerError.ERROR_CYCLIC_DEPENDENCY, error.errorCode);
 		}
 		
-		public function testSimpleDependencySetter():void{
+		public function testSimpleDependencySetter():void
+		{
 			
 			var xml:XML = constructXMLFromEmbed(DependencySimpleSetterXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
@@ -2023,7 +2215,7 @@ package org.toshiroioc.core
 			
 			var beanOne:SimpleDependencyObject = context.getTypedObject("object2", clazz);
 			assertNotNull(beanOne);
-			assertTrue(beanOne is SimpleDependencyObject);	
+			assertTrue(beanOne is SimpleDependencyObject);
 			assertNotNull(beanOne.someChild);
 			assertTrue(beanOne.someChild is BeanWithConstructor);
 			assertEquals("some123$#", beanOne.someString);
@@ -2036,18 +2228,18 @@ package org.toshiroioc.core
 			
 			assertEquals(beanTwo.someChild, beanOne.someChild);
 			
-			assertEquals (-99999, beanTwo.someChild.someNumber);
-			assertEquals (1111, beanTwo.someChild.someInt);
-			assertEquals ("some123String", beanTwo.someChild.someString);
-			assertEquals (true, beanTwo.someChild.someBoolean);
+			assertEquals(-99999, beanTwo.someChild.someNumber);
+			assertEquals(1111, beanTwo.someChild.someInt);
+			assertEquals("some123String", beanTwo.someChild.someString);
+			assertEquals(true, beanTwo.someChild.someBoolean);
 			
 			var clazz4:Class = Class(getDefinitionByName("org.toshiroioc.test.beans.ParentOfSimpleDependencyObject"));
 			var bean4:* = context.getTypedObject("object4", clazz4);
 			assertTrue(bean4 is ParentOfSimpleDependencyObject);
 		}
 		
-		public function testSimpleDependencyConstructor():void{
-			
+		public function testSimpleDependencyConstructor():void
+		{
 			
 			var xml:XML = constructXMLFromEmbed(DependencySimpleConstructorXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
@@ -2064,9 +2256,9 @@ package org.toshiroioc.core
 			var bean1:SimpleBean = context.getTypedObject("object1", clazz1);
 			assertNotNull(bean1);
 			
-			assertEquals(1111,bean1.uintItem);
-			assertEquals(-99999,bean1.intItem);
-			assertEquals(9999.00001,bean1.numberItem);
+			assertEquals(1111, bean1.uintItem);
+			assertEquals(-99999, bean1.intItem);
+			assertEquals(9999.00001, bean1.numberItem);
 			
 			//	parent class
 			var clazz4:Class = Class(getDefinitionByName("org.toshiroioc.test.beans.ObjectWithConstructorDependency"));
@@ -2078,7 +2270,8 @@ package org.toshiroioc.core
 			assertEquals(bean1, bean4.simpleChild);
 		}
 		
-		  public function testStaticReferenceInConstructor():void{
+		public function testStaticReferenceInConstructor():void
+		{
 			var xml:XML = constructXMLFromEmbed(ConstructorWithStaticReferenceXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			
@@ -2087,10 +2280,12 @@ package org.toshiroioc.core
 			//	testing the exception thrown during initialization,
 			//		if static variable of some bean doesn't exist
 			context.initialize();
-			try{
+			try
+			{
 				context.getObject('objectTwo');
 			}
-			catch(err:ContainerError){
+			catch(err:ContainerError)
+			{
 				error = err;
 				trace(error);
 			}
@@ -2100,21 +2295,25 @@ package org.toshiroioc.core
 			
 			// testing initialization and reference to static variable, if correct
 			
-			var beanWithCorrectStaticReference:BeanWithConstructor = context.getTypedObject("objectOne", org.toshiroioc.test.beans.BeanWithConstructor);
+			var beanWithCorrectStaticReference:BeanWithConstructor = context.getTypedObject("objectOne", org.toshiroioc.
+				test.beans.BeanWithConstructor);
 			assertNotNull(beanWithCorrectStaticReference);
 			assertEquals(7, beanWithCorrectStaticReference.someStatic);
-		}  
+		}
 		
-		 public function testStaticReferenceInSetter():void{
-		 	
-		 	var xml:XML = constructXMLFromEmbed(SetterWithStaticReferenceXMLClass);
+		public function testStaticReferenceInSetter():void
+		{
+			
+			var xml:XML = constructXMLFromEmbed(SetterWithStaticReferenceXMLClass);
 			var context:XMLBeanFactory = new XMLBeanFactory(xml);
 			var error:ContainerError;
 			context.initialize();
-			try{
+			try
+			{
 				context.getObject('objectTwo');
 			}
-			catch(err:ContainerError){
+			catch(err:ContainerError)
+			{
 				error = err;
 			}
 			assertNotNull(error);
@@ -2123,72 +2322,77 @@ package org.toshiroioc.core
 			var bean:SimpleBean = context.getTypedObject("objectOne", SimpleBean);
 			assertNotNull(bean);
 			assertEquals(7, bean.staticRefItem)
-		}  
+		}
 		
-		public static function suite():TestSuite{
+		public static function suite():TestSuite
+		{
 			
 			var testTS:TestSuite = new TestSuite();
 			var tests2:Vector.<Test> = getTestsArr();
-			for each (var value:Test in tests2) {
+			for each(var value:Test in tests2)
+			{
 				testTS.addTest(value);
-			}			
-						
-			return testTS;	
+			}
+			
+			return testTS;
 		}
 		
-		public static function getTestsArr():Vector.<Test>{
+		public static function getTestsArr():Vector.<Test>
+		{
 			var retval:Vector.<Test> = new Vector.<Test>();
 			
 			//retval.push(new XMLBeanFactoryTestCase("testDynamicObjectSetter"));
 			
-			retval.push(new XMLBeanFactoryTestCase("testObjectSetter"));     
+			retval.push(new XMLBeanFactoryTestCase("testWrongAttributeNames"));
+			retval.push(new XMLBeanFactoryTestCase("testWrongProperties"));
+			retval.push(new XMLBeanFactoryTestCase("testObjectSetter"));
 			retval.push(new XMLBeanFactoryTestCase("testRecursiveArrays"));
 			retval.push(new XMLBeanFactoryTestCase("testConcatConfigs"));
 			retval.push(new XMLBeanFactoryTestCase("testMultipleConfigs"));
 			retval.push(new XMLBeanFactoryTestCase('testPureMVCRegistrationAwareMediator'));
 			retval.push(new XMLBeanFactoryTestCase('testI18NMetatagWrongSetterType'));
- 			retval.push(new XMLBeanFactoryTestCase("testBeanIdMetatag"));
+			retval.push(new XMLBeanFactoryTestCase("testBeanIdMetatag"));
 			retval.push(new XMLBeanFactoryTestCase('testRestrictedBeansId'));
 			retval.push(new XMLBeanFactoryTestCase('testI18NMetatag'));
 			retval.push(new XMLBeanFactoryTestCase("testRefBeanNonExistent"));
 			retval.push(new XMLBeanFactoryTestCase("testRefBeanCircular"));
- 			retval.push(new XMLBeanFactoryTestCase("testRefBean"));
- 			retval.push(new XMLBeanFactoryTestCase("testRefFromArrayInnerBean"));
- 			retval.push(new XMLBeanFactoryTestCase("testRefFromInnerBean"));
- 			retval.push(new XMLBeanFactoryTestCase("testRefArrayInnerBeanCircular"));
- 			retval.push(new XMLBeanFactoryTestCase("testErrorsInMap"));
+			retval.push(new XMLBeanFactoryTestCase("testRefBean"));
+			retval.push(new XMLBeanFactoryTestCase("testRefFromArrayInnerBean"));
+			retval.push(new XMLBeanFactoryTestCase("testRefFromInnerBean"));
+			retval.push(new XMLBeanFactoryTestCase("testRefArrayInnerBeanCircular"));
+			retval.push(new XMLBeanFactoryTestCase("testErrorsInMap"));
 			retval.push(new XMLBeanFactoryTestCase("testMap"));
- 			retval.push(new XMLBeanFactoryTestCase("testMetatagsBeforeAndAfterConstructorWithoutProperties")); 
+			retval.push(new XMLBeanFactoryTestCase("testMetatagsBeforeAndAfterConstructorWithoutProperties"));
 			retval.push(new XMLBeanFactoryTestCase("testConstructorArrayInjection"));
 			retval.push(new XMLBeanFactoryTestCase("testErrorsInArray"));
 			retval.push(new XMLBeanFactoryTestCase("testSetterArrayInjection"));
- 		 	retval.push(new XMLBeanFactoryTestCase("testRefOptional"));
-	 	 	retval.push(new XMLBeanFactoryTestCase("testRefOptionalWrongArgument"));
+			retval.push(new XMLBeanFactoryTestCase("testRefOptional"));
+			retval.push(new XMLBeanFactoryTestCase("testRefOptionalWrongArgument"));
 			retval.push(new XMLBeanFactoryTestCase("testMetatagContextInjection"));
- 			retval.push(new XMLBeanFactoryTestCase("testIDNotUnique"));
+			retval.push(new XMLBeanFactoryTestCase("testIDNotUnique"));
 			//retval.push(new XMLBeanFactoryTestCase("testPureMVCMacroCommandStartup"));
 			retval.push(new XMLBeanFactoryTestCase("testPureMVCSimpleCommandStartup"));
 			retval.push(new XMLBeanFactoryTestCase("testDynamicContextLoadFailed"));
- 			retval.push(new XMLBeanFactoryTestCase("testDynamicContextSimpleLoad"));
+			retval.push(new XMLBeanFactoryTestCase("testDynamicContextSimpleLoad"));
 			retval.push(new XMLBeanFactoryTestCase("testDynamicContextRefToBeanFrom2ndConfig"));
 			retval.push(new XMLBeanFactoryTestCase("testDynamicContextRefToBeanFrom1stConfig"));
- 			retval.push(new XMLBeanFactoryTestCase("testNotInitializePrototypeBeans"));
- 			retval.push(new XMLBeanFactoryTestCase("testGetObjectsByClass"));
-			retval.push(new XMLBeanFactoryTestCase("testClassPostprocessor"));  	 	
+			retval.push(new XMLBeanFactoryTestCase("testNotInitializePrototypeBeans"));
+			retval.push(new XMLBeanFactoryTestCase("testGetObjectsByClass"));
+			retval.push(new XMLBeanFactoryTestCase("testClassPostprocessor"));
 			retval.push(new XMLBeanFactoryTestCase("testMetatagsBeforeAndAfterSetter"));
 			retval.push(new XMLBeanFactoryTestCase("testMetatagsBeforeAndAfterConstructor"));
 			retval.push(new XMLBeanFactoryTestCase("testMetatagRequiredNotSatisfied"));
 			retval.push(new XMLBeanFactoryTestCase("testMetatagRequiredSatisfied"));
 			retval.push(new XMLBeanFactoryTestCase("testBeforeAndAfterMetatagsExtended"));
 			retval.push(new XMLBeanFactoryTestCase("testDependencyNotExistingSetter"));
-			retval.push(new XMLBeanFactoryTestCase("testDependencyNotExistingContructor"));  
-			retval.push(new XMLBeanFactoryTestCase("testInstantiateBeanByID"));			
+			retval.push(new XMLBeanFactoryTestCase("testDependencyNotExistingContructor"));
+			retval.push(new XMLBeanFactoryTestCase("testInstantiateBeanByID"));
 			retval.push(new XMLBeanFactoryTestCase("testSetterNumber"));
 			retval.push(new XMLBeanFactoryTestCase("testSetterString"));
-			retval.push(new XMLBeanFactoryTestCase("testSetterDate"));			
+			retval.push(new XMLBeanFactoryTestCase("testSetterDate"));
 			retval.push(new XMLBeanFactoryTestCase("testSetterWithBoolean"));
-			retval.push(new XMLBeanFactoryTestCase("testXMLMissing"));			
-			retval.push(new XMLBeanFactoryTestCase("testSetterWithClass"));			 
+			retval.push(new XMLBeanFactoryTestCase("testXMLMissing"));
+			retval.push(new XMLBeanFactoryTestCase("testSetterWithClass"));
 			retval.push(new XMLBeanFactoryTestCase("testSetterWithImplicitNull"));
 			retval.push(new XMLBeanFactoryTestCase("testInstantiateByConstructorSimpleType"));
 			retval.push(new XMLBeanFactoryTestCase("testConstructorDate"));
@@ -2210,9 +2414,8 @@ package org.toshiroioc.core
 			retval.push(new XMLBeanFactoryTestCase("testCyclicDependencyFromConstructorToSetterComplex"));
 			retval.push(new XMLBeanFactoryTestCase("testCyclicDependencyFromSetterToConstructorComplex"));
 			retval.push(new XMLBeanFactoryTestCase("testStaticReferenceInConstructor"));
-			retval.push(new XMLBeanFactoryTestCase("testStaticReferenceInSetter"));                                    
-			  
-  			
+			retval.push(new XMLBeanFactoryTestCase("testStaticReferenceInSetter"));
+			
 			/*
 			retval.push(new XMLBeanFactoryTestCase("testRefBeanOptional"));
 			retval.push(new XMLBeanFactoryTestCase("testInstantiateByConstructorNewClass"));
@@ -2224,14 +2427,8 @@ package org.toshiroioc.core
 			retval.push(new XMLBeanFactoryTestCase("testResolvingInnerObjectsReferences"));
 			*/
 			
-			
-			
-			
-			
 			return retval;
 		}
-		
-		
-		
+	
 	}
 }
