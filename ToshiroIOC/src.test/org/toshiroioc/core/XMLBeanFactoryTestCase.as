@@ -11,6 +11,7 @@ package org.toshiroioc.core
 	
 	import org.DynamicModule;
 	import org.puremvc.as3.multicore.patterns.mediator.Mediator;
+	import org.puremvc.as3.multicore.patterns.proxy.Proxy;
 	import org.toshiroioc.ContainerError;
 	import org.toshiroioc.plugins.puremvc.multicore.CommandMap;
 	import org.toshiroioc.plugins.puremvc.multicore.SetterMap;
@@ -1192,6 +1193,11 @@ package org.toshiroioc.core
 				Class);
 			assertNotNull(objectVector);
 			assertTrue(objectVector.length > 0);
+			objectVector = null;
+			objectVector = context.getObjectsByClass(getDefinitionByName("org.puremvc.as3.multicore.patterns.proxy.Proxy") as
+				Class);
+			assertNotNull(objectVector);
+			assertTrue(objectVector.length == 2);
 			//test not existing bean of a class
 			try
 			{
