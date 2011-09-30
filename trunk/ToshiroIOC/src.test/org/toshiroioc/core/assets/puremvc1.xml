@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <objects>
 
-	
+
 	<!-- Commands	-->
 	<object id="pureMVCStartupCommand" class="org.toshiroioc.test.puremvc.command.MacroStartupCommand" lifecycle="prototype"/>
-						
-	<object id="prepModelCommand" class="org.toshiroioc.test.puremvc.command.PrepModelCommand" lifecycle="prototype">
-	</object>
-	
+
+	<object id="prepModelCommand" class="org.toshiroioc.test.puremvc.command.PrepModelCommand" lifecycle="prototype"/>
+
 	<object id="testCommand" class="org.toshiroioc.test.puremvc.command.TestCommand" />
-	
-	
+	<object id="prepViewCommand" class="org.toshiroioc.test.puremvc.command.PrepViewCommand" lifecycle="prototype"/>
+
+
 	<object id="exampleProxy" class="org.toshiroioc.test.puremvc.model.ExampleProxy"/>
 	<object id="exampleProxy2" class="org.toshiroioc.test.puremvc.model.ExampleProxy2"/>
-	
-	<object id="prepViewCommand" class="org.toshiroioc.test.puremvc.command.PrepViewCommand" lifecycle="prototype">
-	</object>
-	
+
+
 	<object id="beanWithSetterMap" class="org.toshiroioc.plugins.puremvc.multicore.SetterMap">
 		<property name="mappings">
 			<array>
@@ -53,13 +51,13 @@
 			</array>		
 		</property>
 	</object>
-	
+
 	<!-- Views -->
-	
+
 	<object id="exampleView" class="org.toshiroioc.test.puremvc.view.ExampleView"/>
-	
+
 	<!-- Mediators-->
-	
+
 	<object id="toshiroApplicationFacadeTestMediator" class="org.toshiroioc.test.puremvc.mediator.ToshiroApplicationFacadeTestMediator"/>
 
 	<object id="exampleViewMediator" class="org.toshiroioc.test.puremvc.mediator.ExampleViewMediator">

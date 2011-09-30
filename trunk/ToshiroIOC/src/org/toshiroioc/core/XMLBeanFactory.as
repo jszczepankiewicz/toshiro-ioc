@@ -35,6 +35,7 @@ package org.toshiroioc.core
 	import flash.events.EventDispatcher;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
+	import flash.utils.getQualifiedSuperclassName;
 	
 	import org.toshiroioc.ContainerError;
 	import org.toshiroioc.plugins.i18n.II18NProvider;
@@ -1308,16 +1309,43 @@ package org.toshiroioc.core
 			nodeNamesClassesMap = resultVector;
 		}
 		
+		/**
+		 * Returns all objects in context that are of a class given as parameter (or that inherits from)
+		 * @param clazz
+		 * @return
+		 *
+		 */
 		public function getObjectsByClass(clazz:Class):Vector.<Object>
 		{
 			var objects:Vector.<Object> = new Vector.<Object>;
-			
+			var searchedClassType:String = getQualifiedClassName(clazz);
 			for each(var arr:Array in nodeNamesClassesMap)
 			{
-				if(clazz == (arr[1] as Class))
+				
+				if(searchedClassType == 'Object')
 				{
-					objects.push(getObject(arr[0]));
+					if(clazz == (arr[1] as Class))
+					{
+						objects.push(getObject(arr[0]));
+					}
 				}
+				else
+				{
+					var contextClassType:String = getQualifiedClassName(arr[1] as Class);
+					while(contextClassType != "Object")
+					{
+						if(searchedClassType == contextClassType)
+						{
+							objects.push(getObject(arr[0]));
+							break;
+						}
+						else
+						{
+							contextClassType = getQualifiedSuperclassName(getDefinitionByName(contextClassType) as Class)
+						}
+					}
+				}
+				
 			}
 			switch(objects.length)
 			{
