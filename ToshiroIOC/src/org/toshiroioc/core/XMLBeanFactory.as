@@ -1341,7 +1341,14 @@ package org.toshiroioc.core
 						}
 						else
 						{
-							contextClassType = getQualifiedSuperclassName(getDefinitionByName(contextClassType) as Class)
+							if(contextClassType != "null")
+							{
+								contextClassType = getQualifiedSuperclassName(getDefinitionByName(contextClassType) as Class)
+							}
+							else
+							{
+								break;
+							}
 						}
 					}
 				}
